@@ -1,8 +1,7 @@
-% kompilace
-% mozna budete potrebovat spustit 
+% Compilation
+% maybe you will need run: 
 % mex -setup
 
-mex timestwo.c
 
 % mex libBinaryThinningCxx.a libBinaryThinning.a binaryThinningMex.c
 % mex libBinaryThinningCxx.a binaryThinningMex.c
@@ -12,6 +11,7 @@ mex timestwo.c
 % clc; clear all; cd mex;
 
 if ispc
+    % not tested
     disp('PC');
     itkDir = '"C:/Program Files (x86)/ITK"'
     itkIncludeDir = '"C:/Program Files (x86)/ITK/include"'
@@ -26,7 +26,7 @@ if ispc
         lib = [lib ' ' libpath files(i).name];
     end
     
-    eval(['mex build/libBinaryThinningCxx.a binaryThinningMex.c -O' include lib]);
+    eval(['mex bin/libBinaryThinningCxx.a binaryThinningMex.c -O' include lib]);
 %     include = ' -Ic:\OpenCV-2.3_trunk_20120324_build_64_install\include\opencv\ -Ic:\OpenCV-2.3_trunk_20120324_build_64_install\include\';
 %     libpath = 'c:\OpenCV-2.3_trunk_20120324_build_64_install\lib\';
 %     files = dir([libpath '*.lib']);
@@ -46,6 +46,7 @@ if ispc
 end
 
 if ismac
+    %not tested
     disp('Mac');
     
     include = ' -I/opt/local/include/opencv/ -I/opt/local/include/'; 
@@ -81,7 +82,7 @@ if isunix
         lib = [lib ' ' libpath files(i).name];
     end
     
-    eval(['mex build/libBinaryThinningCxx.a binaryThinningMex.c -O' include lib]);
+    eval(['mex bin/libBinaryThinningCxx.a binaryThinningMex.c -O' include lib]);
 %     mex -O -c tld.cpp
 %     mex -O fern.cpp tld.o
 %     mex -O linkagemex.cpp

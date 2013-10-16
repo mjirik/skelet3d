@@ -1,5 +1,4 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-SET(THINNING_DIR IJ_181_ITKBinaryThinningImageFilter3D/Source)
 
 PROJECT(BinaryThinning3D )
 
@@ -14,9 +13,19 @@ SET(CMAKE_BUILD_TYPE RELEASE)
 #   from unsigned char * to unsigned char *
 # BinaryThinning.c - warpper from C++ to C used with Matlab library
 
+SET(THINNING_DIR IJ_181_ITKBinaryThinningImageFilter3D/Source)
 ENABLE_TESTING()
 
 message(STATUS "module path: ${CMAKE_MODULE_PATH} ${CMAKE_ROOT}")
+FILE(MAKE_DIRECTORY ${CMAKE_MODULE_PATH}/bin)
+#MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
+
+#SET(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+
+#MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
 
 # berlicka pro nalezeni itk pod windows
 # SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/") 
@@ -45,7 +54,7 @@ SET(Libraries
 #ADD_DEFINITIONS(-fPIC )
 
 SET(CurrentExe "BinaryThinning3D")
-ADD_EXECUTABLE(${CurrentExe} C/BinaryThinning3D.cxx ) 
+ADD_EXECUTABLE(${CurrentExe} src/BinaryThinning3D.cxx ) 
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
 ADD_TEST(BinaryThinning3DTest BinaryThinning3D 
@@ -54,17 +63,25 @@ ADD_TEST(BinaryThinning3DTest BinaryThinning3D
     )
 
 SET(CurrentExe "BinaryThinningCxx")
-ADD_LIBRARY(${CurrentExe} STATIC C/BinaryThinningCxx.cxx ) 
+ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinningCxx.cxx ) 
 #ADD_LIBRARY(${CurrentExe} SHARED BinaryThinningCxx.cxx ) 
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
 SET(CurrentExe "BinaryThinning")
-ADD_LIBRARY(${CurrentExe} STATIC C/BinaryThinning.c ) 
+ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinning.c ) 
 #ADD_LIBRARY(${CurrentExe} SHARED BinaryThinning.c ) 
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxx")
 
 SET(CurrentExe "BinaryThinningTest")
-ADD_EXECUTABLE(${CurrentExe} C/BinaryThinningTest.c) 
+ADD_EXECUTABLE(${CurrentExe} src/BinaryThinningTest.c) 
 TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinning BinaryThinningCxx)
 
 
+# Shared libraries
+SET(CurrentExe "BinaryThinningCxxShared")
+ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinningCxx.cxx ) 
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+
+SET(CurrentExe "BinaryThinningShared")
+ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c ) 
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")

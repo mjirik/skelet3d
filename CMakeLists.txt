@@ -18,6 +18,11 @@ ENABLE_TESTING()
 
 message(STATUS "module path: ${CMAKE_MODULE_PATH} ${CMAKE_ROOT}")
 FILE(MAKE_DIRECTORY ${CMAKE_MODULE_PATH}/bin)
+FILE(DOWNLOAD 
+    "http://www.insight-journal.org/download/downloadbitstream/8176/IJ_181_ITKbinaryThinningImageFilter3D.zip"
+    ${CMAKE_MODULE_PATH}/IJ_181_ITKBinaryThinningImageFilter3D/binaryThinning3D.zip
+    SHOW_PROGRESS
+    )
 #MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
 
 #SET(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)

@@ -20,7 +20,9 @@ def skelet3d(data):
     libpath = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) +\
             "/../bin/libBinaryThinningCxxShared.so")
             #"/../bin/libBinaryThinningShared.so")
-    os.environ['PATH'] 
+    if not os.path.exists(libpath):
+        libpath = "libBinaryThinningCxxShared.so"
+    #os.environ['PATH'] 
     #import pdb; pdb.set_trace()
     hlibc = ctypes.CDLL(libpath)
     

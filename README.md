@@ -11,6 +11,7 @@ Prerequisites
   * Python (2.7)
   * CMake
   * ITK
+  * Numpy
 
 
 
@@ -28,6 +29,19 @@ For matlab wrapper run src/compile.m
     matlab -nodesktop -nosplash -r "cd src;compile;exit"
 
 Then there is binaryThhinningMex.mexa64 file. It is used by skelet3d.m.
+
+Example
+=======
+
+    import skelet3d
+
+    data = np.zeros([8,9,10], dtype=np.int8)
+    data [1:4, 3:7,1:12] = 1
+
+    skelet = skelet3d.skelet3d(data)
+
+    print skelet
+
 
 
 Troubleshooting

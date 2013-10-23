@@ -104,6 +104,7 @@ SET(CurrentExe "BinaryThinningShared")
 ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c ) 
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")
 
+INSTALL(TARGETS BinaryThinningCxxShared DESTINATION lib)
 
 
 ## --------------------------- Python compilation -----------------------

@@ -12,16 +12,20 @@ def skelet3d(data):
 
     """
     import ctypes
-    import os
+    import ctypes.util
+    #import os
 
     data = data.astype('int8')
 
 # ThinningCxxShared is C++, ThinningShared is C
-    libpath = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) +\
-            "/../bin/libBinaryThinningCxxShared.so")
-            #"/../bin/libBinaryThinningShared.so")
-    if not os.path.exists(libpath):
-        libpath = "libBinaryThinningCxxShared.so"
+    #libpath = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) +\
+    #        "/../bin/libBinaryThinningCxxShared.so")
+    #        #"/../bin/libBinaryThinningShared.so")
+    #if not os.path.exists(libpath):
+    #    libpath = "libBinaryThinningCxxShared.so"
+
+    libpath = ctypes.util.find_library('BinaryThinningCxxShared')
+    
     #os.environ['PATH'] 
     #import pdb; pdb.set_trace()
     hlibc = ctypes.CDLL(libpath)

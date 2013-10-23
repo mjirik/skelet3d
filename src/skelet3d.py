@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import traceback
 
 def skelet3d(data):
     """
@@ -28,7 +29,17 @@ def skelet3d(data):
     
     #os.environ['PATH'] 
     #import pdb; pdb.set_trace()
-    hlibc = ctypes.CDLL(libpath)
+    try:
+        hlibc = ctypes.CDLL(libpath)
+    except Exception, e:
+        print traceback.format_exc()
+        if libpath != None:
+            print "CDLL cannot find library. Problem with LD_LIBRARY_PATH."
+            print "Please read skelet3d/README.md"
+
+        #print e
+        exit()
+
     
 # unsigned char * thinningCxx (int sizeX, int sizeY, int sizeZ, unsigned char *)
 # function .tostring() give char stream

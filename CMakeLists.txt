@@ -19,13 +19,15 @@ ENABLE_TESTING()
 
 message(STATUS "module path: ${CMAKE_MODULE_PATH} ${CMAKE_ROOT}")
 FILE(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+#message(STATUS "Downloading binary thinning code")
 FILE(DOWNLOAD 
     "http://www.insight-journal.org/download/downloadbitstream/8176/IJ_181_ITKbinaryThinningImageFilter3D.zip"
     ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip
     #${CMAKE_BINARY_DIR}/binaryThinning3D.zip
-    #SHOW_PROGRESS
+    SHOW_PROGRESS
     )
 
+message(STATUS "Unzipping")
 ADD_CUSTOM_TARGET(unzipped_source
     COMMAND unzip ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
     #DEPENDS ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/

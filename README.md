@@ -13,6 +13,9 @@ Prerequisites
   * ITK
   * Numpy
 
+Install prerequisites on Ubunut 14.04
+
+    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev
 
 
 Install notes

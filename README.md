@@ -108,7 +108,11 @@ http://bugs.python.org/issue18502
 
 http://ubuntuforums.org/showthread.php?t=1498755
 
+ld cannot find -lz and -lpng
+-----------------------------
 
-
+Problem is probabli in 32-bit compiling in 64-bit system. You need install fallowing packages. 
+    
+    sudo apt-get install lib32z1-dev libpng12-dev
 
 

@@ -38,7 +38,9 @@ ImageType::Pointer thinningITK( ImageType::Pointer in){
 }
 //char * thinningCxx(int sizeX, int sizeY, int sizeZ, char* data ){
 unsigned char * thinningCxx(int sizeX, int sizeY, int sizeZ, unsigned char * data ){
-printf("thinnCXX()"); 
+// uncomment next line for debug
+//printf("thinnCXX()"); 
+
 //  int ii;
  // for (ii = 0; ii < (sizeX*sizeY*sizeZ) ; ii++){
  //   data[ii] = data[ii] + 2;
@@ -68,8 +70,9 @@ printf("thinnCXX()");
 	// Pixel data is allocated
 	image->SetRegions( region );
 	image->Allocate();
-
-  printf("thinnCxx() printf  \n");
+  // uncomment next line for debug
+  //printf("thinnCxx() printf  \n");
+  
   //std::cout << "thinningCxx()\n";  
 
   // plneni daty

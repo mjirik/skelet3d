@@ -29,7 +29,7 @@ FILE(DOWNLOAD
 
 message(STATUS "Unzipping")
 ADD_CUSTOM_TARGET(unzipped_source
-    COMMAND unzip ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
+    COMMAND unzip -o ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
     #DEPENDS ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/
     #DEPENDS ${CMAKE_BINARY_DIR}/BinaryThinning3D.zip
     )

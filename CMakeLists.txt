@@ -108,7 +108,7 @@ TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")
 
 #MESSAGE("cmake install prefix " ${CMAKE_INSTALL_PREFIX} )
 
-
+SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib") 
 INSTALL(TARGETS BinaryThinningCxxShared DESTINATION lib)
 
 ## --------------------------- Python compilation -----------------------

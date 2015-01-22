@@ -12,6 +12,7 @@ before_install:
     # - wget http://147.228.240.61/queetech/sample-extra-data/io3d_sample_data.zip && unzip io3d_sample_data.zip
 # command to install dependencies
 install:
+    - 'mkdir build'
     - "cd build"
     - "cmake .."
     - "make"

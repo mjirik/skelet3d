@@ -17,6 +17,6 @@ install:
     - "make"
     - "make install"
 # command to run tests
-script: nosetests --with-coverage --cover-package=io3d
+script: nosetests --with-coverage --cover-package=skelet3d
 after_success:
     - coveralls

@@ -18,7 +18,7 @@ Prerequisites
 
 Install prerequisites on Ubunut 14.04
 
-    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev
+    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
 
 
 Install notes

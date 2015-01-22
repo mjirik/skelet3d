@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/mjirik/skelet3d.svg)](https://travis-ci.org/mjirik/skelet3d)
+[![Coverage Status](https://coveralls.io/repos/mjirik/skelet3d/badge.svg)](https://coveralls.io/r/mjirik/skelet3d)
+
 skelet3d
 ========
 

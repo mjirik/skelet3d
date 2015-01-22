@@ -16,7 +16,7 @@ install:
     - "cd build"
     - "cmake .."
     - "make"
-    - "make install"
+    - "sudo make install"
 # command to run tests
 script: nosetests --with-coverage --cover-package=skelet3d
 after_success:

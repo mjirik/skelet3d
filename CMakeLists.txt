@@ -130,7 +130,9 @@ IF (PYTHON)
 
     ADD_CUSTOM_TARGET(target ALL DEPENDS ${OUTPUT})
 
-    INSTALL(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
+    IF(NOT NO_SETUPPY)
+        INSTALL(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
+    ENDIF(NOT NO_SETUPPY)
 ENDIF()
 
 

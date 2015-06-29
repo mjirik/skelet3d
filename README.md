@@ -4,7 +4,7 @@
 skelet3d
 ========
 
-Skeletonize algorithm based on ITKThinningImageFilter3D. 
+Skeletonize algorithm based on [ITKThinningImageFilter3D](http://hdl.handle.net/1926/1292). 
 There is dynamic linked library installed by cmake. Python and Matlab 
 scripts call this library. 
 

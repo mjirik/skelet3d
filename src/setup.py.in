@@ -5,6 +5,6 @@ setup(
         version='${PACKAGE_VERSION}',
         package_dir={ '': '${CMAKE_CURRENT_SOURCE_DIR}'+"/src" },
         #packages=['skelet3d']
-        packages=find_package(exclude['dist', 'docs', 'tests'])
-	py_modules=['skelet3d']
+        # packages=find_package(exclude['dist', 'docs', 'tests'])
+        py_modules=['skelet3d']
     )

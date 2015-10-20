@@ -11,6 +11,11 @@ import distutils.dir_util as dd
 # CMake function
 #################
 #def run_cmake(cmake_args="-DSIMX_USE_PRIME=1 -DSIMX_USE_MPI=1"):
+
+src_dir = os.path.abspath(__file__) 
+src_dir, fl = os.path.split(src_dir) 
+src_dir = src_dir + "/src"
+
 def run_cmake(no_setuppy=1):
     """
     Runs CMake to determine configuration for this build
@@ -40,7 +45,8 @@ run_cmake()
 setup(
         name='skelet3d',
         version='1.0',
-        package_dir={ '': "src" },
+	package_dir={ '': src_dir},
+	#	"c:\\users/mjirik/projects/skelet3d/src" },
         #packages=['skelet3d']
         py_modules=['skelet3d']
     )

@@ -6,7 +6,8 @@ setup(
         name='skelet3d',
         version='${PACKAGE_VERSION}',
         package_dir={ '': op.join('${CMAKE_CURRENT_SOURCE_DIR}', "src/") },
-        packages=['skelet3d']
+        packages=['skelet3d'],
         # packages=find_packages(),
         # py_modules=['skelet3d']
+        required_packages=['numpy', 'scipy'],
     )

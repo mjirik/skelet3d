@@ -1,9 +1,12 @@
+# from setuptools import setup, find_packages
 from distutils.core import setup
 
+import os.path as op
 setup(
         name='skelet3d',
         version='${PACKAGE_VERSION}',
-        package_dir={ '': '${CMAKE_CURRENT_SOURCE_DIR}'+"/src" },
-        #packages=['skelet3d']
-        py_modules=['skelet3d']
+        package_dir={ '': op.join('${CMAKE_CURRENT_SOURCE_DIR}', "src/") },
+        packages=['skelet3d']
+        # packages=find_packages(),
+        # py_modules=['skelet3d']
     )

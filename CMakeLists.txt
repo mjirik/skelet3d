@@ -4,7 +4,7 @@ PROJECT(BinaryThinning3D )
 
 SET(CMAKE_BUILD_TYPE RELEASE)
 
-SET(PACKAGE_VERSION 1.0)
+SET(PACKAGE_VERSION 1.1)
 
 
 
@@ -106,9 +106,26 @@ SET(CurrentExe "BinaryThinningShared")
 ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c ) 
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")
 
-#MESSAGE("cmake install prefix " ${CMAKE_INSTALL_PREFIX} )
 
-INSTALL(TARGETS BinaryThinningCxxShared DESTINATION lib)
+
+# where should be installed so libraries
+FIND_PATH(CONDA_PREFIX NAME "LICENSE.txt" PATHS $ENV{HOME}/miniconda/ $ENV{HOME}/anaconda/)
+# alternative you can use conda info --root
+
+# MESSAGE("cmake install prefix " ${CMAKE_INSTALL_PREFIX} )
+# MESSAGE("conda prefix " ${CONDA_PREFIX} )
+# MESSAGE("home dir" $ENV{HOME} )
+
+IF(CONDA_PREFIX)
+    # MESSAGE("conda nalezena")
+    SET(SKELET3D_LIB_INSTALL_DESTINATION ${CONDA_PREFIX}/lib/python2.7/site-packages)
+
+ELSE()
+    # MESSAGE("conda nenalezena")
+    SET(SKELET3D_LIB_INSTALL_DESTINATION lib)
+ENDIF()
+
+INSTALL(TARGETS BinaryThinningCxxShared DESTINATION ${SKELET3D_LIB_INSTALL_DESTINATION})
 
 ## --------------------------- Python compilation -----------------------
 
@@ -131,7 +148,12 @@ IF (PYTHON)
     ADD_CUSTOM_TARGET(target ALL DEPENDS ${OUTPUT})
 
     IF(NOT NO_SETUPPY)
-        INSTALL(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
+        FIND_PROGRAM(PIP "pip")
+        IF (PIP)
+            INSTALL(CODE "execute_process(COMMAND ${PIP} .)")
+        ELSE()
+            # INSTALL(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
+        ENDIF()
     ENDIF(NOT NO_SETUPPY)
 ENDIF()
 

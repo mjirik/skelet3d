@@ -9,5 +9,5 @@ setup(
         packages=['skelet3d'],
         # packages=find_packages(),
         # py_modules=['skelet3d']
-        required_packages=['numpy', 'scipy'],
+        install_requires=['numpy', 'scipy'],
     )

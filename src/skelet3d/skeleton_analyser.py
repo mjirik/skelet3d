@@ -16,6 +16,7 @@ import traceback
 
 import numpy as np
 import scipy.ndimage
+import scipy.interpolate
 
 
 class SkeletonAnalyser:
@@ -115,6 +116,7 @@ class SkeletonAnalyser:
         logger.debug(
             'skeleton_analysis: starting processing part: length, radius, ' +
             'curve and connections of edge')
+        # TODO switch A and B based on neighborhood maximal radius
         for edg_number in range(1, len_edg + 1):
             edgst = {}
             edgst.update(self.__connection_analysis(edg_number))
@@ -136,16 +138,13 @@ class SkeletonAnalyser:
             'curve, connections of edge')
 
         # @TODO dokončit
-        # logger.debug(
-        # 'skeleton_analysis: starting processing part:
-        # angles of connected edges')
-        # for edg_number in range (1,len_edg+1):
-            # edgst = stats[edg_number]
-            # edgst.update(self.__connected_edge_angle(edg_number, stats))
+        logger.debug( 'skeleton_analysis: starting processing part: angles of connected edges')
+        for edg_number in range (1,len_edg+1):
+            edgst = stats[edg_number]
+            edgst.update(self.__connected_edge_angle(edg_number, stats))
 
-            # updateFunction(edg_number,len_edg, "angles of connected edges")
-        # logger.debug('skeleton_analysis: finished processing part: angles of
-        # connected edges')
+            updateFunction(edg_number,len_edg, "angles of connected edges")
+        logger.debug('skeleton_analysis: finished processing part: angles of connected edges')
 
         return stats
 
@@ -550,10 +549,11 @@ class SkeletonAnalyser:
 
     def __connected_edge_angle_on_one_end(self, edg_number, stats, edg_end):
         """
-        | edg_number: integer with edg_number
-        | stats: dictionary with all statistics and computations
-        | edg_end: letter 'A' or 'B'
-        |    creates phiXa, phiXb and phiXc.
+
+        creates phiXa, phiXb and phiXc.
+        :param edg_number: integer with edg_number
+        :param stats:  dictionary with all statistics and computations
+        :param edg_end: letter 'A' or 'B'
 
         See Schwen2012 : Analysis and algorithmic generation of hepatic vascular
         system.
@@ -609,33 +609,33 @@ class SkeletonAnalyser:
 
 # TODO tady je nějaký binec
         out = {}
-        try:
-            vectorA = stats[edg_number]['vectorA']
-            # vectorB = stats[edg_number]['vectorB']
-            stats[edg_number]['vectorB']
-        except Exception:
-            traceback.print_exc()
-        try:
-            vectorA0 = self.__vector_of_connected_edge(
-                edg_number, stats, 'A', 0)
-            # angleA0a = np.arccos(np.dot(vectorA, vectorA0))
-            angleA0 = self.__vectors_to_angle_deg(vectorA, vectorA0)
-            print 'va ', vectorA0, 'a0a', angleA0, 'a0', angleA0
-            out.update({'angleA0': angleA0.tolist()})
-        except Exception:
-            traceback.print_exc()
-            print (
-                "connected edge (number " + str(edg_number) +
-                ") vectorA not found 0 ")
-
-        try:
-            # vectorA1 = self.__vector_of_connected_edge(
-            self.__vector_of_connected_edge(
-                edg_number, stats, 'A', 1)
-        except:
-            print (
-                "connected edge (number " + str(edg_number) +
-                ") vectorA not found 1")
+        # try:
+        #     vectorA = stats[edg_number]['vectorA']
+        #     # vectorB = stats[edg_number]['vectorB']
+        #     stats[edg_number]['vectorB']
+        # except Exception:
+        #     traceback.print_exc()
+        # try:
+        #     vectorA0 = self.__vector_of_connected_edge(
+        #         edg_number, stats, 'A', 0)
+        #     # angleA0a = np.arccos(np.dot(vectorA, vectorA0))
+        #     angleA0 = self.__vectors_to_angle_deg(vectorA, vectorA0)
+        #     print 'va ', vectorA0, 'a0a', angleA0, 'a0', angleA0
+        #     out.update({'angleA0': angleA0.tolist()})
+        # except Exception:
+        #     traceback.print_exc()
+        #     print (
+        #         "connected edge (number " + str(edg_number) +
+        #         ") vectorA not found 0 ")
+        #
+        # try:
+        #     # vectorA1 = self.__vector_of_connected_edge(
+        #     self.__vector_of_connected_edge(
+        #         edg_number, stats, 'A', 1)
+        # except:
+        #     print (
+        #         "connected edge (number " + str(edg_number) +
+        #         ") vectorA not found 1")
 
         out.update(
             self.__connected_edge_angle_on_one_end(edg_number, stats, 'A'))

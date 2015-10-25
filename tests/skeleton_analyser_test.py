@@ -75,7 +75,7 @@ class TemplateTest(unittest.TestCase):
 
         # T-junction on the left
         data[17, 4:16, 3] = 1
-        import sed3
+        # import sed3
         # ed = sed3.sed3(data)
         # ed.show()
 

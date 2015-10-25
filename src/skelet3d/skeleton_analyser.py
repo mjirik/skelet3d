@@ -597,8 +597,8 @@ class SkeletonAnalyser:
                 'phi' + edg_end + 'a': phiXa.tolist(),
                 'phi' + edg_end + 'b': phiXb.tolist(),
                 'phi' + edg_end + 'c': phiXc.tolist(),
-                'vector' + edg_end + '0': vectorX0.tolist(),
-                'vector' + edg_end + '1': vectorX1.tolist(),
+                'vector' + edg_end + '0': vectorX0,
+                'vector' + edg_end + '1': vectorX1,
             })
 
         # except:  # Exception as e:

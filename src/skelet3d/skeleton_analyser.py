@@ -571,7 +571,7 @@ class SkeletonAnalyser:
                 edg_number, stats, edg_end, 0)
             phiXa = self.__vectors_to_angle_deg(vectorX0, vector)
 
-            out.update({'phiA0' + edg_end + 'a': phiXa.tolist()})
+            # out.update({'phiA0' + edg_end + 'a': phiXa.tolist()})
         except:  # Exception as e:
             logger.warning(traceback.print_exc())
         try:
@@ -594,7 +594,9 @@ class SkeletonAnalyser:
             out.update({
                 'phi' + edg_end + 'a': phiXa.tolist(),
                 'phi' + edg_end + 'b': phiXb.tolist(),
-                'phi' + edg_end + 'c': phiXc.tolist()
+                'phi' + edg_end + 'c': phiXc.tolist(),
+                'vector' + edg_end + '0': vectorX0.tolist(),
+                'vector' + edg_end + '1': vectorX1.tolist(),
             })
 
         except:  # Exception as e:

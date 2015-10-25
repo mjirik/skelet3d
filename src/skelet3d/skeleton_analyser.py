@@ -566,21 +566,23 @@ class SkeletonAnalyser:
         except:  # Exception as e:
             logger.warning(traceback.print_exc())
 
+        vectorX0 = None
+        vectorX1 = None
         try:
             vectorX0 = self.__vector_of_connected_edge(
                 edg_number, stats, edg_end, 0)
-            phiXa = self.__vectors_to_angle_deg(vectorX0, vector)
+            # phiXa = self.__vectors_to_angle_deg(vectorX0, vector)
 
             # out.update({'phiA0' + edg_end + 'a': phiXa.tolist()})
         except:  # Exception as e:
-            logger.warning(traceback.print_exc())
+            logger.debug(traceback.print_exc())
         try:
             vectorX1 = self.__vector_of_connected_edge(
                 edg_number, stats, edg_end, 1)
         except:  # Exception as e:
-            logger.warning(traceback.print_exc())
+            logger.debug(traceback.print_exc())
 
-        try:
+        if (vectorX0 is not None) and (vectorX1 is not None):
 
             vect_proj = self.projection_of_vect_to_xy_plane(
                 vector, vectorX0, vectorX1)
@@ -599,8 +601,8 @@ class SkeletonAnalyser:
                 'vector' + edg_end + '1': vectorX1.tolist(),
             })
 
-        except:  # Exception as e:
-            logger.warning(traceback.print_exc())
+        # except:  # Exception as e:
+        #     logger.warning(traceback.print_exc())
 
         return out
 

@@ -116,14 +116,17 @@ FIND_PATH(CONDA_PREFIX NAME "LICENSE.txt" PATHS $ENV{HOME}/miniconda/ $ENV{HOME}
 # MESSAGE("conda prefix " ${CONDA_PREFIX} )
 # MESSAGE("home dir" $ENV{HOME} )
 
-IF(CONDA_PREFIX)
-    # MESSAGE("conda nalezena")
-    SET(SKELET3D_LIB_INSTALL_DESTINATION ${CONDA_PREFIX}/lib/python2.7/site-packages)
-
-ELSE()
-    # MESSAGE("conda nenalezena")
-    SET(SKELET3D_LIB_INSTALL_DESTINATION lib)
-ENDIF()
+# this is not working ctypes cannot find lib in conda directory
+# problem is that we need build python with normal user and install with sudo
+# IF(CONDA_PREFIX)
+#     # MESSAGE("conda nalezena")
+#     SET(SKELET3D_LIB_INSTALL_DESTINATION ${CONDA_PREFIX}/lib/python2.7/site-packages)
+#
+# ELSE()
+#     # MESSAGE("conda nenalezena")
+#     SET(SKELET3D_LIB_INSTALL_DESTINATION lib)
+# ENDIF()
+SET(SKELET3D_LIB_INSTALL_DESTINATION lib)
 
 INSTALL(TARGETS BinaryThinningCxxShared DESTINATION ${SKELET3D_LIB_INSTALL_DESTINATION})
 

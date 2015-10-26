@@ -70,9 +70,5 @@ def main():
     skelet3d(data)
     print "Output data"
 
-
-
-    pass
-
 if __name__ == "__main__":
     main()

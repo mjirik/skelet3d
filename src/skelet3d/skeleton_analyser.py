@@ -567,7 +567,7 @@ class SkeletonAnalyser:
         try:
             vector = stats[edg_number][vector_key]
         except:  # Exception as e:
-            logger.warning(traceback.print_exc())
+            logger.debug(traceback.print_exc())
 
         try:
             vectorX0 = self.__vector_of_connected_edge(

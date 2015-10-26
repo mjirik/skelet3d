@@ -139,7 +139,7 @@ class SkeletonAnalyser:
 
         # @TODO dokončit
         logger.debug( 'skeleton_analysis: starting processing part: angles of connected edges')
-        for edg_number in range (1,len_edg+1):
+        for edg_number in range (1, len_edg + 1):
             edgst = stats[edg_number]
             edgst.update(self.__connected_edge_angle(edg_number, stats))
 
@@ -658,7 +658,25 @@ class SkeletonAnalyser:
         angleA0 = 0
         return out
 
-    def __swapAB(self):
+    def __swapAB(self, edg_number, stats):
+        """
+        Function can swap A and B node
+        :param edg_number:
+        :param stats:
+        :return:
+        """
+        import copy
+        keys = stats[edg_number].keys()
+        # vector = stats[edg_number][vector_key]
+        for key in keys:
+            k2 = copy.copy(key)
+            idx = k2.find("A")
+            k2[idx] = "B"
+            if k2 in keys:
+                tmp = stats[edg_number][key]
+                stats[edg_number][key] = stats[edg_number][k2]
+
+
         pass
 
 #        try:

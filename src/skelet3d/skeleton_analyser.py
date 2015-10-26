@@ -561,13 +561,14 @@ class SkeletonAnalyser:
         out = {}
 
         vector_key = 'vector' + edg_end
+        vectorX0 = None
+        vectorX1 = None
+        vector = None
         try:
             vector = stats[edg_number][vector_key]
         except:  # Exception as e:
             logger.warning(traceback.print_exc())
 
-        vectorX0 = None
-        vectorX1 = None
         try:
             vectorX0 = self.__vector_of_connected_edge(
                 edg_number, stats, edg_end, 0)
@@ -582,7 +583,7 @@ class SkeletonAnalyser:
         except:  # Exception as e:
             logger.debug(traceback.print_exc())
 
-        if (vectorX0 is not None) and (vectorX1 is not None):
+        if (vectorX0 is not None) and (vectorX1 is not None) and (vector is not None):
 
             vect_proj = self.projection_of_vect_to_xy_plane(
                 vector, vectorX0, vectorX1)

@@ -593,59 +593,69 @@ class SkeletonAnalyser:
                 np.array(vectorX0 / np.linalg.norm(vectorX0)) +\
                 np.array(vectorX1 / np.linalg.norm(vectorX1))
             phiXc = self.__vectors_to_angle_deg(vectorX01avg, vect_proj)
+            return
 
             out.update({
-                'phi' + edg_end + 'a': phiXa.tolist(),
-                'phi' + edg_end + 'b': phiXb.tolist(),
-                'phi' + edg_end + 'c': phiXc.tolist(),
-                'vector' + edg_end + '0': vectorX0,
-                'vector' + edg_end + '1': vectorX1,
+                'phi' + 'a': phiXa.tolist(),
+                'phi' + 'b': phiXb.tolist(),
+                'phi' + 'c': phiXc.tolist(),
+                'vector'+ '0': vectorX0,
+                'vector' + '1': vectorX1,
             })
+            # out.update({
+            #     'phi' + edg_end + 'a': phiXa.tolist(),
+            #     'phi' + edg_end + 'b': phiXb.tolist(),
+            #     'phi' + edg_end + 'c': phiXc.tolist(),
+            #     'vector' + edg_end + '0': vectorX0,
+            #     'vector' + edg_end + '1': vectorX1,
+            #     })
+            return out
+            # return phiXA, phiXb, phiXc, vectorX0, vectorX1
 
         # except:  # Exception as e:
         #     logger.warning(traceback.print_exc())
 
-        return out
+        return None
 
     def __connected_edge_angle(self, edg_number, stats):
         """
         count angles betwen end vectors of edges
         """
 
-# TODO tady je nějaký binec
-        out = {}
-        # try:
-        #     vectorA = stats[edg_number]['vectorA']
-        #     # vectorB = stats[edg_number]['vectorB']
-        #     stats[edg_number]['vectorB']
-        # except Exception:
-        #     traceback.print_exc()
-        # try:
-        #     vectorA0 = self.__vector_of_connected_edge(
-        #         edg_number, stats, 'A', 0)
-        #     # angleA0a = np.arccos(np.dot(vectorA, vectorA0))
-        #     angleA0 = self.__vectors_to_angle_deg(vectorA, vectorA0)
-        #     print 'va ', vectorA0, 'a0a', angleA0, 'a0', angleA0
-        #     out.update({'angleA0': angleA0.tolist()})
-        # except Exception:
-        #     traceback.print_exc()
-        #     print (
-        #         "connected edge (number " + str(edg_number) +
-        #         ") vectorA not found 0 ")
-        #
-        # try:
-        #     # vectorA1 = self.__vector_of_connected_edge(
-        #     self.__vector_of_connected_edge(
-        #         edg_number, stats, 'A', 1)
-        # except:
-        #     print (
-        #         "connected edge (number " + str(edg_number) +
-        #         ") vectorA not found 1")
+        def setAB(statsA, statsB):
 
-        out.update(
-            self.__connected_edge_angle_on_one_end(edg_number, stats, 'A'))
-        out.update(
-            self.__connected_edge_angle_on_one_end(edg_number, stats, 'B'))
+            stA = {}
+            stB = {}
+            edg_end = "A"
+            statstmp = statsA
+            if statsA is not None:
+                stA = {
+                    'phi' + edg_end + 'a': statstmp['phia'],
+                    'phi' + edg_end + 'b': statstmp['phib'],
+                    'phi' + edg_end + 'c': statstmp['phic'],
+                    'vector' + edg_end + '0': statstmp['vector0'],
+                    'vector' + edg_end + '1': statstmp['vector1'],
+                    }
+
+            edg_end = "B"
+            statstmp = statsB
+            if statsB is not None:
+                stB = {
+                    'phi' + edg_end + 'a': statstmp['phia'],
+                    'phi' + edg_end + 'b': statstmp['phib'],
+                    'phi' + edg_end + 'c': statstmp['phic'],
+                    'vector' + edg_end + '0': statstmp['vector0'],
+                    'vector' + edg_end + '1': statstmp['vector1'],
+                    }
+            return stA, stB
+
+        statsA = self.__connected_edge_angle_on_one_end(edg_number, stats, 'A')
+        statsB = self.__connected_edge_angle_on_one_end(edg_number, stats, 'B')
+        stA, stB = setAB(statsA, statsB)
+        out = {}
+        out.update(stA)
+
+        out.update(stB)
         angleA0 = 0
         return out
 

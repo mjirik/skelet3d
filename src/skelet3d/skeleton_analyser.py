@@ -593,7 +593,6 @@ class SkeletonAnalyser:
                 np.array(vectorX0 / np.linalg.norm(vectorX0)) +\
                 np.array(vectorX1 / np.linalg.norm(vectorX1))
             phiXc = self.__vectors_to_angle_deg(vectorX01avg, vect_proj)
-            return
 
             out.update({
                 'phi' + 'a': phiXa.tolist(),
@@ -658,6 +657,9 @@ class SkeletonAnalyser:
         out.update(stB)
         angleA0 = 0
         return out
+
+    def __swapAB(self):
+        pass
 
 #        try:
 # we need find end of edge connected to our node

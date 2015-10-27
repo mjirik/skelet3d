@@ -15,10 +15,25 @@ Prerequisites
   * CMake
   * ITK
   * Numpy
+  * InsightToolkit
 
-Install prerequisites on Ubunut 14.04
+Install prerequisites on Ubuntu 14.04
 
     sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
+    
+ Windows 
+ 
+* install [cmake](https://cmake.org/)
+* Download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
+* install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
+* download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
+
+        mkdir itk-build
+        cd itk-build
+        cmake -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS ..\InsightToolkit-4.7.1
+        C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
+        
+ 
 
 
 Install notes

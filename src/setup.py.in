@@ -2,10 +2,13 @@
 from distutils.core import setup
 
 import os.path as op
+pkgdir = '${CMAKE_CURRENT_SOURCE_DIR}'
+if pkgdir[1] == ":":
+    pkgdir = pkgdir.replace("/", "\\")
 setup(
         name='skelet3d',
         version='${PACKAGE_VERSION}',
-        package_dir={ '': op.join('${CMAKE_CURRENT_SOURCE_DIR}', "src") },
+        package_dir={ '': op.join(pkgdir, "src") },
         packages=['skelet3d'],
         # packages=find_packages(),
         # py_modules=['skelet3d']

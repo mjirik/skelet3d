@@ -32,6 +32,12 @@ Install prerequisites on Ubuntu 14.04
         cd itk-build-64
         cmake cmake -G "Visual Studio 14 2015 Win64" -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON ..\InsightToolkit-4.7.1
         C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
+* Build skelet3d library
+
+        mkdir build
+        cd build
+        cmake -G "Visual Studio 14 2015 Win64" ..
+        C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
         
  
 

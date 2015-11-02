@@ -24,20 +24,21 @@ Install prerequisites on Ubuntu 14.04
  Windows 
  
 * install [cmake](https://cmake.org/), use stable version 3.4.2 ( there are problems with 3.4.0-rc2 when generating 64-bit projects)
-* Download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
+* download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
 * install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
 * download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
 
         mkdir itk-build-64
         cd itk-build-64
         cmake cmake -G "Visual Studio 14 2015 Win64" -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON ..\InsightToolkit-4.7.1
-        C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
+        cmake --build . --config Release
+
 * Build skelet3d library
 
         mkdir build
         cd build
         cmake -G "Visual Studio 14 2015 Win64" ..
-        C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
+        cmake --build . --config Release
         
  
 

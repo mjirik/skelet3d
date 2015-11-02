@@ -128,7 +128,7 @@ SET(CurrentExe "BinaryThinningShared")
 ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c )
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")
 
-ADD_DEPENDENCIES(BinaryThinningCxxShared unzipped_source )
+ADD_DEPENDENCIES(BinaryThinningShared unzipped_source )
 
 
 # where should be installed so libraries

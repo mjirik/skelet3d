@@ -15,7 +15,7 @@ DllImport int thinningCxxIncrement (int a);
 #ifdef __cplusplus
 extern "C"
 #endif
-DllImport __declspec( dllimport ) unsigned char * thinningCxx(int sizeX, int sizeY, int sizeZ, unsigned char * data );
+DllImport unsigned char * thinningCxx(int sizeX, int sizeY, int sizeZ, unsigned char * data );
 
 #endif
 

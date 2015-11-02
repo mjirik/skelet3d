@@ -22,7 +22,7 @@ FILE(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 #message(STATUS "Downloading binary thinning code")
 FIND_PATH(THINNING_DOWNLOADED NAME BinaryThinning3D.cxx PATHS ${CMAKE_SOURCE_DIR}/${THINNING_DIR})
 message("thinning_downloaded ${THINNING_DOWNLOADED}")
-IF (THINNING_DOWNLOADED)
+IF (NOT THINNING_DOWNLOADED)
 FILE(DOWNLOAD
     "http://www.insight-journal.org/download/downloadbitstream/8177/IJ_181_ITKbinaryThinningImageFilter3D.zip"
     ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip
@@ -175,7 +175,10 @@ IF (PYTHON)
 
     ADD_CUSTOM_TARGET(target ALL DEPENDS ${OUTPUT})
 
-    IF(NOT NO_SETUPPY)
+    IF(NO_SETUPPY)
+        MESSAGE(DEPRECATION "Use INSTALL_PYTHON_PACKAGE instead of deprecated NO_SETUPPY variable with inverse logic")
+    ENDIF()
+    IF(INSTALL_PYTHON_PACKAGE)
         FIND_PROGRAM(PIP "pip")
         IF (PIP)
             # INSTALL(CODE "execute_process(COMMAND ${PIP} install ${CMAKE_BINARY_DIR})")

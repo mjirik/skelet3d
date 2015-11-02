@@ -17,22 +17,36 @@ Prerequisites
   * Numpy
   * InsightToolkit
 
-Install prerequisites on Ubuntu 14.04
+## Ubuntu (14.04)
+
+Install prerequisites 
 
     sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
     
- Windows 
+Build c++ library
+
+    cd build
+    cmake ..
+    make
+    make install
+    
+Install python package
+
+    pip install .
+
+## Windows (10 64-bit) 
  
-* install [cmake](https://cmake.org/), use stable version 3.4.2 ( there are problems with 3.4.0-rc2 when generating 64-bit projects)
-* download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
-* install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
-* download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
+* Install [cmake](https://cmake.org/), use stable version 3.4.2 ( there are problems with 3.4.0-rc2 when generating 64-bit projects)
+* Download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
+* Install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
+* Download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
 
         mkdir itk-build-64
         cd itk-build-64
         cmake cmake -G "Visual Studio 14 2015 Win64" -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON ..\InsightToolkit-4.7.1
         cmake --build . --config Release
-
+        
+* Add Insight-toolkit build dir to Windows PATH
 * Build skelet3d library
 
         mkdir build
@@ -43,14 +57,7 @@ Install prerequisites on Ubuntu 14.04
  
 
 
-Install notes
-=============
-
-
-    cd build
-    cmake ..
-    make
-    make install
+## Matlab
 
 For matlab wrapper run src/compile.m
 

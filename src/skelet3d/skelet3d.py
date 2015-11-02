@@ -25,19 +25,23 @@ def skelet3d(data):
     #if not os.path.exists(libpath):
     #    libpath = "libBinaryThinningCxxShared.so"
 
-    libpath = ctypes.util.find_library('BinaryThinningCxxShared')
+    libname = 'BinaryThinningCxxShared'
+    libpath = ctypes.util.find_library(libname)
     
     #os.environ['PATH'] 
     #import pdb; pdb.set_trace()
     try:
         hlibc = ctypes.CDLL(libpath)
     except Exception, e:
+        print "libname: ", libname
+        print "libpath: ", libpath
         print traceback.format_exc()
         if libpath != None:
             print "CDLL cannot find library. Problem with LD_LIBRARY_PATH."
             print "Please read skelet3d/README.md"
 
         #print e
+
         exit()
 
     

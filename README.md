@@ -28,9 +28,9 @@ Install prerequisites on Ubuntu 14.04
 * install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
 * download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
 
-        mkdir itk-build
-        cd itk-build
-        cmake -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS ..\InsightToolkit-4.7.1
+        mkdir itk-build-64
+        cd itk-build-64
+        cmake cmake -G "Visual Studio 14 2015 Win64" -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON ..\InsightToolkit-4.7.1
         C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe ALL_BUILD.vcxproj
         
  

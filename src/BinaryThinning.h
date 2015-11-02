@@ -7,8 +7,7 @@
     #define DllImport
 #endif
 
-//DllImport
-__declspec( dllimport ) int thinningIncrement (int a);
+DllImport int thinningIncrement (int a);
 DllImport unsigned char * thinning(int sizeX, int sizeY, int sizeZ, unsigned char * data  );
 
 #endif // BINARY_THINNING_H

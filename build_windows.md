@@ -1,7 +1,7 @@
 # Build ITK and skelet3d library on Windows 10 64-bit
 
 * Install [cmake](https://cmake.org/), use stable version 3.4.2 ( there are problems with 3.4.0-rc2 when generating 64-bit projects)
-* Download Visual Studio Express (https://www.visualstudio.com/products/visual-studio-community-vs#)
+* Download [Visual Studio Express](https://www.visualstudio.com/products/visual-studio-community-vs#)
 * Download and install [InsightToolkit](http://www.itk.org/) - [video GUI tutorial](https://www.youtube.com/watch?v=f79joU6FTFQ) or with command line:
 
         mkdir itk-build-64

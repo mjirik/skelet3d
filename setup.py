@@ -41,11 +41,11 @@ def run_cmake(no_setuppy=1):
         print "You may also try editing the settings in CMakeLists.txt file and re-running setup"
         sys.exit(-1)
 
-run_cmake()
+# run_cmake()
 setup(
         name='skelet3d',
-        version='1.0',
-	package_dir={ '': src_dir},
+        version='1.3',
+	    package_dir={ '': src_dir},
 	#	"c:\\users/mjirik/projects/skelet3d/src" },
         #packages=['skelet3d']
         py_modules=['skelet3d']

@@ -17,7 +17,9 @@ Prerequisites
   * Numpy
   * InsightToolkit
 
-## Ubuntu (14.04)
+## Ubuntu 
+
+Tested on Ubuntu 12.04 and 14.04
 
 Install prerequisites 
 
@@ -34,7 +36,9 @@ Install python package
 
     pip install .
 
-## Windows (10 64-bit) 
+## Windows 
+
+Tested on Windows 10 64-bit 
  
 * Install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
 * Download [DLL libraries](http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip) 

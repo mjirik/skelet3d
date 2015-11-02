@@ -132,6 +132,12 @@ http://bugs.python.org/issue18502
 
 http://ubuntuforums.org/showthread.php?t=1498755
 
+
+WindowsError:[Error193]
+-----------------------
+
+You are probably using 32-bit skeleton build with 64-bit python
+
 ld cannot find -lz and -lpng
 -----------------------------
 

@@ -114,15 +114,18 @@ SET(CurrentExe "BinaryThinningTest")
 ADD_EXECUTABLE(${CurrentExe} src/BinaryThinningTest.c)
 #TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinning BinaryThinningCxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinningShared BinaryThinningCxxShared)
+ADD_DEPENDENCIES(${CurrentExe} unzipped_source )
 
 SET(CurrentExe "BinaryThinning3D")
 ADD_EXECUTABLE(${CurrentExe} src/BinaryThinning3D.cxx )
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+ADD_DEPENDENCIES(${CurrentExe} unzipped_source )
 
 # Shared libraries
 SET(CurrentExe "BinaryThinningCxxShared")
 ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinningCxx.cxx )
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+ADD_DEPENDENCIES(${CurrentExe} unzipped_source )
 
 SET(CurrentExe "BinaryThinningShared")
 ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c )

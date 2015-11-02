@@ -19,6 +19,7 @@ install:
     - "cmake .."
     - "make"
     - "sudo make install"
+    - pip install .
     - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'
     - 'sudo ldconfig -v'

@@ -38,8 +38,10 @@ Install python package
  
 * Install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
 * Download [DLL libraries](http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip) 
-into directory in environment PATH or [build it yourself](build_windows.md)
+into directory in environment PATH (e.g. `c:\Windows\System32` ) or [build it yourself](build_windows.md)
+* Install skelet3d
         
+        pip install skelet3d
  
 
 

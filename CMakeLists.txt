@@ -42,6 +42,8 @@ ELSE()
     SET(UNZIP "unzip")
 ENDIF()
 
+MESSAGE("UNZIP application: ${UNZIP}")
+
 
 ADD_CUSTOM_TARGET(unzipped_source
     COMMAND ${UNZIP} -o ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
@@ -177,7 +179,7 @@ IF (PYTHON)
 
     IF(NO_SETUPPY)
         MESSAGE(DEPRECATION "Use INSTALL_PYTHON_PACKAGE instead of deprecated NO_SETUPPY variable with inverse logic")
-    ENDIF()
+    ENDIF(NO_SETUPPY)
     IF(INSTALL_PYTHON_PACKAGE)
         FIND_PROGRAM(PIP "pip")
         IF (PIP)
@@ -186,7 +188,7 @@ IF (PYTHON)
         ELSE()
             INSTALL(CODE "execute_process(COMMAND ${PYTHON} ${SETUP_PY} install)")
         ENDIF()
-    ENDIF(NOT NO_SETUPPY)
+    ENDIF(INSTALL_PYTHON_PACKAGE)
 ENDIF()
 
 

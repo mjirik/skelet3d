@@ -24,7 +24,8 @@ FIND_PATH(THINNING_DOWNLOADED NAME BinaryThinning3D.cxx PATHS ${CMAKE_SOURCE_DIR
 message("thinning_downloaded ${THINNING_DOWNLOADED}")
 IF (NOT THINNING_DOWNLOADED)
 FILE(DOWNLOAD
-    "http://www.insight-journal.org/download/downloadbitstream/8176/IJ_181_ITKbinaryThinningImageFilter3D.zip"
+    # "http://www.insight-journal.org/download/downloadbitstream/8176/IJ_181_ITKbinaryThinningImageFilter3D.zip"
+    "http://147.228.240.61/queetech/install/IJ_181_ITKbinaryThinningImageFilter3D.zip"
     ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip
     #${CMAKE_BINARY_DIR}/binaryThinning3D.zip
     SHOW_PROGRESS

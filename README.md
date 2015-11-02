@@ -51,7 +51,7 @@ Install python package
 
         mkdir build
         cd build
-        cmake -G "Visual Studio 14 2015 Win64" ..
+        cmake -G "Visual Studio 14 2015 Win64" -D ITK_DIR=C:/Users/mjirik/Downloads/itk-build-64 ..
         cmake --build . --config Release
         
  

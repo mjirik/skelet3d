@@ -8,9 +8,9 @@ SET(PACKAGE_VERSION 1.3.0)
 
 
 
-# BinaryThinning3D.cxx - standalone file with example of 
+# BinaryThinning3D.cxx - standalone file with example of
 #   using itkBinaryThinningImageFilter3D
-# BinaryThinningCxx - library with skelet function 
+# BinaryThinningCxx - library with skelet function
 #   from unsigned char * to unsigned char *
 # BinaryThinning.c - warpper from C++ to C used with Matlab library
 
@@ -20,19 +20,35 @@ ENABLE_TESTING()
 message(STATUS "module path: ${CMAKE_MODULE_PATH} ${CMAKE_ROOT}")
 FILE(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 #message(STATUS "Downloading binary thinning code")
-FILE(DOWNLOAD 
-    "http://www.insight-journal.org/download/downloadbitstream/8176/IJ_181_ITKbinaryThinningImageFilter3D.zip"
+FIND_PATH(THINNING_DOWNLOADED NAME BinaryThinning3D.cxx PATHS ${CMAKE_SOURCE_DIR}/${THINNING_DIR})
+message("thinning_downloaded ${THINNING_DOWNLOADED}")
+IF (THINNING_DOWNLOADED)
+FILE(DOWNLOAD
+    "http://www.insight-journal.org/download/downloadbitstream/8177/IJ_181_ITKbinaryThinningImageFilter3D.zip"
     ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip
     #${CMAKE_BINARY_DIR}/binaryThinning3D.zip
     SHOW_PROGRESS
     )
 
+ENDIF()
+
+
 message(STATUS "Unzipping")
+
+IF(WIN32)
+    #^SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
+    FIND_PROGRAM(UNZIP "unzip" PATH "C:/Program Files (x86)/GnuWin32/bin")
+ELSE()
+    SET(UNZIP "unzip")
+ENDIF()
+
+
 ADD_CUSTOM_TARGET(unzipped_source
-    COMMAND unzip -o ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
+    COMMAND ${UNZIP} -o ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/binaryThinning3D.zip -d ${CMAKE_SOURCE_DIR}/${THINNING_DIR}
     #DEPENDS ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/
     #DEPENDS ${CMAKE_BINARY_DIR}/BinaryThinning3D.zip
     )
+
 
 #MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
 
@@ -44,8 +60,8 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 #MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
 
 # berlicka pro nalezeni itk pod windows
-# SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/") 
-#SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/") 
+# SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
+#SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
 
 #INCLUDE(Dart)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source)
@@ -64,48 +80,50 @@ INCLUDE(${ITK_USE_FILE})
 #ENDFOREACH(Package)
 
 SET(Libraries
-  ${ITK_LIBRARIES} 
+  ${ITK_LIBRARIES}
 )
 
 #ADD_DEFINITIONS(-fPIC )
 
-SET(CurrentExe "BinaryThinning3D")
-ADD_EXECUTABLE(${CurrentExe} src/BinaryThinning3D.cxx ) 
-TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
-ADD_TEST(BinaryThinning3DTest BinaryThinning3D 
-    ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source/img_in.dcm 
+ADD_TEST(BinaryThinning3DTest BinaryThinning3D
+    ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source/img_in.dcm
     ${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source/img_out.dcm
     )
 
 
-SET(CurrentExe "BinaryThinningCxx")
-ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinningCxx.cxx ) 
-#ADD_LIBRARY(${CurrentExe} SHARED BinaryThinningCxx.cxx ) 
-TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+# Static libraries
 
-ADD_DEPENDENCIES(BinaryThinningCxx unzipped_source 
-    )
+# SET(CurrentExe "BinaryThinningCxx")
+# ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinningCxx.cxx )
+# TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
+#
+# ADD_DEPENDENCIES(BinaryThinningCxx unzipped_source )
+#
+# SET(CurrentExe "BinaryThinning")
+# ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinning.c )
+# TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxx")
 
-SET(CurrentExe "BinaryThinning")
-ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinning.c ) 
-#ADD_LIBRARY(${CurrentExe} SHARED BinaryThinning.c ) 
-TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxx")
 
+# Executable
 SET(CurrentExe "BinaryThinningTest")
-ADD_EXECUTABLE(${CurrentExe} src/BinaryThinningTest.c) 
+ADD_EXECUTABLE(${CurrentExe} src/BinaryThinningTest.c)
 TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinning BinaryThinningCxx)
 
+SET(CurrentExe "BinaryThinning3D")
+ADD_EXECUTABLE(${CurrentExe} src/BinaryThinning3D.cxx )
+TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
 # Shared libraries
 SET(CurrentExe "BinaryThinningCxxShared")
-ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinningCxx.cxx ) 
+ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinningCxx.cxx )
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
 SET(CurrentExe "BinaryThinningShared")
-ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c ) 
+ADD_LIBRARY(${CurrentExe} SHARED src/BinaryThinning.c )
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxxShared")
 
+ADD_DEPENDENCIES(BinaryThinningCxxShared unzipped_source )
 
 
 # where should be installed so libraries
@@ -165,7 +183,6 @@ IF (PYTHON)
         ENDIF()
     ENDIF(NOT NO_SETUPPY)
 ENDIF()
-
 
 
 

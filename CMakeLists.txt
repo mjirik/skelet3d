@@ -93,22 +93,24 @@ ADD_TEST(BinaryThinning3DTest BinaryThinning3D
 
 
 # Static libraries
+IF(BUILD_STATIC)
+    SET(CurrentExe "BinaryThinningCxx")
+    ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinningCxx.cxx )
+    TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
 
-# SET(CurrentExe "BinaryThinningCxx")
-# ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinningCxx.cxx )
-# TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
-#
-# ADD_DEPENDENCIES(BinaryThinningCxx unzipped_source )
-#
-# SET(CurrentExe "BinaryThinning")
-# ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinning.c )
-# TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxx")
+    ADD_DEPENDENCIES(BinaryThinningCxx unzipped_source )
+
+    SET(CurrentExe "BinaryThinning")
+    ADD_LIBRARY(${CurrentExe} STATIC src/BinaryThinning.c )
+    TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries} "BinaryThinningCxx")
+ENDIF()
 
 
 # Executable
 SET(CurrentExe "BinaryThinningTest")
 ADD_EXECUTABLE(${CurrentExe} src/BinaryThinningTest.c)
-TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinning BinaryThinningCxx)
+#TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinning BinaryThinningCxx)
+TARGET_LINK_LIBRARIES(${CurrentExe} BinaryThinningShared BinaryThinningCxxShared)
 
 SET(CurrentExe "BinaryThinning3D")
 ADD_EXECUTABLE(${CurrentExe} src/BinaryThinning3D.cxx )

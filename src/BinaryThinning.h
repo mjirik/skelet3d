@@ -1,3 +1,14 @@
+#ifndef BINARY_THINNING_H
+#define BINARY_THINNING_H
 
-int thinningIncrement (int a);
-unsigned char * thinning(int sizeX, int sizeY, int sizeZ, unsigned char * data  );
+#if defined(WIN32)                   // MS Windows
+    #define DllImport   __declspec( dllimport )
+#else
+    #define DllImport
+#endif
+
+//DllImport
+__declspec( dllimport ) int thinningIncrement (int a);
+DllImport unsigned char * thinning(int sizeX, int sizeY, int sizeZ, unsigned char * data  );
+
+#endif // BINARY_THINNING_H

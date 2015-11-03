@@ -1,3 +1,6 @@
+# bumpversion patch
+# python setup.py register sdist upload
+
 # from distutils.core import setup
 from setuptools import setup, find_packages
 import sys

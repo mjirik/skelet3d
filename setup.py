@@ -1,4 +1,5 @@
-from distutils.core import setup
+# from distutils.core import setup
+from setuptools import setup, find_packages
 import sys
 import os
 import os.path as op
@@ -43,10 +44,14 @@ def run_cmake(no_setuppy=1):
 
 # run_cmake()
 setup(
-        name='skelet3d',
-        version='1.3',
-	    package_dir={ '': src_dir},
-	#	"c:\\users/mjirik/projects/skelet3d/src" },
-        #packages=['skelet3d']
-        py_modules=['skelet3d']
+    name='skelet3d',
+    version='1.3.1',
+    package_dir={ '': src_dir},
+    author='Miroslav Jirik',
+    author_email="miroslav.jirik@gmail.com",
+
+#	"c:\\users/mjirik/projects/skelet3d/src" },
+    packages=find_packages(),
+    # py_modules=['skelet3d']
+    install_requires=['numpy'],
     )

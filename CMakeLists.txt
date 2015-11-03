@@ -4,7 +4,8 @@ PROJECT(BinaryThinning3D )
 
 SET(CMAKE_BUILD_TYPE RELEASE)
 
-SET(PACKAGE_VERSION 1.4.0)
+# version controlled with bumpversion
+SET(PACKAGE_VERSION 1.4.1)
 
 
 

@@ -13,9 +13,19 @@ import distutils.dir_util as dd
 #################
 #def run_cmake(cmake_args="-DSIMX_USE_PRIME=1 -DSIMX_USE_MPI=1"):
 
-src_dir = os.path.abspath(__file__) 
-src_dir, fl = os.path.split(src_dir) 
-src_dir = src_dir + "/src"
+cmake_pkgdir = '${CMAKE_CURRENT_SOURCE_DIR}'
+
+if cmake_pkgdir[0] == '$':
+    package_dir={}# {'':'./'}
+else:
+    package_dir={ '': cmake_pkgdir }
+
+__VERSION__='1.3.1'
+
+# src_dir = os.path.abspath(__file__)
+# src_dir, fl = os.path.split(src_dir)
+# src_dir = src_dir + "/src"
+
 
 def run_cmake(no_setuppy=1):
     """
@@ -32,7 +42,7 @@ def run_cmake(no_setuppy=1):
     os.chdir(new_dir)
     # construct argument string
     cmake_args = ''
-    cmake_args ="-DNO_SETUPPY=" + str(no_setuppy) 
+    # cmake_args ="-DNO_SETUPPY=" + str(no_setuppy)
 
     try:
         ds.spawn(['cmake','../']+cmake_args.split())
@@ -43,10 +53,11 @@ def run_cmake(no_setuppy=1):
         sys.exit(-1)
 
 # run_cmake()
+print 'pkgdir ', package_dir
 setup(
     name='skelet3d',
-    version='1.3.1',
-    package_dir={ '': src_dir},
+    version=__VERSION__,
+    package_dir=package_dir,
     author='Miroslav Jirik',
     author_email="miroslav.jirik@gmail.com",
 

@@ -167,7 +167,8 @@ INSTALL(TARGETS BinaryThinningCxxShared DESTINATION ${SKELET3D_LIB_INSTALL_DESTI
 FIND_PROGRAM(PYTHON "python")
 
 IF (PYTHON)
-    SET(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/src/setup.py.in")
+    # SET(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/src/setup.py.in")
+    SET(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py")
     SET(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
     #set(DEPS        "${CMAKE_CURRENT_SOURCE_DIR}/module/__init__.py")
     SET(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/timestamp")

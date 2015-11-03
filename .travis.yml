@@ -23,7 +23,7 @@ install:
     - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'
     - 'sudo ldconfig -v'
-    - conda list -e
+    # - conda list -e
 # command to run tests
 script: nosetests --with-coverage --cover-package=skelet3d
 after_success:

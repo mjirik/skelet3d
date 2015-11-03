@@ -163,6 +163,8 @@ INSTALL(TARGETS BinaryThinningCxxShared DESTINATION ${SKELET3D_LIB_INSTALL_DESTI
 # ENDIF()
 
 ## --------------------------- Python compilation -----------------------
+# it is not necessary to build python package this way
+# it can be installed independently on shared libraries
 
 FIND_PROGRAM(PYTHON "python")
 
@@ -171,10 +173,11 @@ IF (PYTHON)
     SET(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py")
     SET(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
     #set(DEPS        "${CMAKE_CURRENT_SOURCE_DIR}/module/__init__.py")
-    SET(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/timestamp")
+    SET(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/timestamp")
 
     CONFIGURE_FILE(${SETUP_PY_IN} ${SETUP_PY})
 
+    # "setup.py build" create build/build dir otherwise there is fail in touch command
     ADD_CUSTOM_COMMAND(OUTPUT ${OUTPUT}
                         COMMAND ${PYTHON} ${SETUP_PY} build
                         COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}

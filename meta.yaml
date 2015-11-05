@@ -31,10 +31,12 @@ requirements:
     - python
     - setuptools
     - numpy
+    - scipy
 
   run:
     - python
     - numpy
+    - scipy
 
 test:
   # Python imports

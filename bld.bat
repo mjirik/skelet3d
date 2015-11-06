@@ -7,27 +7,15 @@ if errorlevel 1 exit 1
 :: http://docs.continuum.io/conda/build.html
 :: for a list of environment variables that are set during the build process.
 
-"%PYTHON%" -m wget "http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip" -o dll.zip
-"%PYTHON%" -m zipfile -e dll.zip .
 
-xcopy "%ITK+Skelet3D_dll\*.dll" "%SCRIPTS%"
+:: Try to download libraries
+:: "%PYTHON%" -m wget "http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip" -o dll.zip
+:: "%PYTHON%" -m zipfile -e dll.zip .
+::
+:: xcopy "%ITK+Skelet3D_dll\*.dll" "%SCRIPTS%"
 
-echo "LIBRARY_LIB"
-echo "%LIBRARY_LIB%"
-dir "%LIBRARY_LIB%"
-rem -------------------------------------------
 
-dir "%LIBRARY_PREFIX%"
-move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.dll" "%LIBRARY_LIB%"
-echo "
-echo "%STDLIB_DIR%"
-echo "%SP_DIR%"
-echo "%SRC_DIR%"
-echo "%SCRIPTS%"
 
-rem 33333333333333333333333333333333
-
-dir "%SP_DIR%"
 :: Full build is fallowing
 ::
 :: rem Need to handle Python 3.x case at some point (Visual Studio 2010)
@@ -65,10 +53,21 @@ dir "%SP_DIR%"
 :: :: rmdir "%LIBRARY_PREFIX%\%OPENCV_ARCH%" /S /Q
 ::
 :: rem By default cv.py is installed directly in site-packages
-rem Therefore, we have to copy all of the dlls directly into it!
+:: rem Therefore, we have to copy all of the dlls directly into it!
 :: xcopy "%LIBRARY_LIB%\opencv*.dll" "%SP_DIR%"
-
-rem We have to copy libpng.dll and zlib.dll for runtime
-rem dependencies, similar to copying opencv above.
+::
+:: rem We have to copy libpng.dll and zlib.dll for runtime
+:: rem dependencies, similar to copying opencv above.
 :: xcopy "%LIBRARY_BIN%\libpng15.dll" "%SP_DIR%"
 :: xcopy "%LIBRARY_BIN%\zlib.dll" "%SP_DIR%"
+
+
+:: Print some variables
+:: echo "LIBRARY_LIB"
+:: echo "%LIBRARY_LIB%"
+:: dir "%LIBRARY_LIB%"
+:: echo "%LIBRARY_PREFIX%"
+:: echo "%STDLIB_DIR%"
+:: echo "%SP_DIR%"
+:: echo "%SRC_DIR%"
+:: echo "%SCRIPTS%"

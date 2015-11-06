@@ -3,6 +3,7 @@
 
 import numpy as np
 import traceback
+import sys
 
 def skelet3d(data):
     """
@@ -27,7 +28,16 @@ def skelet3d(data):
 
     libname = 'BinaryThinningCxxShared'
     libpath = ctypes.util.find_library(libname)
-    
+
+    if libpath is None:
+        if sys.platform.startswith('win'):
+            import libfixer
+            libfixer.libfix()
+            print "Trying to download dll libraries"
+            libpath = ctypes.util.find_library(libname)
+
+
+
     #os.environ['PATH'] 
     #import pdb; pdb.set_trace()
     try:

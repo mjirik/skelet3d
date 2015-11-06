@@ -1,4 +1,4 @@
-:: "%PYTHON%" setup.py install
+"%PYTHON%" setup.py install
 if errorlevel 1 exit 1
 
 :: Add more build steps here, if they are necessary.
@@ -7,8 +7,10 @@ if errorlevel 1 exit 1
 :: http://docs.continuum.io/conda/build.html
 :: for a list of environment variables that are set during the build process.
 
-python -m wget "http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip" -o dll.zip
-python -m zipfile -e dll.zip .
+"%PYTHON%" -m wget "http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip" -o dll.zip
+"%PYTHON%" -m zipfile -e dll.zip .
+
+xcopy "%ITK+Skelet3D_dll\*.dll" "%SCRIPTS%"
 
 echo "LIBRARY_LIB"
 echo "%LIBRARY_LIB%"
@@ -17,11 +19,17 @@ rem -------------------------------------------
 
 dir "%LIBRARY_PREFIX%"
 move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.dll" "%LIBRARY_LIB%"
+echo "
+echo "%STDLIB_DIR%"
+echo "%SP_DIR%"
+echo "%SRC_DIR%"
+echo "%SCRIPTS%"
 
 rem 33333333333333333333333333333333
 
 dir "%SP_DIR%"
-
+:: Full build is fallowing
+::
 :: rem Need to handle Python 3.x case at some point (Visual Studio 2010)
 :: if %ARCH%==32 (
 ::   if %PY_VER% LSS 3 (
@@ -58,7 +66,7 @@ dir "%SP_DIR%"
 ::
 :: rem By default cv.py is installed directly in site-packages
 rem Therefore, we have to copy all of the dlls directly into it!
-xcopy "%LIBRARY_LIB%\opencv*.dll" "%SP_DIR%"
+:: xcopy "%LIBRARY_LIB%\opencv*.dll" "%SP_DIR%"
 
 rem We have to copy libpng.dll and zlib.dll for runtime
 rem dependencies, similar to copying opencv above.

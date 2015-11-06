@@ -1,4 +1,4 @@
-"%PYTHON%" setup.py install
+:: "%PYTHON%" setup.py install
 if errorlevel 1 exit 1
 
 :: Add more build steps here, if they are necessary.
@@ -7,41 +7,56 @@ if errorlevel 1 exit 1
 :: http://docs.continuum.io/conda/build.html
 :: for a list of environment variables that are set during the build process.
 
+python -m wget "http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip" -o dll.zip
+python -m zipfile -e dll.zip .
 
+echo "LIBRARY_LIB"
+echo "%LIBRARY_LIB%"
+dir "%LIBRARY_LIB%"
+rem -------------------------------------------
 
-rem Need to handle Python 3.x case at some point (Visual Studio 2010)
-if %ARCH%==32 (
-  if %PY_VER% LSS 3 (
-    set CMAKE_GENERATOR="Visual Studio 14 2015"
-    set CMAKE_CONFIG="Release|Win32"
-::	set OPENCV_ARCH=x86
-::	set OPENCV_VC=vc9
-  )
-)
-if %ARCH%==64 (
-  if %PY_VER% LSS 3 (
-    set CMAKE_GENERATOR="Visual Studio 14 2015 Win64"
-    set CMAKE_CONFIG="Release|x64"
-::	set OPENCV_ARCH=x64
-::	set OPENCV_VC=vc9
-  )
-)
-
-mkdir build2
-cd build2
-
-cmake .. -G%CMAKE_GENERATOR%
-
-cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
-cmake --build . --config %CMAKE_CONFIG% --target INSTALL
-
-rem Let's just move the files around to a more sane structure (flat)
+dir "%LIBRARY_PREFIX%"
 move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.dll" "%LIBRARY_LIB%"
-:: move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.exe" "%LIBRARY_BIN%"
-:: move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\lib\*.lib" "%LIBRARY_LIB%"
-:: rmdir "%LIBRARY_PREFIX%\%OPENCV_ARCH%" /S /Q
 
-rem By default cv.py is installed directly in site-packages
+rem 33333333333333333333333333333333
+
+dir "%SP_DIR%"
+
+:: rem Need to handle Python 3.x case at some point (Visual Studio 2010)
+:: if %ARCH%==32 (
+::   if %PY_VER% LSS 3 (
+::     set CMAKE_GENERATOR="Visual Studio 14 2015"
+::     set CMAKE_CONFIG="Release"
+:: ::	set OPENCV_ARCH=x86
+:: ::	set OPENCV_VC=vc9
+::   )
+:: )
+:: if %ARCH%==64 (
+::   if %PY_VER% LSS 3 (
+::     set CMAKE_GENERATOR="Visual Studio 14 2015 Win64"
+::     set CMAKE_CONFIG="Release"
+:: ::	set OPENCV_ARCH=x64
+:: ::	set OPENCV_VC=vc9
+::   )
+:: )
+::
+:: mkdir build2
+:: cd build2
+::
+:: cmake .. -G%CMAKE_GENERATOR%
+::
+:: cmake --build . --config %CMAKE_CONFIG% --target ALL_BUILD
+:: cmake --build . --config %CMAKE_CONFIG% --target INSTALL
+::
+:: rem Let's just move the files around to a more sane structure (flat)
+:: dir
+:: move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.dll" "%LIBRARY_LIB%"
+::
+:: :: move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\bin\*.exe" "%LIBRARY_BIN%"
+:: :: move "%LIBRARY_PREFIX%\%OPENCV_ARCH%\%OPENCV_VC%\lib\*.lib" "%LIBRARY_LIB%"
+:: :: rmdir "%LIBRARY_PREFIX%\%OPENCV_ARCH%" /S /Q
+::
+:: rem By default cv.py is installed directly in site-packages
 rem Therefore, we have to copy all of the dlls directly into it!
 xcopy "%LIBRARY_LIB%\opencv*.dll" "%SP_DIR%"
 

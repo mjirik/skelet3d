@@ -12,6 +12,8 @@
 import numpy as np
 import unittest
 from nose.plugins.attrib import attr
+import skelet3d
+print dir(skelet3d)
 import skelet3d.skeleton_analyser as sk
 import copy
 
@@ -99,7 +101,8 @@ class TemplateTest(unittest.TestCase):
         self.assertEqual(np.max(skan.sklabel), 6)
 
     def test_generate_elipse(self):
-        mask = sk.generate_binary_elipsoid([6, 4, 3])
+        import skelet3d.skeleton_analyser
+        mask = skelet3d.skeleton_analyser.generate_binary_elipsoid([6, 4, 3])
         print mask.shape
 
 

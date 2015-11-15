@@ -11,7 +11,7 @@ import tempfile
 
 def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     
-    outdir = tempfile.gettempdie()
+    outdir = tempfile.gettempdir()
     filename = wget.download(url, out=outdir)
 
     zf = zipfile.ZipFile(filename)

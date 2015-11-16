@@ -6,15 +6,18 @@ import wget
 import zipfile
 import glob
 import shutil
+import os
 import os.path as op
 import tempfile
 
 def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     
     outdir = tempfile.gettempdir()
-    print "temp directory ", outdir
+    # print "temp directory ", outdir
     outdir = tempfile.mkdtemp()
-    print "temp directory ", outdir
+    print "temp file ", outdir
+    # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
+    # be requred permisson for write
     filename = wget.download(url, out=op.join(outdir, "skelet3d_dll.zip"))
 
 
@@ -35,6 +38,8 @@ def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     for file in glob.glob(r'ITK+Skelet3D_dll/*.dll'):
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
+
+    shutil.rmtree(outdir)
 
 
 def get_conda_dir():

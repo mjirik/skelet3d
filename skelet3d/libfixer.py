@@ -51,6 +51,14 @@ def get_conda_dir():
         dstdir = op.join(home, "miniconda")
     elif op.isdir(op.join(home, "miniconda2")):
         dstdir = op.join(home, "miniconda2")
+    elif op.isdir("c:\miniconda2"):
+        dstdir = "c:\miniconda2"
+    elif op.isdir("c:\miniconda"):
+        dstdir = "c:\miniconda"
+    elif op.isdir("c:\anaconda2"):
+        dstdir = "c:\anaconda2"
+    elif op.isdir("c:\anaconda"):
+        dstdir = "c:\anaconda"
     else:
         print "Cannot find anaconda/miniconda directory"
         dstdir = None

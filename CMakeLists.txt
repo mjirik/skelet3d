@@ -136,7 +136,12 @@ ADD_DEPENDENCIES(BinaryThinningShared unzipped_source )
 
 
 # where should be installed so libraries
-FIND_PATH(CONDA_PREFIX NAME "LICENSE.txt" PATHS $ENV{HOME}/miniconda/ $ENV{HOME}/anaconda/)
+FIND_PATH(CONDA_PREFIX NAME "LICENSE.txt" PATHS
+    $ENV{HOME}/miniconda/
+    $ENV{HOME}/miniconda2/
+    $ENV{HOME}/anaconda/
+    $ENV{HOME}/anaconda2/
+    )
 # alternative you can use conda info --root
 
 # MESSAGE("cmake install prefix " ${CMAKE_INSTALL_PREFIX} )

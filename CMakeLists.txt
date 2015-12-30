@@ -62,10 +62,17 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 #MESSAGE (STATUS "CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
+MESSAGE(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
+# message(STATUS "CMAKE_ROOT: ${CMAKE_ROOT} ${CMAKE_PREFIX_PATH}")
+
 
 # berlicka pro nalezeni itk pod windows
 # SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
 #SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
+
+# pro nalezeni na linuxu lze specifikovat pomoci
+# SET(CMAKE_MODULE_PATH "/usr/lib/InsightToolkit/")
+# CMAKE_MODULE_PATH("/usr/lib/InsightToolkit/ITKConfig.cmake")
 
 #INCLUDE(Dart)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source)

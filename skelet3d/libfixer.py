@@ -23,6 +23,7 @@ def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
 
     zf = zipfile.ZipFile(filename)
     zf.extractall()
+    zf.close()
     # for filename in [ 'README.txt', 'notthere.txt' ]:
     #     try:
     #         data = zf.read(filename)
@@ -50,15 +51,13 @@ def get_conda_dir():
     dstdir = ''
     try:
         import subprocess
-        p = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+        p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
         out, err = p.communicate()
 
         dstdir = out.strip()
     except:
         import traceback
         traceback.print_exc()
-
-
 
     from os.path import expanduser
     home = expanduser("~")

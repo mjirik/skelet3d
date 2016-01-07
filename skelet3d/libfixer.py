@@ -39,13 +39,32 @@ def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
 
-    shutil.rmtree(outdir)
+    try:
+        shutil.rmtree(outdir)
+    except:
+        import traceback
+        traceback.print_exc()
 
 
 def get_conda_dir():
+    dstdir = ''
+    try:
+        import subprocess
+        p = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+        out, err = p.communicate()
+
+        dstdir = out.strip()
+    except:
+        import traceback
+        traceback.print_exc()
+
+
+
     from os.path import expanduser
     home = expanduser("~")
-    if op.isdir(op.join(home, "anaconda")):
+    if op.isdir(dstdir):
+        pass
+    elif op.isdir(op.join(home, "anaconda")):
         dstdir = op.join(home, "anaconda")
     elif op.isdir(op.join(home, "miniconda")):
         dstdir = op.join(home, "miniconda")

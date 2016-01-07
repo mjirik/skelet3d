@@ -51,10 +51,14 @@ def get_conda_dir():
     dstdir = ''
     try:
         import subprocess
-        p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+        import re
+        # cond info --root work only for root environment
+        # p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+        p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
         out, err = p.communicate()
 
         dstdir = out.strip()
+        dstdir = re.search("\*(.*)\n", dstdir).group(1).strip()
     except:
         import traceback
         traceback.print_exc()
@@ -63,20 +67,20 @@ def get_conda_dir():
     home = expanduser("~")
     if op.isdir(dstdir):
         pass
-    elif op.isdir(op.join(home, "anaconda")):
-        dstdir = op.join(home, "anaconda")
-    elif op.isdir(op.join(home, "miniconda")):
-        dstdir = op.join(home, "miniconda")
-    elif op.isdir(op.join(home, "miniconda2")):
-        dstdir = op.join(home, "miniconda2")
-    elif op.isdir("c:\miniconda2"):
-        dstdir = "c:\miniconda2"
-    elif op.isdir("c:\miniconda"):
-        dstdir = "c:\miniconda"
-    elif op.isdir("c:\anaconda2"):
-        dstdir = "c:\anaconda2"
-    elif op.isdir("c:\anaconda"):
-        dstdir = "c:\anaconda"
+    # elif op.isdir(op.join(home, "anaconda")):
+    #     dstdir = op.join(home, "anaconda")
+    # elif op.isdir(op.join(home, "miniconda")):
+    #     dstdir = op.join(home, "miniconda")
+    # elif op.isdir(op.join(home, "miniconda2")):
+    #     dstdir = op.join(home, "miniconda2")
+    # elif op.isdir("c:\miniconda2"):
+    #     dstdir = "c:\miniconda2"
+    # elif op.isdir("c:\miniconda"):
+    #     dstdir = "c:\miniconda"
+    # elif op.isdir("c:\anaconda2"):
+    #     dstdir = "c:\anaconda2"
+    # elif op.isdir("c:\anaconda"):
+    #     dstdir = "c:\anaconda"
     else:
         print "Cannot find anaconda/miniconda directory"
         dstdir = None

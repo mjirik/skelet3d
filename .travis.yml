@@ -8,10 +8,21 @@ python:
 virtualenv:
   system_site_packages: true
 before_install:
-    - sudo apt-get install -qq cmake python-numpy python-scipy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
+    - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+    - chmod +x miniconda.sh
+    - ./miniconda.sh -b
+    - export PATH=/home/travis/miniconda2/bin:$PATH
+
+    - sudo apt-get install -qq cmake libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
     # - wget http://147.228.240.61/queetech/sample-extra-data/io3d_sample_data.zip && unzip io3d_sample_data.zip
 # command to install dependencies
 install:
+
+    - conda update --yes conda
+    - conda install --yes pip nose coverage
+    # Install dependencies
+    - conda install --yes -c SimpleITK -c luispedro -c mjirik --file requirements_conda.txt
+    - pip install -r requirements_pip.txt
     - "echo $LD_LIBRARY_PATH"
     - "pip install -r requirements.txt"
     - 'mkdir build'

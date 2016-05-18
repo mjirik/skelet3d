@@ -35,6 +35,11 @@ def skelet3d(data):
             libfixer.libfix()
             print "Trying to download dll libraries"
             libpath = ctypes.util.find_library(libname)
+        if sys.platform.startswith('linux'):
+            import libfixer
+            libfixer.libfix_linux_conda()
+            print "Trying to download dll libraries"
+            libpath = ctypes.util.find_library(libname)
 
 
 

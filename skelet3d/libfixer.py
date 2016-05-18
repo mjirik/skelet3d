@@ -10,15 +10,14 @@ import os
 import os.path as op
 import tempfile
 
-def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
-    
+def download_and_unzip(url):
     outdir = tempfile.gettempdir()
     # print "temp directory ", outdir
     outdir = tempfile.mkdtemp()
     print "temp file ", outdir
     # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
     # be requred permisson for write
-    filename = wget.download(url, out=op.join(outdir, "skelet3d_dll.zip"))
+    filename = wget.download(url, out=op.join(outdir, "skelet3d.zip"))
 
 
     zf = zipfile.ZipFile(filename)
@@ -33,10 +32,29 @@ def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     #         print filename, ':'
     #         print repr(data)
     #     print
+    return outdir
+
+def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
+    outdir = download_and_unzip(url)
 
     dest_dir = get_conda_dir()
 
     for file in glob.glob(r'ITK+Skelet3D_dll/*.dll'):
+        shutil.copy(file, dest_dir)
+        print "copy %s into %s" % (file, dest_dir)
+
+    try:
+        shutil.rmtree(outdir)
+    except:
+        import traceback
+        traceback.print_exc()
+
+def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
+    outdir = download_and_unzip(url)
+
+    dest_dir = os.path.join(get_conda_dir(), "lib")
+
+    for file in glob.glob(r'Skelet3D_so/*.so'):
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
 
@@ -57,11 +75,13 @@ def get_conda_dir():
         p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
         out, err = p.communicate()
 
+        import ipdb; ipdb.set_trace()
         dstdir = out.strip()
-        dstdir = re.search("\*(.*)\n", dstdir).group(1).strip()
+        dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
     except:
         import traceback
         traceback.print_exc()
+        print 'out\n', out
 
     from os.path import expanduser
     home = expanduser("~")

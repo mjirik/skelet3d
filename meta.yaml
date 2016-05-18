@@ -1,12 +1,12 @@
 package:
   name: skelet3d
-  version: "1.4.15"
+  version: "1.4.16"
 
 source:
-  git_rev: 1.4.15
+  git_rev: 1.4.16
   git_url: .
-  # fn: skelet3d-1.4.15.tar.gz
-  # url: https://pypi.python.org/packages/source/s/skelet3d/skelet3d-1.4.15.tar.gz
+  # fn: skelet3d-1.4.16.tar.gz
+  # url: https://pypi.python.org/packages/source/s/skelet3d/skelet3d-1.4.16.tar.gz
   # md5: 3674d524673671c87cc7b74f20276eb6
 #  patches:
    # List any patch files here

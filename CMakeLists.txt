@@ -67,12 +67,18 @@ MESSAGE(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
 
 
 # berlicka pro nalezeni itk pod windows
-# SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
-#SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
+IF (WIN32)
+  # SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
+  # SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
+ENDIF (WIN32)
 
 # pro nalezeni na linuxu lze specifikovat pomoci
-# SET(CMAKE_MODULE_PATH "/usr/lib/InsightToolkit/")
-# CMAKE_MODULE_PATH("/usr/lib/InsightToolkit/ITKConfig.cmake")
+IF (UNIX)
+  SET(ITK_DIR "/usr/lib/InsightToolkit/")
+  # CMAKE_MODULE_PATH("/usr/lib/InsightToolkit/ITKConfig.cmake")
+ENDIF (UNIX)
+
+MESSAGE(STATUS "CMAKE_MODULE_PATH after little help ${CMAKE_MODULE_PATH}")
 
 #INCLUDE(Dart)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/${THINNING_DIR}/Source)

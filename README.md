@@ -63,6 +63,7 @@ Example
 Simple example with donut shape
 
     import skelet3d
+    import numpy as np
 
     # Create donut shape
     data = np.ones([3,7,9])

@@ -63,7 +63,7 @@ def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.z
 
     dest_dir = os.path.join(get_conda_dir(), "lib")
 
-    for file in glob.glob(r'Skelet3D_so/*.so'):
+    for file in glob.glob(r'Skelet3D_so/*.*'):
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
 

@@ -30,18 +30,10 @@ def skelet3d(data):
     libpath = ctypes.util.find_library(libname)
 
     if libpath is None:
-        if sys.platform.startswith('win'):
-            import libfixer
-            libfixer.libfix()
-            print "Trying to download dll libraries"
-            libpath = ctypes.util.find_library(libname)
-        if sys.platform.startswith('linux'):
-            import libfixer
-            libfixer.libfix_linux_conda()
-            print "Trying to download dll libraries"
-            libpath = ctypes.util.find_library(libname)
-
-
+        import libfixer
+        libfixer.libfix()
+        print "Trying to download dll libraries"
+        libpath = ctypes.util.find_library(libname)
 
     #os.environ['PATH'] 
     #import pdb; pdb.set_trace()

@@ -9,6 +9,7 @@ import shutil
 import os
 import os.path as op
 import tempfile
+import sys
 
 def download_and_unzip(url):
     outdir = tempfile.gettempdir()
@@ -35,6 +36,16 @@ def download_and_unzip(url):
     return outdir
 
 def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
+    if sys.platform.startswith('win'):
+        import libfixer
+        libfix_windows()
+        print "Trying to download .dll libraries"
+    if sys.platform.startswith('linux'):
+        import libfixer
+        libfix_linux_conda()
+        print "Trying to download .so libraries"
+
+def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     outdir = download_and_unzip(url)
 
     dest_dir = get_conda_dir()

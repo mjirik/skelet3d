@@ -23,18 +23,15 @@ Tested on Ubuntu 12.04, 14.04 and 16.04. Check [install notes](install_linux.md)
 
 Install prerequisites 
 
-    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
-    
-Build c++ library
-
-    cd build
-    cmake ..
-    make
-    make install
+    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev python-pip
     
 Install python package
 
-    pip install .
+    pip install skelet3d
+
+Install `.so` libraries
+
+    python -m skelet3d.libfixer
 
 ## Windows 
 

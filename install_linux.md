@@ -4,11 +4,21 @@
 
 ## Build skelet without Anaconda
 
-Install ubuntu packages
+Install prerequisites
 
-    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
- 
-Build c++ library
+    sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev python-pip
+
+Install python package
+
+    pip install skelet3d
+
+### Install `.so` libraries
+
+Install `.so` libraries
+
+    sudo python -m skelet3d.libfixer
+
+or build c++ library
 
     cd build
     cmake ..
@@ -16,11 +26,7 @@ Build c++ library
     make install
     
 or download [linux build](http://147.228.240.61/queetech/install/Skelet3D_so.zip) 
-    
-Install python package
 
-    pip install .
-    
 
 ## Use Anaconda packages
 
@@ -44,4 +50,5 @@ Add `miniconda2/bin` directory to path or restart terminal
 Install skelet3d
 
     conda install -c mjirik skelet3d
-    
+    sudo python -m skelet3d.libfixer
+

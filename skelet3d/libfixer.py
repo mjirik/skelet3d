@@ -101,9 +101,9 @@ def get_conda_dir():
     #     dstdir = "c:\anaconda2"
     # elif op.isdir("c:\anaconda"):
     #     dstdir = "c:\anaconda"
-    else:
-        print "Cannot find anaconda/miniconda directory"
-        dstdir = None
+    # else:
+        # print "Cannot find anaconda/miniconda directory"
+        # dstdir = None
 
     return dstdir
 

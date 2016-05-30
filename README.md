@@ -19,7 +19,7 @@ Prerequisites
 
 ## Ubuntu 
 
-Tested on Ubuntu 12.04 and 14.04
+Tested on Ubuntu 12.04, 14.04 and 16.04. Check [install notes](install_linux.md) for more information.
 
 Install prerequisites 
 

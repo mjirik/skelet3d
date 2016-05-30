@@ -32,7 +32,7 @@ def skelet3d(data):
     if libpath is None:
         import libfixer
         libfixer.libfix()
-        print "Trying to download dll libraries"
+        print "Library download complete"
         libpath = ctypes.util.find_library(libname)
 
     #os.environ['PATH'] 

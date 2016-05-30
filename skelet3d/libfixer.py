@@ -37,13 +37,11 @@ def download_and_unzip(url):
 
 def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     if sys.platform.startswith('win'):
-        import libfixer
-        libfix_windows()
         print "Trying to download .dll libraries"
+        libfix_windows()
     if sys.platform.startswith('linux'):
-        import libfixer
-        libfix_linux_conda()
         print "Trying to download .so libraries"
+        libfix_linux_conda()
 
 def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     outdir = download_and_unzip(url)
@@ -86,7 +84,7 @@ def get_conda_dir():
         p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
         out, err = p.communicate()
 
-        import ipdb; ipdb.set_trace()
+        # import ipdb; ipdb.set_trace()
         dstdir = out.strip()
         dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
     except:

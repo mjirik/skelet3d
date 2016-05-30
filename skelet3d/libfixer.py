@@ -86,7 +86,7 @@ def linux_copy_to_conda_dir(url):
 
     dest_dir = os.path.join(get_conda_dir(), "lib")
 
-    for file in glob.glob(r'Skelet3D_so/*.so'):
+    for file in glob.glob(r'Skelet3D_so/*.*'):
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
 

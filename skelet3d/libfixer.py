@@ -59,6 +59,29 @@ def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dl
         traceback.print_exc()
 
 def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
+    # linux_copy_to_conda_dir(url)
+    print "run with sudo"
+    outdir = download_and_unzip(url)
+    dest_dir = "/usr/local/lib"
+
+    for file in glob.glob(r'Skelet3D_so/*.so'):
+        shutil.copy(file, dest_dir)
+        print "copy %s into %s" % (file, dest_dir)
+
+    try:
+        shutil.rmtree(outdir)
+    except:
+        import traceback
+        traceback.print_exc()
+
+def linux_copy_to_conda_dir(url):
+    """
+    This is not working.
+    There are some problems with LD_LIBRARY_PATH
+
+    :param url:
+    :return:
+    """
     outdir = download_and_unzip(url)
 
     dest_dir = os.path.join(get_conda_dir(), "lib")

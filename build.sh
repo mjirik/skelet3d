@@ -16,3 +16,4 @@ CMAKE_GENERATOR="Unix Makefiles"
 cmake .. -G"$CMAKE_GENERATOR" -DCMAKE_INSTALL_PREFIX=$PREFIX
 cmake --build .
 cmake --build . --target install
+cd ..

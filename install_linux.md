@@ -14,7 +14,9 @@ Install Miniconda
     wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O Miniconda-latest-Linux-x86_64.sh
     bash Miniconda-latest-Linux-x86_64.sh -b
     
+
 Add `miniconda2/bin` directory to path or restart terminal
+
 
     cd
     export "PATH=`pwd`/miniconda2/bin:\$PATH"

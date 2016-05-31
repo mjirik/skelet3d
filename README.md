@@ -31,7 +31,7 @@ Install python package
 
 Install `.so` libraries
 
-    python -m skelet3d.libfixer
+    sudo miniconda2/bin/python -m skelet3d.libfixer
 
 ## Windows 
 

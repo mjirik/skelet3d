@@ -67,7 +67,7 @@ MESSAGE(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
 
 
 # berlicka pro nalezeni itk pod windows a linuxem
-FIND_PATH(ITK_DIR NAME "UseITK.txt" PATHS
+FIND_PATH(ITK_DIR NAME "ITKConfig.cmake" PATHS
     $ENV{HOME}/Downloads/InsightToolkit-3.20.1/itkbin/
     "C:/Program Files (x86)/ITK/lib/InsightToolkit/"
     "/usr/lib/InsightToolkit"

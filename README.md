@@ -131,6 +131,12 @@ http://bugs.python.org/issue18502
 http://ubuntuforums.org/showthread.php?t=1498755
 
 
+Cannot find library 2
+---------------------
+
+`libBinaryThinningCxxShared.so` is expected to be in `/usr/local/lib` and in `~/miniconda2/lib`
+
+
 WindowsError:[Error193]
 -----------------------
 

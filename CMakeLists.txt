@@ -66,17 +66,24 @@ MESSAGE(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
 # message(STATUS "CMAKE_ROOT: ${CMAKE_ROOT} ${CMAKE_PREFIX_PATH}")
 
 
-# berlicka pro nalezeni itk pod windows
-IF (WIN32)
-  # SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
-  # SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
-ENDIF (WIN32)
+# berlicka pro nalezeni itk pod windows a linuxem
+FIND_PATH(ITK_DIR NAME "UseITK.txt" PATHS
+    $ENV{HOME}/Downloads/InsightToolkit-3.20.1/itkbin/
+    "C:/Program Files (x86)/ITK/lib/InsightToolkit/"
+    "/usr/lib/InsightToolkit"
+    #    $ENV{HOME}/anaconda/
+    #    $ENV{HOME}/anaconda2/
+    )
+#IF (WIN32)
+# SET(ITK_DIR "C:/Users/mjirik/Downloads/InsightToolkit-3.20.1/itkbin/")
+# SET(ITK_DIR "C:/Program Files (x86)/ITK/lib/InsightToolkit/")
+#ENDIF (WIN32)
 
 # pro nalezeni na linuxu lze specifikovat pomoci
-IF (UNIX)
-  SET(ITK_DIR "/usr/lib/InsightToolkit/")
-  # CMAKE_MODULE_PATH("/usr/lib/InsightToolkit/ITKConfig.cmake")
-ENDIF (UNIX)
+# IF (UNIX)
+#  SET(ITK_DIR "/usr/lib/InsightToolkit/")
+# CMAKE_MODULE_PATH("/usr/lib/InsightToolkit/ITKConfig.cmake")
+# ENDIF (UNIX)
 
 MESSAGE(STATUS "CMAKE_MODULE_PATH after little help ${CMAKE_MODULE_PATH}")
 

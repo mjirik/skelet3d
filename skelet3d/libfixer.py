@@ -8,6 +8,7 @@ import glob
 import shutil
 import os
 import os.path as op
+import stat
 import tempfile
 import sys
 
@@ -58,15 +59,46 @@ def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dl
         import traceback
         traceback.print_exc()
 
+def __chmod(filename):
+    """
+    Make file for all
+    :param filename:
+    :return:
+    """
+
+    os.chmod(filename,
+             stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH |
+             stat.S_IRUSR | stat.S_IRGRP | stat.S_IXOTH |
+             stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
+             )
+
+def __chown(filename):
+    """
+    Make file owned by the user
+    :param filename:
+    :return:
+    """
+    os.chown(filename, int(os.getenv('SUDO_UID')), int(os.getenv('SUDO_GID')))
+
 def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
     # linux_copy_to_conda_dir(url)
     print "run with sudo"
     outdir = download_and_unzip(url)
     dest_dir = "/usr/local/lib"
+    dest_dir_conda_lib = os.path.join(get_conda_dir(), "lib")
+    print dest_dir_conda_lib
 
-    for file in glob.glob(r'Skelet3D_so/*.*'):
+    for file in glob.glob(r'Skelet3D_so/*Cxx*.so'):
+        # chmod is not necessary
+        # __chmod(file)
+
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
+        shutil.copy(file, dest_dir_conda_lib)
+        print "copy %s into %s" % (file, dest_dir)
+        fhead, fteil = os.path.split(file)
+        dest_file = os.path.join(dest_dir_conda_lib, fteil)
+        __chown(dest_file)
 
     try:
         shutil.rmtree(outdir)
@@ -84,11 +116,11 @@ def linux_copy_to_conda_dir(url):
     """
     outdir = download_and_unzip(url)
 
-    dest_dir = os.path.join(get_conda_dir(), "lib")
+    dest_dir_conda_lib = os.path.join(get_conda_dir(), "lib")
 
-    for file in glob.glob(r'Skelet3D_so/*.*'):
-        shutil.copy(file, dest_dir)
-        print "copy %s into %s" % (file, dest_dir)
+    for file in glob.glob(r'Skelet3D_so/*Cxx*.so'):
+        shutil.copy(file, dest_dir_conda_lib)
+        print "copy %s into %s" % (file, dest_dir_conda_lib)
 
     try:
         shutil.rmtree(outdir)
@@ -113,7 +145,6 @@ def get_conda_dir():
     except:
         import traceback
         traceback.print_exc()
-        print 'out\n', out
 
     from os.path import expanduser
     home = expanduser("~")

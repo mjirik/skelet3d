@@ -136,6 +136,11 @@ Cannot find library 2
 
 `libBinaryThinningCxxShared.so` is expected to be in `/usr/local/lib` and in `~/miniconda2/lib`
 
+OSError
+-------
+
+OSError: /home/.../lib-dynload/../../libBinaryThinningCxxShared.so:
+undefined symbol: _ZN3itk15ExceptionObject11SetLocationERKSs
 
 WindowsError:[Error193]
 -----------------------

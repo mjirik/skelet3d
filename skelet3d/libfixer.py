@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-import wget
 import zipfile
 import glob
 import shutil
@@ -13,6 +12,7 @@ import tempfile
 import sys
 
 def download_and_unzip(url):
+    import wget
     outdir = tempfile.gettempdir()
     # print "temp directory ", outdir
     outdir = tempfile.mkdtemp()
@@ -80,13 +80,38 @@ def __chown(filename):
     """
     os.chown(filename, int(os.getenv('SUDO_UID')), int(os.getenv('SUDO_GID')))
 
+def __demote(user_uid, user_gid):
+    """
+    set normal user to the process
+    :param user_uid:
+    :param user_gid:
+    :return:
+    """
+    def result():
+        print('starting demotion')
+        os.setgid(user_gid)
+        os.setuid(user_uid)
+        print('finished demotion')
+    return result
+
+def __make_non_sudo():
+    demote_fun = None
+    if os.getuid() == 0:
+        uid = int(os.getenv('SUDO_UID'))
+        gid = int(os.getenv('SUDO_GID'))
+        print "__make_non_sudo ", gid, uid
+        return __demote(uid, gid)
+    else:
+        return None
+
+
 def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
     # linux_copy_to_conda_dir(url)
-    print "run with sudo"
+    if os.getuid() != 0:
+        print "please run with sudo"
     outdir = download_and_unzip(url)
     dest_dir = "/usr/local/lib"
     dest_dir_conda_lib = os.path.join(get_conda_dir(), "lib")
-    print dest_dir_conda_lib
 
     for file in glob.glob(r'Skelet3D_so/*Cxx*.so'):
         # chmod is not necessary
@@ -95,7 +120,7 @@ def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.z
         shutil.copy(file, dest_dir)
         print "copy %s into %s" % (file, dest_dir)
         shutil.copy(file, dest_dir_conda_lib)
-        print "copy %s into %s" % (file, dest_dir)
+        print "copy %s into %s" % (file, dest_dir_conda_lib)
         fhead, fteil = os.path.split(file)
         dest_file = os.path.join(dest_dir_conda_lib, fteil)
         __chown(dest_file)
@@ -129,44 +154,47 @@ def linux_copy_to_conda_dir(url):
         traceback.print_exc()
 
 
+
 def get_conda_dir():
     dstdir = ''
-    try:
-        import subprocess
-        import re
-        # cond info --root work only for root environment
-        # p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
-        p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
-        out, err = p.communicate()
+    if os.getuid() != 0:
+        # if sudo is used, conda is not in path and process will fail
+        try:
+            import subprocess
+            import re
+            # cond info --root work only for root environment
+            # p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+            p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE) #, preexec_fn=__make_non_sudo())
+            out, err = p.communicate()
 
-        # import ipdb; ipdb.set_trace()
-        dstdir = out.strip()
-        dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
-    except:
-        import traceback
-        traceback.print_exc()
+            # import ipdb; ipdb.set_trace()
+            dstdir = out.strip()
+            dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
+        except:
+            import traceback
+            traceback.print_exc()
 
     from os.path import expanduser
     home = expanduser("~")
     if op.isdir(dstdir):
         pass
-    # elif op.isdir(op.join(home, "anaconda")):
-    #     dstdir = op.join(home, "anaconda")
-    # elif op.isdir(op.join(home, "miniconda")):
-    #     dstdir = op.join(home, "miniconda")
-    # elif op.isdir(op.join(home, "miniconda2")):
-    #     dstdir = op.join(home, "miniconda2")
-    # elif op.isdir("c:\miniconda2"):
-    #     dstdir = "c:\miniconda2"
-    # elif op.isdir("c:\miniconda"):
-    #     dstdir = "c:\miniconda"
-    # elif op.isdir("c:\anaconda2"):
-    #     dstdir = "c:\anaconda2"
-    # elif op.isdir("c:\anaconda"):
-    #     dstdir = "c:\anaconda"
-    # else:
-        # print "Cannot find anaconda/miniconda directory"
-        # dstdir = None
+    elif op.isdir(op.join(home, "anaconda")):
+        dstdir = op.join(home, "anaconda")
+    elif op.isdir(op.join(home, "miniconda")):
+        dstdir = op.join(home, "miniconda")
+    elif op.isdir(op.join(home, "miniconda2")):
+        dstdir = op.join(home, "miniconda2")
+    elif op.isdir("c:\miniconda2"):
+        dstdir = "c:\miniconda2"
+    elif op.isdir("c:\miniconda"):
+        dstdir = "c:\miniconda"
+    elif op.isdir("c:\anaconda2"):
+        dstdir = "c:\anaconda2"
+    elif op.isdir("c:\anaconda"):
+        dstdir = "c:\anaconda"
+    else:
+        print "Cannot find anaconda/miniconda directory"
+        dstdir = None
 
     return dstdir
 

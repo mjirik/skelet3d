@@ -29,9 +29,12 @@ Install python package
 
     pip install skelet3d
 
-Install `.so` libraries
+To build `.so` libraries you will need download skelet3d sources:
 
-    sudo miniconda2/bin/python -m skelet3d.libfixer
+    cd build
+    cmake ..
+    make
+    make install
 
 ## Windows 
 

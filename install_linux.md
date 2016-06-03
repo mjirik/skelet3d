@@ -8,6 +8,10 @@ Install ubuntu packages
 
     sudo apt-get install cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev
 
+For Ubuntu 16.04 install 
+
+    sudo apt-get install libgdcm2.6
+
 Install Miniconda
 
     wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O Miniconda-latest-Linux-x86_64.sh
@@ -23,7 +27,14 @@ Add `miniconda2/bin` directory to path or restart terminal
 Install skelet3d
 
     conda install -c mjirik skelet3d
-    sudo python -m skelet3d.libfixer
+    
+To build `.so` libraries you will need download skelet3d sources:
+
+    cd build
+    cmake ..
+    make
+    make install
+
 
 
 ## Install skelet without Anaconda

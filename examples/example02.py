@@ -20,6 +20,7 @@ volume_data [:, 5, 2:9] = 1
 volume_data [:, 0:7, 5] = 1
 skelet = skelet3d.skelet3d(volume_data)
 
-skan = skelet3d.SkeletonAnalyser(skelet, volume_data=volume_data)
+skan = skelet3d.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[1,1,1])
 stats = skan.skeleton_analysis()
-print stats
+edge_number = 1
+print stats[edge_number]['radius_mm']

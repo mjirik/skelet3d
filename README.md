@@ -98,6 +98,9 @@ Result:
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0]]], dtype=uint8)
+            
+            
+For more examples with skeleton analysis or visualisation see [example directory](https://github.com/mjirik/skelet3d/tree/master/examples)
 
 
 

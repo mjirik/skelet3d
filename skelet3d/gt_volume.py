@@ -19,7 +19,6 @@ import numpy as np
 import scipy.ndimage
 
 # import datareader
-import sed3 as se
 
 import gt_vtk
 
@@ -130,6 +129,7 @@ class VolumeTreeGenerator:
         #dw.Write3DData(self.data3d, outputfile, filetype)
 
     def show(self):
+        import sed3 as se
         pyed = se.sed3(self.data3d)
         pyed.show()
 

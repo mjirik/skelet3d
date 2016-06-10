@@ -9,7 +9,7 @@ Skeletonization algorithm is based on [ITKThinningImageFilter3D](http://hdl.hand
 There is dynamic linked library installed by cmake. Python and Matlab 
 scripts call this library. 
 
-![1D simplified model](graphics/2014-03-2-porta_lar-crop.png)
+![1D simplified model](graphics/2014-09-2-porta_lar-crop.png)
 
 Prerequisites
 =============

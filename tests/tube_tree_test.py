@@ -27,8 +27,8 @@ class TubeTreeTest(unittest.TestCase):
 
     @attr("LAR")
     def test_vessel_tree_lar(self):
-        import imtools.gt_lar
-        tvg = TreeGenerator(imtools.gt_lar.GTLar)
+        import skelet3d.gt_lar
+        tvg = TreeGenerator(skelet3d.gt_lar.GTLar)
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
@@ -49,7 +49,6 @@ class TubeTreeTest(unittest.TestCase):
     def test_vessel_tree_vtk_from_skeleton(self):
 
         import skelet3d
-        import imtools
         import skelet3d.skeleton_analyser
         import shutil
 
@@ -89,7 +88,7 @@ class TubeTreeTest(unittest.TestCase):
         tests export function
         """
 
-        import imtools.vesseltree_export as vt
+        import skelet3d.vesseltree_export as vt
         yaml_input = os.path.join(path_to_script, "vt_biodur.yaml")
         yaml_output = os.path.join(path_to_script, "delme_esofspy.txt")
         vt.vt2esofspy(yaml_input, yaml_output)

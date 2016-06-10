@@ -12,12 +12,12 @@ os: linux
 sudo: required
 dist: trusty
 # install new cmake
-addons:
-  apt:
-    packages:
-      - cmake
-    sources:
-      - kalakris-cmake
+#addons:
+#  apt:
+#    packages:
+#      - cmake
+#    sources:
+#      - kalakris-cmake
 virtualenv:
   system_site_packages: true
 before_install:

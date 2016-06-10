@@ -41,6 +41,7 @@ requirements:
     - numpy
     - scipy
     - pywget
+    # necessary for yaml
 
 test:
   # Python imports

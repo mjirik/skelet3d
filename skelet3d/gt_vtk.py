@@ -4,7 +4,6 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import vtk
 import numpy as nm
 import yaml
 import argparse
@@ -42,6 +41,7 @@ class VTKTreeGenerator:
 
     def save(self, outputfile):
 
+        import vtk
         writer = vtk.vtkPolyDataWriter()
         writer.SetFileName(outputfile)
         try:
@@ -60,6 +60,7 @@ def get_cylinder(upper, height, radius,
                  direction,
                  resolution=10):
 
+    import vtk
     src = vtk.vtkCylinderSource()
     src.SetCenter((0, height/2, 0))
     src.SetHeight(height + radius/2.0)
@@ -122,6 +123,7 @@ def get_cylinder(upper, height, radius,
 
 def gen_tree(tree_data):
 
+    import vtk
     points = vtk.vtkPoints()
     polyData = vtk.vtkPolyData()
     polyData.Allocate(1000, 1)
@@ -220,6 +222,7 @@ def vt2vtk_file(vessel_tree, outfile, text_label=None):
     :param text_label: text label like 'porta' or 'hepatic_veins'
     :return:
     """
+    import vtk
     trees = fix_tree_structure(vessel_tree)
 
     tkeys = trees.keys()

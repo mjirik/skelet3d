@@ -4,9 +4,12 @@
 skelet3d
 ========
 
-Skeletonize algorithm based on [ITKThinningImageFilter3D](http://hdl.handle.net/1926/1292). 
+Package is constructed to analyse vessel tree structures. Length, radius and branching angles can be computed.
+Skeletonization algorithm is based on [ITKThinningImageFilter3D](http://hdl.handle.net/1926/1292). 
 There is dynamic linked library installed by cmake. Python and Matlab 
 scripts call this library. 
+
+
 
 Prerequisites
 =============

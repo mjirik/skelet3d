@@ -60,7 +60,7 @@ class SkeletonAnalyser:
 
         logger.debug('Inited SkeletonAnalyser - voxelsize:' + str(
             voxelsize_mm) + ' volumedata:' + str(volume_data is not None))
-        print 'aggreg ', self.aggregate_near_nodes_distance
+        logger.debug('aggreg %s', self.aggregate_near_nodes_distance)
         # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
 
 
@@ -567,7 +567,7 @@ class SkeletonAnalyser:
         try:
             vector = stats[edg_number][vector_key]
         except:  # Exception as e:
-            logger.debug(traceback.print_exc())
+            logger.debug(traceback.format_exc())
 
         try:
             vectorX0 = self.__vector_of_connected_edge(
@@ -576,12 +576,12 @@ class SkeletonAnalyser:
 
             # out.update({'phiA0' + edg_end + 'a': phiXa.tolist()})
         except:  # Exception as e:
-            logger.debug(traceback.print_exc())
+            logger.debug(traceback.format_exc())
         try:
             vectorX1 = self.__vector_of_connected_edge(
                 edg_number, stats, edg_end, 1)
         except:  # Exception as e:
-            logger.debug(traceback.print_exc())
+            logger.debug(traceback.format_exc())
 
         if (vectorX0 is not None) and (vectorX1 is not None) and (vector is not None):
 
@@ -1102,7 +1102,7 @@ class SkeletonAnalyser:
             return dst
 
         else:
-            print "__radius_analysis_init() error.  "
+            logger.warning("__radius_analysis_init() error.  ")
             return None
 
     def __radius_analysis(self, edg_number, skdst):
@@ -1203,7 +1203,7 @@ def generate_binary_elipsoid(ndradius=[1, 1, 1]):
     """
     ndradius = np.asarray(ndradius).astype(np.double)
     shape = ((ndradius * 2) + 1).astype(np.uint)
-    print "elipsoid shape ", shape
+    logger.debug("elipsoid shape %s", str(shape))
     # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
     x, y, z = np.indices(shape)
     center1 = ndradius

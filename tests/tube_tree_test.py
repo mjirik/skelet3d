@@ -13,15 +13,11 @@ import unittest
 import numpy as np
 import sys
 
-# from imtools import qmisc
-# from imtools import misc
 import skelet3d
 logger.debug(str(dir(skelet3d)))
 logger.debug(skelet3d.__file__)
 import skelet3d.tree_processing
-# import skelet3d.tree_processing
 from skelet3d.tree_processing import TreeGenerator
-import io3d
 
 #
 

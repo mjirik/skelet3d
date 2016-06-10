@@ -1,10 +1,10 @@
-__all__ = ['skelet3d', 'skeleton_analyser', 'tree_processing']
+__all__ = ['skelet3d', 'skeleton_analyser', 'tree.py']
 
 __version__ = "1.5.1"
 
 print "import skelet3d ok"
 import skeleton_analyser
-import tree_processing
+import tree
 from skeleton_analyser import SkeletonAnalyser
-from tree_processing import TreeGenerator
+from tree import TreeGenerator
 from skeletonizer import skelet3d

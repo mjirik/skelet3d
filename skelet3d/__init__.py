@@ -1,6 +1,6 @@
 __all__ = ['skelet3d', 'skeleton_analyser', 'tree_processing']
 
-__version__ = "1.4.29"
+__version__ = "1.4.30"
 
 print "import skelet3d ok"
 import skeleton_analyser

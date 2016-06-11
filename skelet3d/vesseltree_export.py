@@ -30,8 +30,12 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
     """
 
     if (type(vesseltree) == str) and os.path.isfile(vesseltree):
-        import io3d
-        vt = io3d.misc.obj_from_file(vesseltree)
+        import yaml
+        f = open(vesseltree, 'rb')
+        vt = yaml.load(f)
+        f.close()
+        # import io3d
+        # vt = io3d.misc.obj_from_file(vesseltree)
     else:
         vt = vesseltree
     print vt['general']

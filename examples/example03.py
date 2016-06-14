@@ -4,9 +4,9 @@
 
 import numpy as np
 import skelet3d
-import imtools
 import skelet3d.skeleton_analyser
-from imtools.tree_processing import TreeGenerator
+import skelet3d.tree
+from skelet3d.tree import TreeGenerator
 
 # output vtk file can be visualized with ParaView
 fn_out = 'tree.vkt'

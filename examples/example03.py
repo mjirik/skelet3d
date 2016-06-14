@@ -26,3 +26,4 @@ tvg.shape = [100, 100, 100]
 tvg.tree_data = stats
 output = tvg.generateTree() # noqa
 tvg.saveToFile(fn_out)
+print "Output saved as '{}'".format(fn_out)

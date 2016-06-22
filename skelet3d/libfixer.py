@@ -66,11 +66,15 @@ def __chmod(filename):
     :return:
     """
 
-    os.chmod(filename,
-             stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH |
-             stat.S_IRUSR | stat.S_IRGRP | stat.S_IXOTH |
-             stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
-             )
+    if sys.platform.startswith('win'):
+        pass
+    else:
+        os.chmod(
+            filename,
+            stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH |
+            stat.S_IRUSR | stat.S_IRGRP | stat.S_IXOTH |
+            stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH
+        )
 
 def __chown(filename):
     """
@@ -78,6 +82,8 @@ def __chown(filename):
     :param filename:
     :return:
     """
+    if sys.platform.startswith('win'):
+        return
     os.chown(filename, int(os.getenv('SUDO_UID')), int(os.getenv('SUDO_GID')))
 
 def __demote(user_uid, user_gid):

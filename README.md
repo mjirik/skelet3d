@@ -164,3 +164,8 @@ Problem is probabli in 32-bit compiling in 64-bit system. You need install fallo
     sudo apt-get install lib32z1-dev libpng12-dev
 
 
+Windows: missing `mscvp140.dll` and `vcruntime140.dll`
+------------------------------------------------------
+
+Install 
+[Visual C++ 2015 Redistributable](https://www.microsoft.com/cs-cz/download/details.aspx?id=48145)

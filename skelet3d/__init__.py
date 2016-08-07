@@ -1,6 +1,6 @@
 __all__ = ['skelet3d', 'skeleton_analyser', 'tree.py']
 
-__version__ = "1.5.10"
+__version__ = "1.5.11"
 
 import skeleton_analyser
 import tree

@@ -5,21 +5,12 @@ import numpy as np
 import traceback
 import sys
 
-def skelet3d(data):
-    """
-    skel = skeleton (data)
-
-    data: 3D numpy data
-    skel: 3D skeleton
-
-    """
+def get_skelet3d_lib():
     import ctypes
     import ctypes.util
     #import os
 
-    data = data.astype('int8')
-
-# ThinningCxxShared is C++, ThinningShared is C
+    # ThinningCxxShared is C++, ThinningShared is C
     #libpath = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) +\
     #        "/../bin/libBinaryThinningCxxShared.so")
     #        #"/../bin/libBinaryThinningShared.so")
@@ -35,7 +26,7 @@ def skelet3d(data):
         print "Library download complete"
         libpath = ctypes.util.find_library(libname)
 
-    #os.environ['PATH'] 
+    #os.environ['PATH']
     #import pdb; pdb.set_trace()
     try:
         hlibc = ctypes.CDLL(libpath)
@@ -54,7 +45,23 @@ def skelet3d(data):
 
         exit()
 
-    
+    return hlibc
+
+
+def skelet3d(data):
+    """
+    skel = skeleton (data)
+
+    data: 3D numpy data
+    skel: 3D skeleton
+
+    """
+    import ctypes
+    import ctypes.util
+    data = data.astype('int8')
+
+    hlibc = get_skelet3d_lib()
+
 # unsigned char * thinningCxx (int sizeX, int sizeY, int sizeZ, unsigned char *)
 # function .tostring() give char stream
     thinning = hlibc.thinningCxx
@@ -72,8 +79,6 @@ def skelet3d(data):
 
     outa = np.fromstring(sdata, dtype='uint8')
     return outa.reshape(data.shape)
-
-
 
 def main():
     data = np.zeros([8,9,10], dtype='int8')

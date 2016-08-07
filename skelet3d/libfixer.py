@@ -51,7 +51,7 @@ def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dl
 
     for file in glob.glob(r'ITK+Skelet3D_dll/*.dll'):
         shutil.copy(file, dest_dir)
-        print "copy %s into %s" % (file, dest_dir)
+        print "copy %s ---> %s" % (file, dest_dir)
 
     try:
         shutil.rmtree(outdir)
@@ -118,9 +118,9 @@ def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.z
         # __chmod(file)
 
         shutil.copy(file, dest_dir)
-        print "copy %s into %s" % (file, dest_dir)
+        print "copy %s ---> %s" % (file, dest_dir)
         shutil.copy(file, dest_dir_conda_lib)
-        print "copy %s into %s" % (file, dest_dir_conda_lib)
+        print "copy %s ---> %s" % (file, dest_dir_conda_lib)
         fhead, fteil = os.path.split(file)
         dest_file = os.path.join(dest_dir_conda_lib, fteil)
         __chown(dest_file)
@@ -154,25 +154,34 @@ def linux_copy_to_conda_dir(url):
         traceback.print_exc()
 
 
+def _find_conda_dir_with_conda():
+    dstdir = ''
+    try:
+        import subprocess
+        import re
+        # cond info --root work only for root environment
+        # p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+        p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE) #, preexec_fn=__make_non_sudo())
+        out, err = p.communicate()
+
+        # import ipdb; ipdb.set_trace()
+        dstdir = out.strip()
+        dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
+    except:
+        import traceback
+        traceback.print_exc()
+    return dstdir
+
 
 def get_conda_dir():
-    dstdir = ''
-    if os.getuid() != 0:
+    dstdir = ""
+    if sys.platform.startswith('win'):
+        dstdir = _find_conda_dir_with_conda()
+    else:
+        # osx or linux
         # if sudo is used, conda is not in path and process will fail
-        try:
-            import subprocess
-            import re
-            # cond info --root work only for root environment
-            # p = subprocess.Popen(['conda', 'info', '--root'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
-            p = subprocess.Popen(['conda', 'info', '-e'], stdout=subprocess.PIPE,  stderr=subprocess.PIPE) #, preexec_fn=__make_non_sudo())
-            out, err = p.communicate()
-
-            # import ipdb; ipdb.set_trace()
-            dstdir = out.strip()
-            dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
-        except:
-            import traceback
-            traceback.print_exc()
+        if os.getuid() != 0:
+            dstdir = _find_conda_dir_with_conda()
 
     from os.path import expanduser
     home = expanduser("~")

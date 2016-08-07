@@ -1,9 +1,6 @@
 general:
   Nv: 1.000023290719942
-  anotation: !!python/object/apply:sip._unpickle_type
-  - PyQt4.QtCore
-  - QString
-  - !!python/tuple [!!python/unicode '/home/mjirik/projects/lisa/sample_data/biodur_sample']
+  anotation: '/home/mjirik/projects/lisa/sample_data/biodur_sample'
   processed_by: Histology Analyser
   shape_px: [50, 139, 139]
   surface_density: 0.03680554836706175

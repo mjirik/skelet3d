@@ -17,7 +17,7 @@ import argparse
 import datetime
 
 
-class TreeGenerator:
+class TreeConstructor:
 
     def __init__(self, generator_class='volume', generator_params=None):
         """
@@ -146,7 +146,8 @@ class TreeGenerator:
             logger.debug("joints generated")
         except:
             import traceback
-            logger.debug(traceback.format_exc())
+            # logger.debug(traceback.format_exc())
+            logger.debug("no finish() function in tree constructor")
 
         output = self.generator.get_output()
 
@@ -313,6 +314,13 @@ python src/gt_volume.py -i ./tests/hist_stats_test.yaml'
     # ukládání do souboru
     if args.outputfile is not None:
         tg.saveToFile(args.outputfile, args.outputfiletype)
+
+
+class TreeGenerator(TreeConstructor):
+    """
+    back compatibility
+    """
+    pass
 
 if __name__ == "__main__":
     main()

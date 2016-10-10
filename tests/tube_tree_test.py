@@ -22,7 +22,8 @@ from skelet3d.tree import TreeGenerator
 #
 
 class TubeTreeTest(unittest.TestCase):
-    interactivetTest = False
+    def setUp(self):
+        self.interactivetTest = False
     # interactivetTest = True
 
     @attr("LAR")
@@ -73,6 +74,18 @@ class TubeTreeTest(unittest.TestCase):
         tvg.saveToFile(fn_out)
         os.path.exists(fn_out)
 
+    # TODO finish this test
+    def test_vessel_tree_vol(self):
+        import skelet3d.gt_volume
+        tvg = TreeGenerator(skelet3d.gt_volume.VolumeTreeGenerator)
+        yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
+        tvg.importFromYaml(yaml_path)
+        tvg.voxelsize_mm = [1, 1, 1]
+        tvg.shape = [100, 100, 100]
+        output = tvg.generateTree() # noqa
+        # tvg.show()
+        # if self.interactiveTests:
+        #     tvg.show()
 
     def test_import_new_vt_format(self):
 

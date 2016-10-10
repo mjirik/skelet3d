@@ -20,7 +20,7 @@ import scipy.ndimage
 
 # import datareader
 
-import gt_vtk
+import tb_vtk
 
 import vtk
 from vtk.util import numpy_support
@@ -28,7 +28,7 @@ from vtk.util import numpy_support
 from datetime import datetime
 
 
-class VolumeTreeGenerator:
+class TBVolume:
     """
     This generator is called by generateTree() function as a general form.
     Other similar generator is used for generating LAR outputs.

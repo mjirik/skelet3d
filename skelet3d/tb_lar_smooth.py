@@ -36,7 +36,7 @@ import geometry3d as g3
 import interpolation_pyplasm as ip
 
 
-class GTLarSmooth:
+class TBLarSmooth:
 
     def __init__(self, gtree=None):
         """

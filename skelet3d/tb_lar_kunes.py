@@ -3,7 +3,7 @@
 
 """
 Surface model generator of vessel tree.
-Used by gt_volume.py
+Used by tb_volume.py
 """
 import logging
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ import geometry3d as g3
 # import warnings
 # warnings.filterwarnings('error')
 
-class GTLar:
+class TBLar:
     """
     gtree is information about input data structure.
     endDistMultiplicator: move connected side of cylinders away from joint by multiplication of radius

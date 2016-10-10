@@ -17,7 +17,7 @@ import skelet3d
 logger.debug(str(dir(skelet3d)))
 logger.debug(skelet3d.__file__)
 import skelet3d.tree
-from skelet3d.tree import TreeGenerator
+from skelet3d.tree import TreeBuilder
 
 #
 
@@ -28,8 +28,8 @@ class TubeTreeTest(unittest.TestCase):
 
     @attr("LAR")
     def test_vessel_tree_lar(self):
-        import skelet3d.gt_lar
-        tvg = TreeGenerator(skelet3d.gt_lar.GTLar)
+        import skelet3d.tb_lar
+        tvg = TreeBuilder(skelet3d.tb_lar.TBLar)
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
@@ -39,7 +39,7 @@ class TubeTreeTest(unittest.TestCase):
             tvg.show()
 
     def test_vessel_tree_vtk(self):
-        tvg = TreeGenerator('vtk')
+        tvg = TreeBuilder('vtk')
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
@@ -66,7 +66,7 @@ class TubeTreeTest(unittest.TestCase):
         skan = skelet3d.skeleton_analyser.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[1,1,1])
         stats = skan.skeleton_analysis()
 
-        tvg = TreeGenerator('vtk')
+        tvg = TreeBuilder('vtk')
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
         tvg.tree_data = stats
@@ -76,8 +76,8 @@ class TubeTreeTest(unittest.TestCase):
 
     # TODO finish this test
     def test_vessel_tree_vol(self):
-        import skelet3d.gt_volume
-        tvg = TreeGenerator(skelet3d.gt_volume.VolumeTreeGenerator)
+        import skelet3d.tb_volume
+        tvg = TreeBuilder(skelet3d.tb_volume.TBVolume)
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
@@ -89,7 +89,7 @@ class TubeTreeTest(unittest.TestCase):
 
     def test_import_new_vt_format(self):
 
-        tvg = TreeGenerator()
+        tvg = TreeBuilder()
         yaml_path = os.path.join(path_to_script, "vt_biodur.yaml")
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]

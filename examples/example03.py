@@ -6,7 +6,7 @@ import numpy as np
 import skelet3d
 import skelet3d.skeleton_analyser
 import skelet3d.tree
-from skelet3d.tree import TreeGenerator
+from skelet3d.tree import TreeBuilder
 
 # output vtk file can be visualized with ParaView
 fn_out = 'tree.vkt'
@@ -20,7 +20,7 @@ skelet = skelet3d.skelet3d(volume_data)
 skan = skelet3d.skeleton_analyser.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[1,1,1])
 stats = skan.skeleton_analysis()
 
-tvg = TreeGenerator('vtk')
+tvg = TreeBuilder('vtk')
 tvg.voxelsize_mm = [1, 1, 1]
 tvg.shape = [100, 100, 100]
 tvg.tree_data = stats

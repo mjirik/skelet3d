@@ -26,7 +26,7 @@ import geometry3d as g3
 # import warnings
 # warnings.filterwarnings('error')
 
-class GTLar:
+class TBLar:
 
     def __init__(self, gtree=None,
                  endDistMultiplicator=1,

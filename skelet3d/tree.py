@@ -17,7 +17,7 @@ import argparse
 import datetime
 
 
-class TreeConstructor:
+class TreeBuilder:
 
     def __init__(self, generator_class='volume', generator_params=None):
         """
@@ -35,23 +35,23 @@ class TreeConstructor:
         self.tree_label = None
 
         if generator_class in ['vol', 'volume']:
-            import gt_volume
-            generator_class = gt_volume.VolumeTreeGenerator
+            import tb_volume
+            generator_class = tb_volume.TBVolume
         elif generator_class  in ['lar']:
-            import gt_lar
-            generator_class = gt_lar.GTLar
+            import tb_lar
+            generator_class = tb_lar.TBLar
         elif generator_class  in ['vtk']:
-            import gt_vtk
-            generator_class = gt_vtk.VTKTreeGenerator
+            import tb_vtk
+            generator_class = tb_vtk.TBVTK
         elif generator_class  in ['kunes']:
-            import gt_lar_kunes
-            generator_class = gt_lar_kunes.GTLar
+            import tb_lar_kunes
+            generator_class = tb_lar_kunes.TBLar
         elif generator_class  in ['larsm']:
-            import gt_lar_smooth
-            generator_class = gt_lar_smooth.GTLarSmooth
+            import tb_lar_smooth
+            generator_class = tb_lar_smooth.TBLarSmooth
         elif generator_class  in ['lar_nojoints']:
-            import gt_lar
-            generator_class = gt_lar.GTLar
+            import tb_lar
+            generator_class = tb_lar.TBLar
             generator_params = {
                 'endDistMultiplicator': 0,
                 'use_joints': False
@@ -229,7 +229,7 @@ def main():
     # input parser
     parser = argparse.ArgumentParser(
         description='Histology analyser reporter. Try: \
-python src/gt_volume.py -i ./tests/hist_stats_test.yaml'
+python src/tb_volume.py -i ./tests/hist_stats_test.yaml'
     )
     parser.add_argument(
         '-i', '--inputfile',
@@ -292,7 +292,7 @@ python src/gt_volume.py -i ./tests/hist_stats_test.yaml'
     #     gen_vtk_tree.vt2vtk_file(args.inputfile, args.outputfile)
     #     return
 
-    tg = TreeGenerator(generator_class, generator_params)
+    tg = TreeBuilder(generator_class, generator_params)
     tg.importFromYaml(args.inputfile)
     tg.voxelsize_mm = args.voxelsize
     tg.shape = args.datashape
@@ -316,11 +316,11 @@ python src/gt_volume.py -i ./tests/hist_stats_test.yaml'
         tg.saveToFile(args.outputfile, args.outputfiletype)
 
 
-class TreeGenerator(TreeConstructor):
-    """
-    back compatibility
-    """
-    pass
+# class TreeGenerator(TreeConstructor):
+#     """
+#     back compatibility
+#     """
+#     pass
 
 if __name__ == "__main__":
     main()

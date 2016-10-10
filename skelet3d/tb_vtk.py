@@ -13,7 +13,7 @@ import numpy as np
 
 # new interface
 
-class VTKTreeGenerator:
+class TBVTK:
     """
     This generator is called by generateTree() function as a general form.
     Other similar generator is used for generating LAR outputs.

@@ -98,7 +98,7 @@ class TreeBuilder:
         # except:
         #     self.tree_data = self.rawdata['Graph']
 
-    def generateTree(self):
+    def buildTree(self):
         """
         | Funkce na vygenerování objemu stromu ze zadaných dat.
         | Generates output by defined generator. If VolumeTreeGenerator is used, output is data3d.
@@ -297,7 +297,7 @@ python src/tb_volume.py -i ./tests/hist_stats_test.yaml'
     tg.voxelsize_mm = args.voxelsize
     tg.shape = args.datashape
     tg.use_lar = args.useLar
-    data3d = tg.generateTree()
+    data3d = tg.buildTree()
 
     logger.info("TimeUsed:" + str(datetime.now() - startTime))
     # volume_px = sum(sum(sum(data3d)))

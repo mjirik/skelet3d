@@ -16,6 +16,8 @@ import sys
 import skelet3d
 logger.debug(str(dir(skelet3d)))
 logger.debug(skelet3d.__file__)
+# import skelet3d.
+# from skelet3d import TreeBuilder
 import skelet3d.tree
 from skelet3d.tree import TreeBuilder
 
@@ -34,7 +36,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
-        output = tvg.generateTree() # noqa
+        output = tvg.buildTree() # noqa
         if self.interactiveTests:
             tvg.show()
 
@@ -44,7 +46,8 @@ class TubeTreeTest(unittest.TestCase):
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
-        output = tvg.generateTree() # noqa
+        output = tvg.buildTree() # noqa
+        tvg.show()
 
     @unittest.skipIf(not ("skelet3d" in sys.modules), "skelet3d is not installed")
     def test_vessel_tree_vtk_from_skeleton(self):
@@ -70,7 +73,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
         tvg.tree_data = stats
-        output = tvg.generateTree() # noqa
+        output = tvg.buildTree() # noqa
         tvg.saveToFile(fn_out)
         os.path.exists(fn_out)
 
@@ -82,8 +85,8 @@ class TubeTreeTest(unittest.TestCase):
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
-        output = tvg.generateTree() # noqa
-        # tvg.show()
+        output = tvg.buildTree() # noqa
+        tvg.show()
         # if self.interactiveTests:
         #     tvg.show()
 
@@ -94,7 +97,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.importFromYaml(yaml_path)
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [150, 150, 150]
-        data3d = tvg.generateTree()
+        data3d = tvg.buildTree()
 
     def test_test_export_to_esofspy(self):
         """

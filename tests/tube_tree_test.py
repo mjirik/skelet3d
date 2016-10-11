@@ -48,6 +48,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.shape = [100, 100, 100]
         output = tvg.buildTree() # noqa
         tvg.show()
+        tvg.saveToFile("tree_output.vtk")
 
     @unittest.skipIf(not ("skelet3d" in sys.modules), "skelet3d is not installed")
     def test_vessel_tree_vtk_from_skeleton(self):
@@ -108,5 +109,31 @@ class TubeTreeTest(unittest.TestCase):
         yaml_input = os.path.join(path_to_script, "vt_biodur.yaml")
         yaml_output = os.path.join(path_to_script, "delme_esofspy.txt")
         vt.vt2esofspy(yaml_input, yaml_output)
+
+
+    def test_tree_generator(self):
+        import numpy as np
+        tree_data = {
+
+        }
+        for i in range(10):
+            edge = {
+                "nodeA_ZYX_mm": np.random.random(3) * 100,
+                "nodeB_ZYX_mm": np.random.random(3) * 100,
+                "radius_mm": 5
+            }
+            tree_data[i] = edge
+
+
+        tvg = TreeBuilder('vtk')
+        yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
+        # tvg.importFromYaml(yaml_path)
+        tvg.voxelsize_mm = [1, 1, 1]
+        tvg.shape = [100, 100, 100]
+        tvg.tree_data = tree_data
+        output = tvg.buildTree() # noqa
+        tvg.show()
+        tvg.saveToFile("tree_output.vtk")
+        # self.assertTrue(False)
 if __name__ == "__main__":
     unittest.main()

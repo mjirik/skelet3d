@@ -131,6 +131,7 @@ def gen_tree(tree_data):
     poffset = 0
 
     for br in tree_data:
+        logger.debug("generating edge " + str(br["length"]))
         cyl = get_cylinder(br['upperVertex'],
                            br['length'],
                            br['radius'],
@@ -164,6 +165,8 @@ def compatibility_processing(indata):
         ii = indata[key]
         logger.debug(ii)
         br = {}
+
+        lengthEstimation = None
         try:
             # old version of yaml tree
             vA = ii['upperVertexXYZmm']
@@ -176,13 +179,20 @@ def compatibility_processing(indata):
                 vA = ii['nodeA_ZYX_mm']
                 vB = ii['nodeB_ZYX_mm']
                 radi = ii['radius_mm']
-                lengthEstimation = ii['lengthEstimation']
+                if "lengthEstimation" in ii.keys():
+                    lengthEstimation = ii['lengthEstimation']
             except:
+                import traceback
+                logger.debug(traceback.format_exc())
                 continue
 
         br['upperVertex'] = nm.array(vA) * scale
         br['radius'] = radi * scale
-        br['real_length'] = lengthEstimation * scale
+        if lengthEstimation is None:
+
+            br['real_length'] = None
+        else:
+            br['real_length'] = lengthEstimation * scale
 
         vv = nm.array(vB) * scale - br['upperVertex']
         br['direction'] = vv / nm.linalg.norm(vv)

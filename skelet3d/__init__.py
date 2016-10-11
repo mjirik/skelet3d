@@ -6,4 +6,4 @@ import skeleton_analyser
 import tree
 from skeleton_analyser import SkeletonAnalyser
 from tree import TreeBuilder
-# from skeletonizer import skelet3d
+from skeletonizer import skelet3d

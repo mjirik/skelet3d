@@ -87,7 +87,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.voxelsize_mm = [1, 1, 1]
         tvg.shape = [100, 100, 100]
         output = tvg.buildTree() # noqa
-        tvg.show()
+        # tvg.show()
         # if self.interactiveTests:
         #     tvg.show()
 

@@ -116,18 +116,35 @@ class TubeTreeTest(unittest.TestCase):
         tree_data = {
 
         }
-        element_number = 10
+        element_number = 5
+        np.random.seed(0)
         pts = np.random.random([element_number, 3]) * 100
-        for i in range(element_number):
+
+        # construct voronoi
+        import scipy.spatial
+        vor3 = scipy.spatial.Voronoi(pts)
+
+
+        for i, two_points in enumerate(vor3.ridge_points):
             edge = {
                 #"nodeA_ZYX_mm": np.random.random(3) * 100,
-                "nodeA_ZYX_mm": pts[i-1],
-                "nodeB_ZYX_mm": pts[i],
+                "nodeA_ZYX_mm": vor3.vertices[two_points[0]],
+                "nodeB_ZYX_mm": vor3.vertices[two_points[1]],
                 #"nodeB_ZYX_mm": np.random.random(3) * 100,
-                "radius_mm": 5
+                "radius_mm": 3
             }
             tree_data[i] = edge
 
+        length = len(tree_data)
+        for i in range(element_number):
+            edge = {
+                #         #"nodeA_ZYX_mm": np.random.random(3) * 100,
+                "nodeA_ZYX_mm": pts[i-1],
+                "nodeB_ZYX_mm": pts[i],
+                #         "nodeB_ZYX_mm": np.random.random(3) * 100,
+                "radius_mm": 1
+            }
+            tree_data[i+length] = edge
 
         tvg = TreeBuilder('vtk')
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")
@@ -138,6 +155,22 @@ class TubeTreeTest(unittest.TestCase):
         output = tvg.buildTree() # noqa
         # tvg.show()
         tvg.saveToFile("tree_output.vtk")
+
+        tvg.voxelsize_mm = [1, 1, 1]
         # self.assertTrue(False)
+
+
+
+def dist_to_vectors(v1, vlist):
+    import numpy as np
+    out = []
+    for v2 in vlist:
+        dist = np.linalg.norm(v1-v2)
+        out.append(dist)
+    return np.asarray(out)
+
+
+
+
 if __name__ == "__main__":
     unittest.main()

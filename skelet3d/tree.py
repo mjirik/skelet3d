@@ -140,11 +140,11 @@ class TreeBuilder:
                 #     self.generator.add_cylinder(p1m, p2m, rad, in)
         logger.debug("cylinders generated")
 
-        try:
+        if "finish" in dir(self.generator):
             # generator could have finish() function
             self.generator.finish()
             logger.debug("joints generated")
-        except:
+        else:
             import traceback
             # logger.debug(traceback.format_exc())
             logger.debug("no finish() function in tree constructor")

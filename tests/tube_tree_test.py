@@ -116,10 +116,14 @@ class TubeTreeTest(unittest.TestCase):
         tree_data = {
 
         }
-        for i in range(10):
+        element_number = 10
+        pts = np.random.random([element_number, 3]) * 100
+        for i in range(element_number):
             edge = {
-                "nodeA_ZYX_mm": np.random.random(3) * 100,
-                "nodeB_ZYX_mm": np.random.random(3) * 100,
+                #"nodeA_ZYX_mm": np.random.random(3) * 100,
+                "nodeA_ZYX_mm": pts[i-1],
+                "nodeB_ZYX_mm": pts[i],
+                #"nodeB_ZYX_mm": np.random.random(3) * 100,
                 "radius_mm": 5
             }
             tree_data[i] = edge
@@ -132,7 +136,7 @@ class TubeTreeTest(unittest.TestCase):
         tvg.shape = [100, 100, 100]
         tvg.tree_data = tree_data
         output = tvg.buildTree() # noqa
-        tvg.show()
+        # tvg.show()
         tvg.saveToFile("tree_output.vtk")
         # self.assertTrue(False)
 if __name__ == "__main__":

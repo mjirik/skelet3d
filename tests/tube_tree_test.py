@@ -116,7 +116,7 @@ class TubeTreeTest(unittest.TestCase):
         tree_data = {
 
         }
-        element_number = 7
+        element_number = 50
         np.random.seed(0)
         pts = np.random.random([element_number, 3]) * 100
 
@@ -129,6 +129,8 @@ class TubeTreeTest(unittest.TestCase):
         # for i, two_points in enumerate(vor3.ridge_points):
         for i, simplex in enumerate(vor3.ridge_vertices):
             simplex = np.asarray(simplex)
+            # fallowing line removes all ridges with oulayers
+            simplex = simplex[simplex > 0]
             if np.all(simplex >= 0):
 
                 x = vor3.vertices[simplex, 0]
@@ -142,22 +144,24 @@ class TubeTreeTest(unittest.TestCase):
                         # "nodeB_ZYX_mm": vor3.vertices[simplex],
                         "nodeA_ZYX_mm": vor3.vertices[two_points[0]],
                         "nodeB_ZYX_mm": vor3.vertices[two_points[1]],
-                        "radius_mm": 3
+                        "radius_mm": 2
                     }
                     tree_data[i] = edge
             else:
                 pass
 
-        length = len(tree_data)
-        for i in range(element_number):
-            edge = {
-                #         #"nodeA_ZYX_mm": np.random.random(3) * 100,
-                "nodeA_ZYX_mm": pts[i-1],
-                "nodeB_ZYX_mm": pts[i],
-                #         "nodeB_ZYX_mm": np.random.random(3) * 100,
-                "radius_mm": 1
-            }
-            tree_data[i+length] = edge
+        show_input_points = False
+        if show_input_points:
+            length = len(tree_data)
+            for i in range(element_number):
+                edge = {
+                    #         #"nodeA_ZYX_mm": np.random.random(3) * 100,
+                    "nodeA_ZYX_mm": pts[i-1],
+                    "nodeB_ZYX_mm": pts[i],
+                    #         "nodeB_ZYX_mm": np.random.random(3) * 100,
+                    "radius_mm": 1
+                }
+                tree_data[i+length] = edge
 
         tvg = TreeBuilder('vtk')
         yaml_path = os.path.join(path_to_script, "./hist_stats_test.yaml")

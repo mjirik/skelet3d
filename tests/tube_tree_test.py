@@ -116,24 +116,37 @@ class TubeTreeTest(unittest.TestCase):
         tree_data = {
 
         }
-        element_number = 5
+        element_number = 7
         np.random.seed(0)
         pts = np.random.random([element_number, 3]) * 100
 
         # construct voronoi
         import scipy.spatial
+        import itertools
         vor3 = scipy.spatial.Voronoi(pts)
 
 
-        for i, two_points in enumerate(vor3.ridge_points):
-            edge = {
-                #"nodeA_ZYX_mm": np.random.random(3) * 100,
-                "nodeA_ZYX_mm": vor3.vertices[two_points[0]],
-                "nodeB_ZYX_mm": vor3.vertices[two_points[1]],
-                #"nodeB_ZYX_mm": np.random.random(3) * 100,
-                "radius_mm": 3
-            }
-            tree_data[i] = edge
+        # for i, two_points in enumerate(vor3.ridge_points):
+        for i, simplex in enumerate(vor3.ridge_vertices):
+            simplex = np.asarray(simplex)
+            if np.all(simplex >= 0):
+
+                x = vor3.vertices[simplex, 0]
+                y = vor3.vertices[simplex, 1]
+                z = vor3.vertices[simplex, 2]
+                for two_points in itertools.combinations(simplex, 2):
+
+
+                    edge = {
+                        # "nodeA_ZYX_mm": vor3.vertices[simplex],
+                        # "nodeB_ZYX_mm": vor3.vertices[simplex],
+                        "nodeA_ZYX_mm": vor3.vertices[two_points[0]],
+                        "nodeB_ZYX_mm": vor3.vertices[two_points[1]],
+                        "radius_mm": 3
+                    }
+                    tree_data[i] = edge
+            else:
+                pass
 
         length = len(tree_data)
         for i in range(element_number):

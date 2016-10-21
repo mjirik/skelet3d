@@ -67,13 +67,15 @@ class TBVolume:
 
         # drawing a line
         for i in range(0, len(xvalues)):
+            # TODO make something with indexes out of requested area
             try:
                 cyl_data3d[int(zvalues[i])][int(yvalues[i])][int(xvalues[i])] = 0
             except:
                 import traceback
                 traceback.print_exc()
                 print "except in drawing line"
-                import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
+                logger.warning("cylinder drawing problem")
+                # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
 
         # cuting size of 3d space needed for calculating distances (smaller ==
         # a lot faster)

@@ -116,7 +116,7 @@ class TubeTreeTest(unittest.TestCase):
         tree_data = {
 
         }
-        element_number = 50
+        element_number = 80
         np.random.seed(0)
         pts = np.random.random([element_number, 3]) * 100
 
@@ -173,7 +173,13 @@ class TubeTreeTest(unittest.TestCase):
         # tvg.show()
         tvg.saveToFile("tree_output.vtk")
 
-        tvg.voxelsize_mm = [1, 1, 1]
+
+        tvgvol = TreeBuilder('vol')
+        tvgvol.voxelsize_mm = [1, 1, 1]
+        tvgvol.shape = [100, 100, 100]
+        tvgvol.tree_data = tree_data
+        outputvol = tvgvol.buildTree()
+        tvgvol.saveToFile("tree_volume.pklz")
         # self.assertTrue(False)
 
 

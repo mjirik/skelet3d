@@ -17,9 +17,6 @@ import skelet3d
 logger.debug(str(dir(skelet3d)))
 logger.debug(skelet3d.__file__)
 # import skelet3d.
-# from skelet3d import TreeBuilder
-import skelet3d.tree
-from skelet3d.tree import TreeBuilder
 
 #
 

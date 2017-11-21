@@ -35,11 +35,11 @@ def run_cmake(no_setuppy=1):
     Runs CMake to determine configuration for this build
     """
     if ds.find_executable('cmake') is None:
-        print "CMake  is required to build SimX"
-        print "Please install cmake version >= 2.6 and re-run setup"
+        print("CMake  is required to build SimX")
+        print( "Please install cmake version >= 2.6 and re-run setup")
         sys.exit(-1)
         
-    print "Configuring SimX build with CMake.... "
+    print("Configuring SimX build with CMake.... ")
     new_dir = op.join(op.split(__file__)[0],'build')
     dd.mkpath(new_dir)
     os.chdir(new_dir)
@@ -50,13 +50,13 @@ def run_cmake(no_setuppy=1):
     try:
         ds.spawn(['cmake','../']+cmake_args.split())
     except ds.DistutilsExecError:
-        print "Error while running cmake"
-        print "run 'setup.py build --help' for build options"
-        print "You may also try editing the settings in CMakeLists.txt file and re-running setup"
+        print("Error while running cmake")
+        print("run 'setup.py build --help' for build options")
+        print("You may also try editing the settings in CMakeLists.txt file and re-running setup")
         sys.exit(-1)
 
 # run_cmake()
-print 'pkgdir ', package_dir
+print('pkgdir ', package_dir)
 setup(
     name='skelet3d',
     version=__VERSION__,

@@ -40,7 +40,8 @@ requirements:
     - python
     - numpy
     - scipy
-    - pywget
+    - wget # this package from -c mjirik is used instead of pywget package from -c conda
+#    - pywget
     # necessary for yaml
 
 test:

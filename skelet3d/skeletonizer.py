@@ -23,23 +23,23 @@ def get_skelet3d_lib():
     if libpath is None:
         import libfixer
         libfixer.libfix()
-        print "Library download complete"
+        print ("Library download complete")
         libpath = ctypes.util.find_library(libname)
 
     #os.environ['PATH']
     #import pdb; pdb.set_trace()
     try:
         hlibc = ctypes.CDLL(libpath)
-    except Exception, e:
-        print "libname: ", libname
-        print "libpath: ", libpath
-        print traceback.format_exc()
+    except Exception as e:
+        print("libname: ", libname)
+        print("libpath: ", libpath)
+        print(traceback.format_exc())
         if libpath != None:
-            print "CDLL cannot find library."
-            print "On Linux is the problem with LD_LIBRARY_PATH."
-            print "On Windows could be problem with messing 32-bit and 64-bit DLL libraries."
-            print "Please read skelet3d/README.md"
-            print "https://github.com/mjirik/skelet3d/blob/master/README.md"
+            print ("CDLL cannot find library.")
+            print ("On Linux is the problem with LD_LIBRARY_PATH.")
+            print ("On Windows could be problem with messing 32-bit and 64-bit DLL libraries.")
+            print ("Please read skelet3d/README.md")
+            print ("https://github.com/mjirik/skelet3d/blob/master/README.md")
 
         #print e
 
@@ -83,11 +83,11 @@ def skelet3d(data):
 def main():
     data = np.zeros([8,9,10], dtype='int8')
     data [1:4, 3:7,1:12] = 1
-    print "Example"
-    print "Input data"
-    print data
+    print("Example")
+    print("Input data")
+    print(data)
     skelet3d(data)
-    print "Output data"
+    print("Output data")
 
 if __name__ == "__main__":
     main()

@@ -62,6 +62,8 @@ class SkeletonAnalyser:
             voxelsize_mm) + ' volumedata:' + str(volume_data is not None))
         logger.debug('aggreg %s', self.aggregate_near_nodes_distance)
         # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
+        self.shifted_zero = None
+        self.shifted_sklabel = None
 
 
     def skeleton_analysis(self, guiUpdateFunction=None):
@@ -109,9 +111,8 @@ class SkeletonAnalyser:
         logger.debug(
             'skeleton_analysis: finished element_neighbors processing')
         # clear unneeded data. IMPORTANT!!
-        del(self.shifted_zero) # needed by __element_neighbors
-        del(self.shifted_sklabel) # needed by __element_neighbors
-        
+        self.__clean_shifted()
+
         # get main stats
         logger.debug(
             'skeleton_analysis: starting processing part: length, radius, ' +
@@ -170,6 +171,22 @@ class SkeletonAnalyser:
 
         return stats
 
+    def __clean_shifted(self):
+        del(self.shifted_zero) # needed by __element_neighbors
+        self.shifted_zero = None
+        del(self.shifted_sklabel) # needed by __element_neighbors
+        self.shifted_sklabel = None
+        # mozna fix kratkodobych potizi, ale skutecny problem byl jinde
+        # try:
+        #     del(self.shifted_zero) # needed by __element_neighbors
+        # except:
+        #     logger.warning('self.shifted_zero does not exsist')
+        # try:
+        #     del(self.shifted_sklabel) # needed by __element_neighbors
+        # except:
+        #     logger.warning('self.shifted_zero does not exsist')
+
+
     def __cut_short_skeleton_terminal_edges(self, cut_ratio=2.0):
         """
         cut_ratio = 2.0 -> if radius of terminal edge is 2x its lenght or more,
@@ -200,19 +217,9 @@ class SkeletonAnalyser:
         logger.debug(
             'skeleton_analysis: finished element_neighbors processing')
         # clear unneeded data. IMPORTANT!!
-        del(self.shifted_zero) # needed by __element_neighbors
-        del(self.shifted_sklabel) # needed by __element_neighbors
-        # mozna fix kratkodobych potizi, ale skutecny problem byl jinde
-        # try:
-        #     del(self.shifted_zero) # needed by __element_neighbors
-        # except:
-        #     logger.warning('self.shifted_zero does not exsist')
-        # try:
-        #     del(self.shifted_sklabel) # needed by __element_neighbors
-        # except:
-        #     logger.warning('self.shifted_zero does not exsist')
-        
-        # remove edges+nodes that are not connected to rest of the skeleton                
+
+        self.__clean_shifted()
+        # remove edges+nodes that are not connected to rest of the skeleton
         logger.debug(
             'skeleton_analysis: Cut - Removing edges that are not' +
             ' connected to rest of the skeleton (not counting its nodes)')
@@ -730,10 +737,11 @@ class SkeletonAnalyser:
         |   element bounding box (with border)
         """
         # check if we have shifted sklabel, if not create it.
-        try:
-            self.shifted_zero
-            self.shifted_sklabel
-        except AttributeError:
+        # try:
+        #     self.shifted_zero
+        #     self.shifted_sklabel
+        # except AttributeError:
+        if (self.shifted_sklabel is not None) and (self.shifted_zero is not None):
             logger.debug('Generating shifted sklabel...')
             self.shifted_zero = abs(np.min(self.sklabel)) + 1
             self.shifted_sklabel = self.sklabel + self.shifted_zero

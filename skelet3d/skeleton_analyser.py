@@ -741,7 +741,7 @@ class SkeletonAnalyser:
         #     self.shifted_zero
         #     self.shifted_sklabel
         # except AttributeError:
-        if (self.shifted_sklabel is not None) and (self.shifted_zero is not None):
+        if (self.shifted_sklabel is None) or (self.shifted_zero is None):
             logger.debug('Generating shifted sklabel...')
             self.shifted_zero = abs(np.min(self.sklabel)) + 1
             self.shifted_sklabel = self.sklabel + self.shifted_zero

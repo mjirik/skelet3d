@@ -1,6 +1,6 @@
 __all__ = ['skeletonizer', 'skeleton_analyser', 'tree']
 
-__version__ = "1.5.30"
+__version__ = "1.5.32"
 
 from . import skeleton_analyser
 from .skeleton_analyser import SkeletonAnalyser

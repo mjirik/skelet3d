@@ -4,7 +4,7 @@ python:
   - "2.7"
   # - "3.2"
   # - "3.3"
-  # - "3.4"
+   - "3.4"
 
 
 os: linux
@@ -33,10 +33,11 @@ before_install:
 install:
 
     - conda update --yes conda
-    - conda install --yes pip nose coverage
+    - conda install --yes pip nose
     # Install dependencies
     - conda install --yes -c SimpleITK -c luispedro -c mjirik --file requirements_conda.txt
     # - pip install -r requirements_pip.txt
+    - pip install python-coveralls
     - "echo $LD_LIBRARY_PATH"
     - "pip install -r requirements.txt"
     - 'mkdir build'

@@ -46,6 +46,8 @@ requirements:
     # pywget is not build for python 3.6
 #    - pywget
     # necessary for yaml
+    - vtk
+    - pyyaml
 
 test:
   # Python imports

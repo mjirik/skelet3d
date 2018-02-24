@@ -23,7 +23,7 @@ def get_skelet3d_lib():
     if libpath is None:
         import libfixer
         libfixer.libfix()
-        print ("Library download complete")
+        print("Library download complete")
         libpath = ctypes.util.find_library(libname)
 
     #os.environ['PATH']
@@ -35,14 +35,11 @@ def get_skelet3d_lib():
         print("libpath: ", libpath)
         print(traceback.format_exc())
         if libpath != None:
-            print ("CDLL cannot find library.")
-            print ("On Linux is the problem with LD_LIBRARY_PATH.")
-            print ("On Windows could be problem with messing 32-bit and 64-bit DLL libraries.")
-            print ("Please read skelet3d/README.md")
-            print ("https://github.com/mjirik/skelet3d/blob/master/README.md")
-
-        #print e
-
+            print("CDLL cannot find library.")
+            print("On Linux is the problem with LD_LIBRARY_PATH.")
+            print("On Windows could be problem with messing 32-bit and 64-bit DLL libraries.")
+            print("Please read skelet3d/README.md")
+            print("https://github.com/mjirik/skelet3d/blob/master/README.md")
         exit()
 
     return hlibc

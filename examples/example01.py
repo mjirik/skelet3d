@@ -19,4 +19,4 @@ data [:, 3, 3:6] = 0
 
 skelet = skelet3d.skelet3d(data)
 
-print skelet
+print(skelet)

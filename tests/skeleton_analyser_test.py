@@ -13,7 +13,6 @@ import numpy as np
 import unittest
 from nose.plugins.attrib import attr
 import skelet3d
-print dir(skelet3d)
 import skelet3d.skeleton_analyser as sk
 import copy
 
@@ -51,7 +50,6 @@ class TemplateTest(unittest.TestCase):
                 cut_wrong_skeleton=False, 
                 aggregate_near_nodes_distance=20)
         vessel_tree = skan.skeleton_analysis()
-        # print 'skan completeskan completed'
 
         # ed = sed3.sed3(skan.sklabel, contour=data)
         # ed.show()
@@ -103,9 +101,6 @@ class TemplateTest(unittest.TestCase):
     def test_generate_elipse(self):
         import skelet3d.skeleton_analyser
         mask = skelet3d.skeleton_analyser.generate_binary_elipsoid([6, 4, 3])
-        print mask.shape
-
-
 
         self.assertEqual(mask[0][0][0], 0)
         self.assertEqual(mask[6][4][3], 1)
@@ -142,9 +137,6 @@ class TemplateTest(unittest.TestCase):
         pixel = vessel_tree[1]['lengthEstimationPixel']
         poly = vessel_tree[1]['lengthEstimationPoly']
         spline = vessel_tree[1]['lengthEstimationSpline']
-        # print 'pixel', pixel
-        # print poly
-        # print spline
 
         # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
         # self.assertAlmostEqual

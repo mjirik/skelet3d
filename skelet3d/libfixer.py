@@ -14,9 +14,8 @@ import sys
 def download_and_unzip(url):
     import wget
     outdir = tempfile.gettempdir()
-    # print "temp directory ", outdir
+    # print("temp directory ", outdir)
     outdir = tempfile.mkdtemp()
-    print "temp file ", outdir
     # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
     # be requred permisson for write
     filename = wget.download(url, out=op.join(outdir, "skelet3d.zip"))
@@ -25,23 +24,14 @@ def download_and_unzip(url):
     zf = zipfile.ZipFile(filename)
     zf.extractall()
     zf.close()
-    # for filename in [ 'README.txt', 'notthere.txt' ]:
-    #     try:
-    #         data = zf.read(filename)
-    #     except KeyError:
-    #         print 'ERROR: Did not find %s in zip file' % filename
-    #     else:
-    #         print filename, ':'
-    #         print repr(data)
-    #     print
     return outdir
 
 def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     if sys.platform.startswith('win'):
-        print "Trying to download .dll libraries"
+        print("Trying to download .dll libraries")
         libfix_windows()
     if sys.platform.startswith('linux'):
-        print "Trying to download .so libraries"
+        print("Trying to download .so libraries")
         libfix_linux_conda()
 
 def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
@@ -51,7 +41,7 @@ def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dl
 
     for file in glob.glob(r'ITK+Skelet3D_dll/*.dll'):
         shutil.copy(file, dest_dir)
-        print "copy %s ---> %s" % (file, dest_dir)
+        print("copy %s ---> %s" % (file, dest_dir))
 
     try:
         shutil.rmtree(outdir)
@@ -105,7 +95,7 @@ def __make_non_sudo():
     if os.getuid() == 0:
         uid = int(os.getenv('SUDO_UID'))
         gid = int(os.getenv('SUDO_GID'))
-        print "__make_non_sudo ", gid, uid
+        print("__make_non_sudo ", gid, uid)
         return __demote(uid, gid)
     else:
         return None
@@ -114,7 +104,7 @@ def __make_non_sudo():
 def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
     # linux_copy_to_conda_dir(url)
     if os.getuid() != 0:
-        print "please run with sudo"
+        print("please run with sudo")
     outdir = download_and_unzip(url)
     dest_dir = "/usr/local/lib"
     dest_dir_conda_lib = os.path.join(get_conda_dir(), "lib")
@@ -124,9 +114,9 @@ def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.z
         # __chmod(file)
 
         shutil.copy(file, dest_dir)
-        print "copy %s ---> %s" % (file, dest_dir)
+        print("copy %s ---> %s" % (file, dest_dir))
         shutil.copy(file, dest_dir_conda_lib)
-        print "copy %s ---> %s" % (file, dest_dir_conda_lib)
+        print("copy %s ---> %s" % (file, dest_dir_conda_lib))
         fhead, fteil = os.path.split(file)
         dest_file = os.path.join(dest_dir_conda_lib, fteil)
         __chown(dest_file)
@@ -151,7 +141,7 @@ def linux_copy_to_conda_dir(url):
 
     for file in glob.glob(r'Skelet3D_so/*Cxx*.so'):
         shutil.copy(file, dest_dir_conda_lib)
-        print "copy %s into %s" % (file, dest_dir_conda_lib)
+        print("copy %s into %s" % (file, dest_dir_conda_lib))
 
     try:
         shutil.rmtree(outdir)
@@ -203,12 +193,12 @@ def get_conda_dir():
         dstdir = "c:\miniconda2"
     elif op.isdir("c:\miniconda"):
         dstdir = "c:\miniconda"
-    elif op.isdir("c:\anaconda2"):
-        dstdir = "c:\anaconda2"
-    elif op.isdir("c:\anaconda"):
-        dstdir = "c:\anaconda"
+    elif op.isdir(r"c:\anaconda2"):
+        dstdir = r"c:\anaconda2"
+    elif op.isdir(r"c:\anaconda"):
+        dstdir = r"c:\anaconda"
     else:
-        print "Cannot find anaconda/miniconda directory"
+        print("Cannot find anaconda/miniconda directory")
         dstdir = None
 
     return dstdir

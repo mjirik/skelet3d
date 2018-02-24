@@ -74,7 +74,7 @@ Simple example with donut shape
 
     skelet = skelet3d.skelet3d(data)
 
-    print skelet
+    print(skelet)
 
 Result:
 

@@ -20,8 +20,6 @@ class Skelet3DTest(unittest.TestCase):
 
     # @attr('interactive')
     def test_donut(self):
-        print "donut"
-
         # Create donut shape
         data = np.ones([3, 7, 9])
         data[:, 3, 3:6] = 0

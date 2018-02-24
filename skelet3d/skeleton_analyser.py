@@ -343,10 +343,10 @@ class SkeletonAnalyser:
             # d1_dbg = data3d_skel.copy()
             # sklabel_edg0, len_edg0 = scipy.ndimage.label(data3d_skel)
             
-            # print 'generate structure'
+            # print('generate structure')
             structure = generate_binary_elipsoid(
                     self.aggregate_near_nodes_distance / np.asarray(self.voxelsize_mm))
-            # print 'perform dilation ', data3d_skel.shape
+            # print('perform dilation ', data3d_skel.shape)
             # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
 
             # TODO select best method
@@ -355,9 +355,7 @@ class SkeletonAnalyser:
 
             # per partes method even slower
             # nd_dil = self.__skeleton_nodes_aggregation_per_each_node(data3d_skel==2, structure)
-            # print "dilatation completed"
             data3d_skel[nd_dil & data3d_skel > 0] = 2
-            # print 'set to 2'
             sklabel_edg1, len_edg1 = scipy.ndimage.label(data3d_skel)
             # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
             # import sed3
@@ -367,12 +365,8 @@ class SkeletonAnalyser:
         return data3d_skel
 
     def __skeleton_nodes_aggregation_per_each_node(self, data3d_skel2, structure):
-        # print data3d_skel2.dtype
         node_list = np.nonzero(data3d_skel2)
         nlz = zip(node_list[0], node_list[1], node_list[2])
-
-        # print 'zip finished'
-
         for node_xyz in nlz:
             data3d_skel2 = self.__node_dilatation(data3d_skel2, node_xyz, structure)
 
@@ -385,8 +379,6 @@ class SkeletonAnalyser:
         """
         border = structure.shape
         
-        # print 'border ', border
-        # print structure.shape
         xlim = [max(0, node_xyz[0] - border[0]), min(data3d_skel2.shape[0], node_xyz[0] + border[0])]
         ylim = [max(0, node_xyz[1] - border[1]), min(data3d_skel2.shape[1], node_xyz[1] + border[1])]
         zlim = [max(0, node_xyz[2] - border[2]), min(data3d_skel2.shape[2], node_xyz[2] + border[2])]
@@ -441,8 +433,6 @@ class SkeletonAnalyser:
         logger.debug('deleted nodes')
         labeled_terminals = self.__label_edge_by_its_terminal(
             labeled_terminals)
-        # print "labeled edges + terminals"
-        # print np.unique(labeled_terminals)
         # pe = ped.sed3(labeled_terminals)
         # pe.show()
         for i in range(np.min(labeled_terminals), 0):
@@ -490,7 +480,7 @@ class SkeletonAnalyser:
 # get normalised vectors
         v1u = v1 / np.linalg.norm(v1)
         v2u = v2 / np.linalg.norm(v2)
-        # print 'v1u ', v1u, ' v2u ', v2u
+        # print('v1u ', v1u, ' v2u ', v2u)
 
         angle = np.arccos(np.dot(v1u, v2u))
 # special cases
@@ -502,7 +492,7 @@ class SkeletonAnalyser:
 
         angle_deg = np.degrees(angle)
 
-        # print 'angl ', angle, ' angl_deg ', angle_deg
+        # print('angl ', angle, ' angl_deg ', angle_deg)
         return angle_deg
 
     def __vector_of_connected_edge(self,
@@ -686,32 +676,6 @@ class SkeletonAnalyser:
 
         pass
 
-#        try:
-# we need find end of edge connected to our node
-# import pdb; pdb.set_trace()
-# if stats[edg_number]['nodeIdA'] == stats[connectedEdgesA[0]]['nodeId0']:
-# sousední hrana u uzlu na konci 0 má stejný node na svém
-# konci 0 jako nynější hrana
-#                vectorA0 = stats[connectedEdgesA[0]]['vectorA']
-#            else:
-#                vectorA0 = stats[connectedEdgesA[0]]['vectorB']
-#        except:
-#
-# second neighbors on end "0"
-# if  stats[edg_number]['nodeIdA'] == stats[connectedEdgesA[1]]['nodeId0']:
-# sousední hrana u uzlu na konci 0 má
-# stejný node na svém konci 0 jako nynější hrana
-#                vectorA1 = stats[connectedEdgesA[1]]['vectorA']
-#            else:
-#                vectorA1 = stats[connectedEdgesA[1]]['vectorB']
-#            print "ahoj"
-#        except:
-#            print ("Cannot compute angles for edge " + str(edg_number))
-#
-#        angle0 = np.arccos(np.dot(vectorA1, vectorA0))
-#
-#        return {'angle0':angle0}
-
     def __get_vector_from_curve(self, t0, t1, curve_params):
         return (np.array(curve_model(t1, curve_params)) -
                 np.array(curve_model(t0, curve_params)))
@@ -824,7 +788,6 @@ class SkeletonAnalyser:
     def __count_length(self, x, y, z, N):
         length = 0
         for i in range(N - 1):
-            # print i, ' ', t[i]
             p1 = np.asarray([
                 x[i],
                 y[i],
@@ -836,7 +799,6 @@ class SkeletonAnalyser:
                 z[i + 1]
             ])
             length += np.linalg.norm(p2 - p1)
-            # print p1
 
         return length
 
@@ -1082,12 +1044,11 @@ class SkeletonAnalyser:
         except Exception as ex:
             logger.warning("Problem in __edge_curve()")
             logger.warning(traceback.format_exc())
-            print (ex)
+            print(ex)
 
         return retval
 
     # def edge_analysis(sklabel, edg_number):
-        # print 'element_analysis'
 # element dilate * sklabel[sklabel < 0]
         # pass
     def __radius_analysis_init(self):

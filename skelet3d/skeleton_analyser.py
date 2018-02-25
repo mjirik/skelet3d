@@ -410,7 +410,7 @@ class SkeletonAnalyser:
             scipy.ndimage.generic_filter, function=np.max, footprint=fp)
         mf = median_filter(labeled_terminals)
 
-        for label in list(range(np.min(labeled_terminals)), 0):
+        for label in list(range(np.min(labeled_terminals), 0)):
             neigh = np.min(mf[labeled_terminals == label])
             labeled_terminals[labeled_terminals == neigh] = label
         return labeled_terminals
@@ -435,7 +435,7 @@ class SkeletonAnalyser:
             labeled_terminals)
         # pe = ped.sed3(labeled_terminals)
         # pe.show()
-        for i in list(range(np.min(labeled_terminals)), 0):
+        for i in list(range(np.min(labeled_terminals), 0)):
             lti = labeled_terminals == i
             if np.sum(lti) < threshold:
                 # delete small

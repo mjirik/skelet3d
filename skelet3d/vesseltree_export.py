@@ -31,15 +31,17 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
 
     if (type(vesseltree) == str) and os.path.isfile(vesseltree):
         import yaml
-        f = open(vesseltree, 'rb')
-        vt = yaml.load(f)
-        f.close()
+        with open(vesseltree, 'r') as f:
+            vt = yaml.load(f)
+        # f = open(vesseltree, 'rb')
+        # vt = yaml.load(f)
+        # f.close()
         # import io3d
         # vt = io3d.misc.obj_from_file(vesseltree)
     else:
         vt = vesseltree
-    print(vt['general'])
-    print(vt.keys())
+    logger.debug(str(vt['general']))
+    logger.debug(str(vt.keys()))
     vtgm = vt['graph']['microstructure']
     lines = []
     vs = vt['general']['voxel_size_mm']
@@ -55,7 +57,6 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
 
     i = 1
     for id in vtgm:
-        # edge['']
         try:
             nda = vtgm[id]['nodeA_ZYX']
             ndb = vtgm[id]['nodeB_ZYX']

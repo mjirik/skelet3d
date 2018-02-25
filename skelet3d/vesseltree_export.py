@@ -14,10 +14,10 @@ logger = logging.getLogger(__name__)
 import argparse
 
 
-import traceback
+# import traceback
 
-import numpy as np
-import scipy.ndimage
+# import numpy as np
+# import scipy.ndimage
 
 def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
     """

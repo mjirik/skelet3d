@@ -2,4 +2,7 @@
 vtk
 sip
 pyyaml
+numpy
+scipy
+pywget
 

@@ -10,8 +10,7 @@ import os.path
 from nose.plugins.attrib import attr
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 import unittest
-import numpy as np
-import sys
+# import sys
 
 import skelet3d
 logger.debug(str(dir(skelet3d)))

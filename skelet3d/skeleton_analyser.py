@@ -101,7 +101,7 @@ class SkeletonAnalyser:
             'skeleton_analysis: starting element_neighbors processing')
         self.elm_neigh = {}
         self.elm_box = {}
-        for edg_number in (range(len_node, 0) + range(1, len_edg + 1)):
+        for edg_number in (list(range(len_node, 0)) + list(range(1, len_edg + 1))):
             self.elm_neigh[edg_number], self.elm_box[
                 edg_number] = self.__element_neighbors(edg_number)
             # update gui progress
@@ -118,7 +118,7 @@ class SkeletonAnalyser:
             'skeleton_analysis: starting processing part: length, radius, ' +
             'curve and connections of edge')
         # TODO switch A and B based on neighborhood maximal radius
-        for edg_number in range(1, len_edg + 1):
+        for edg_number in list(range(1, len_edg + 1)):
             edgst = {}
             edgst.update(self.__connection_analysis(edg_number))
             edgst.update(self.__edge_curve(edg_number, edgst))
@@ -140,7 +140,7 @@ class SkeletonAnalyser:
 
         # @TODO dokončit
         logger.debug( 'skeleton_analysis: starting processing part: angles of connected edges')
-        for edg_number in range (1, len_edg + 1):
+        for edg_number in list(range(1, len_edg + 1)):
             edgst = stats[edg_number]
             edgst.update(self.__connected_edge_angle(edg_number, stats))
 
@@ -211,7 +211,7 @@ class SkeletonAnalyser:
             'skeleton_analysis: starting element_neighbors processing')
         self.elm_neigh = {}
         self.elm_box = {}
-        for edg_number in (range(len_node, 0) + range(1, len_edg + 1)):
+        for edg_number in (list(range(len_node, 0)) + list(range(1, len_edg + 1))):
             self.elm_neigh[edg_number], self.elm_box[
                 edg_number] = self.__element_neighbors(edg_number)
         logger.debug(
@@ -410,7 +410,7 @@ class SkeletonAnalyser:
             scipy.ndimage.generic_filter, function=np.max, footprint=fp)
         mf = median_filter(labeled_terminals)
 
-        for label in range(np.min(labeled_terminals), 0):
+        for label in list(range(np.min(labeled_terminals)), 0):
             neigh = np.min(mf[labeled_terminals == label])
             labeled_terminals[labeled_terminals == neigh] = label
         return labeled_terminals
@@ -435,7 +435,7 @@ class SkeletonAnalyser:
             labeled_terminals)
         # pe = ped.sed3(labeled_terminals)
         # pe.show()
-        for i in range(np.min(labeled_terminals), 0):
+        for i in list(range(np.min(labeled_terminals)), 0):
             lti = labeled_terminals == i
             if np.sum(lti) < threshold:
                 # delete small
@@ -787,7 +787,7 @@ class SkeletonAnalyser:
 
     def __count_length(self, x, y, z, N):
         length = 0
-        for i in range(N - 1):
+        for i in list(range(N - 1)):
             p1 = np.asarray([
                 x[i],
                 y[i],
@@ -812,7 +812,7 @@ class SkeletonAnalyser:
             # get closest point to startpoint
             p_length = float('Inf')  # get max length
             closest_num = -1
-            for p in range(0, len(points_mm[0])):
+            for p in list(range(0, len(points_mm[0]))):
                 test_point = np.array(
                     [points_mm[0][p], points_mm[1][p], points_mm[2][p]])
                 p_length_new = np.linalg.norm(startpoint - test_point)

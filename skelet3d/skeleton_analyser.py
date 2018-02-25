@@ -761,14 +761,15 @@ class SkeletonAnalyser:
         return neighbors, box
 
     def __length_from_curve_spline(self, edg_stats, N=20):
+        pts_mm_ord = edg_stats['curve_params']['orderedPoints_mm']
+        tck, u = scipy.interpolate.splprep(
+            pts_mm_ord, s=self.spline_smoothing)
         t = np.linspace(0.0, 1.0, N)
-        x, y, z = scipy.interpolate.splev(
-            t,
-            edg_stats['curve_params']['fitParamsSpline']
-        )
-        # x = points[0, :]
-        # y = points[1, :]
-        # z = points[2, :]
+        x, y, z = scipy.interpolate.splev(t,tck)
+        # x, y, z = scipy.interpolate.splev(
+        #     t,
+        #     edg_stats['curve_params']['fitParamsSpline']
+        # )
         return self.__count_length(x, y, z, N)
 
     def __length_from_curve_poly(self, edg_stats, N=10):
@@ -1024,8 +1025,6 @@ class SkeletonAnalyser:
             # first and last have big weight
             w[1] = len(pts_mm_ord[0])
             w[-1] = len(pts_mm_ord[0])
-            tck, u = scipy.interpolate.splprep(
-                pts_mm_ord, s=self.spline_smoothing)
             # tckl = np.asarray(tck).tolist()
 
             retval = {'curve_params':
@@ -1038,7 +1037,8 @@ class SkeletonAnalyser:
                           'fitCurveStrX': str(np.poly1d(fitParamsX)),
                           'fitCurveStrY': str(np.poly1d(fitParamsY)),
                           'fitCurveStrZ': str(np.poly1d(fitParamsZ)),
-                          'fitParamsSpline': tck
+                          'orderedPoints_mm': pts_mm_ord,
+                          # 'fitParamsSpline': tck
                       }}
 
         except Exception as ex:

@@ -31,8 +31,9 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
 
     if (type(vesseltree) == str) and os.path.isfile(vesseltree):
         import yaml
-        with open(vesseltree, 'r') as f:
-            vt = yaml.load(f)
+        with open(vesseltree, encoding="utf-8") as f:
+            intext = f.read()
+            vt = yaml.load(intext)
         # f = open(vesseltree, 'rb')
         # vt = yaml.load(f)
         # f.close()

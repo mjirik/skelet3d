@@ -31,7 +31,7 @@ class ExportTest(unittest.TestCase):
         """
 
         import skelet3d.vesseltree_export as vt
-        yaml_input = os.path.join(path_to_script, "vt_biodur.yaml")
+        yaml_input = os.path.join(path_to_script, "vt_biodur_simple.yaml")
         yaml_output = os.path.join(path_to_script, "delme_esofspy.txt")
         vt.vt2esofspy(yaml_input, yaml_output)
 

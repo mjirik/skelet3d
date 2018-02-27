@@ -64,6 +64,15 @@ class SkeletonAnalyser:
         # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
         self.shifted_zero = None
         self.shifted_sklabel = None
+        self.stats = None
+
+    def to_yaml(self, filename):
+        if self.stats is None:
+            logger.error("Run .skeleton_analysis() before .to_yaml()")
+            return
+        import yaml
+        with open(filename, "w") as f:
+            yaml.dump(self.stats, f)
 
 
     def skeleton_analysis(self, guiUpdateFunction=None):
@@ -121,7 +130,8 @@ class SkeletonAnalyser:
         for edg_number in list(range(1, len_edg + 1)):
             edgst = {}
             edgst.update(self.__connection_analysis(edg_number))
-            edgst.update(self.__edge_curve(edg_number, edgst))
+            edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
+            edgst = self.__edge_curve(edg_number, edgst)
             edgst.update(self.__edge_length(edg_number, edgst))
             edgst.update(self.__edge_vectors(edg_number, edgst))
             # edgst = edge_analysis(sklabel, i)
@@ -145,6 +155,8 @@ class SkeletonAnalyser:
             edgst.update(self.__connected_edge_angle(edg_number, stats))
 
             updateFunction(edg_number,len_edg, "angles of connected edges")
+
+        self.stats = stats
         logger.debug('skeleton_analysis: finished processing part: angles of connected edges')
 
         return stats
@@ -285,6 +297,7 @@ class SkeletonAnalyser:
             te = [i for i in self.elm_neigh[tn] if i > 0][0] # terminal edge
             radius = float(self.__radius_analysis(te, skdst))
             edgst = self.__connection_analysis(int(te))
+            edgst = self.__ordered_points_with_pixel_length(edg_number, edg_stats=edgst)
             edgst.update(self.__edge_length(edg_number, edgst))
             length = edgst['lengthEstimation']
             
@@ -514,8 +527,14 @@ class SkeletonAnalyser:
             ndid = 'nodeIdB'
         else:
             logger.error('Wrong edg_end in __vector_of_connected_edge()')
+        if len(connectedEdges) <= con_edg_order:
+            return None
+        connected_edge_id = connectedEdges[con_edg_order]
 
-        connectedEdgeStats = stats[connectedEdges[con_edg_order]]
+        if len(stats) < connected_edge_id:
+            logger.warning("Not found connected edge with ID: " + str(connected_edge_id))
+            return None
+        connectedEdgeStats = stats[connected_edge_id]
         # import pdb; pdb.set_trace()
 
         if stats[edg_number][ndid] == connectedEdgeStats['nodeIdA']:
@@ -566,19 +585,19 @@ class SkeletonAnalyser:
         except:  # Exception as e:
             logger.debug(traceback.format_exc())
 
-        try:
-            vectorX0 = self.__vector_of_connected_edge(
-                edg_number, stats, edg_end, 0)
+        # try:
+        vectorX0 = self.__vector_of_connected_edge(
+            edg_number, stats, edg_end, 0)
             # phiXa = self.__vectors_to_angle_deg(vectorX0, vector)
 
             # out.update({'phiA0' + edg_end + 'a': phiXa.tolist()})
-        except:  # Exception as e:
-            logger.debug(traceback.format_exc())
-        try:
-            vectorX1 = self.__vector_of_connected_edge(
-                edg_number, stats, edg_end, 1)
-        except:  # Exception as e:
-            logger.debug(traceback.format_exc())
+        # except:  # Exception as e:
+        #     logger.debug(traceback.format_exc())
+        # try:
+        vectorX1 = self.__vector_of_connected_edge(
+            edg_number, stats, edg_end, 1)
+        # except:  # Exception as e:
+        #     logger.debug(traceback.format_exc())
 
         if (vectorX0 is not None) and (vectorX1 is not None) and (vector is not None):
 
@@ -761,7 +780,12 @@ class SkeletonAnalyser:
         return neighbors, box
 
     def __length_from_curve_spline(self, edg_stats, N=20):
-        pts_mm_ord = edg_stats['curve_params']['orderedPoints_mm']
+        # pts_mm_ord = [
+        #     edg_stats['curve_params']['orderedPoints_mm_X'],
+        #     edg_stats['curve_params']['orderedPoints_mm_Y'],
+        #     edg_stats['curve_params']['orderedPoints_mm_Z']
+        # ]
+        pts_mm_ord = edg_stats["orderedPoints_mm"]
         tck, u = scipy.interpolate.splprep(
             pts_mm_ord, s=self.spline_smoothing)
         t = np.linspace(0.0, 1.0, N)
@@ -844,7 +868,7 @@ class SkeletonAnalyser:
             pt_mm[1].append(nodeB_pos[1])
             pt_mm[2].append(nodeB_pos[2])
 
-        return pt_mm, length
+        return np.asarray(pt_mm).tolist(), length
 
     def __edge_length(self, edg_number, edg_stats):
         """
@@ -937,16 +961,17 @@ class SkeletonAnalyser:
             nodeB_pos = None
 
         # get positions of edge points
-        points = (sklabelcr == edg_number).nonzero()
-        points_mm = [
-            np.array(points[0] * self.voxelsize_mm[0]),
-            np.array(points[1] * self.voxelsize_mm[1]),
-            np.array(points[2] * self.voxelsize_mm[2])
-        ]
-
-        _, length_pixel = self.__ordered_points_mm(
-            points_mm, nodeA_pos, nodeB_pos, one_node_mode)
-        length_pixel = float(length_pixel)
+        # points = (sklabelcr == edg_number).nonzero()
+        # points_mm = [
+        #     np.array(points[0] * self.voxelsize_mm[0]),
+        #     np.array(points[1] * self.voxelsize_mm[1]),
+        #     np.array(points[2] * self.voxelsize_mm[2])
+        # ]
+        #
+        # _, length_pixel = self.__ordered_points_mm(
+        #     points_mm, nodeA_pos, nodeB_pos, one_node_mode)
+        # length_pixel = float(length_pixel)
+        length_pixel = edg_stats["lengthEstimationPixel"]
         length = length_pixel
         length_poly = None
         length_spline = None
@@ -954,32 +979,61 @@ class SkeletonAnalyser:
 
             try:
                 length_poly = self.__length_from_curve_poly(edg_stats)
+            except:
+                logger.info("problem with length_poly")
+            try:
                 length_spline = self.__length_from_curve_spline(edg_stats)
                 length = length_spline
             except:
-                logger.info('problem with length_poly or length_spline')
+                logger.info(traceback.format_exc())
+                logger.info('problem with length_spline')
+                logger.error("problem with spline")
 
         # get distance between nodes
-        if one_node_mode:
-            startpoint = np.array([
-                points_mm[0][0],
-                points_mm[1][0],
-                points_mm[2][0]
-            ])
-            nodes_distance = np.linalg.norm(nodeA_pos - startpoint)
-        else:
-            nodes_distance = np.linalg.norm(nodeA_pos - nodeB_pos)
+        pts_mm = np.asarray(edg_stats["orderedPoints_mm"])
+        nodes_distance = np.linalg.norm(pts_mm[:, 0] - pts_mm[:, -1])
 
         stats = {
-            'lengthEstimationPoly': length_poly,
-            'lengthEstimationSpline': length_spline,
-            'lengthEstimation': length,
-            'lengthEstimationPixel': length_pixel,
-            'nodesDistance': float(nodes_distance),
+            'lengthEstimationPoly': float_or_none(length_poly),
+            'lengthEstimationSpline': float_or_none(length_spline),
+            'lengthEstimation': float(length),
+            # 'lengthEstimationPixel': float(length_pixel),
+            'nodesDistance': float_or_none(nodes_distance),
             'tortuosity': float(length / float(nodes_distance))
         }
 
         return stats
+
+    def __ordered_points_with_pixel_length(self, edg_number, edg_stats):
+        box = self.elm_box[edg_number]
+
+        sklabelcr = self.sklabel[box]
+        # get positions of edge points
+        points = (sklabelcr == edg_number).nonzero()
+        points_mm = [
+            np.array((box[0].start + points[0]) * self.voxelsize_mm[0]),
+            np.array((box[1].start + points[1]) * self.voxelsize_mm[1]),
+            np.array((box[2].start + points[2]) * self.voxelsize_mm[2])
+        ]
+        # if 'nodeB_ZYX_mm' in edg_stats.keys():
+        #     point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
+        #     one_node_mode = False
+        # else:
+        #     point1_mm = None
+        #     one_node_mode = True
+        point0_mm = np.array(edg_stats['nodeA_ZYX_mm'])
+        point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
+        pts_mm_ord, pixel_length = self.__ordered_points_mm(
+            points_mm, point0_mm, point1_mm)
+
+        # edg_stats["orderedPoints_mm"]
+        edg_stats['orderedPoints_mm_X'] = pts_mm_ord[0]
+        edg_stats['orderedPoints_mm_Y'] = pts_mm_ord[1]
+        edg_stats['orderedPoints_mm_Z'] = pts_mm_ord[2]
+        edg_stats['orderedPoints_mm'] = pts_mm_ord
+
+        edg_stats["lengthEstimationPixel"] = pixel_length
+        return edg_stats
 
     def __edge_curve(self,  edg_number, edg_stats):
         """
@@ -990,30 +1044,12 @@ class SkeletonAnalyser:
         |    edg_stats['nodeB_ZYX_mm']
         """
         retval = {}
+        if "orderedPoints_mm" not in edg_stats:
+            edg_stats = self.__ordered_points_with_pixel_length(edg_number, edg_stats)
+        pts_mm_ord = edg_stats["orderedPoints_mm"]
         try:
-
-            # crop used area
-            box = self.elm_box[edg_number]
-
-            sklabelcr = self.sklabel[box]
-            # get positions of edge points
-            points = (sklabelcr == edg_number).nonzero()
-            points_mm = [
-                np.array((box[0].start + points[0]) * self.voxelsize_mm[0]),
-                np.array((box[1].start + points[1]) * self.voxelsize_mm[1]),
-                np.array((box[2].start + points[2]) * self.voxelsize_mm[2])
-            ]
             point0_mm = np.array(edg_stats['nodeA_ZYX_mm'])
-            # if 'nodeB_ZYX_mm' in edg_stats.keys():
-            #     point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
-            #     one_node_mode = False
-            # else:
-            #     point1_mm = None
-            #     one_node_mode = True
             point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
-            pts_mm_ord, _ = self.__ordered_points_mm(
-                points_mm, point0_mm, point1_mm)
-
             t = np.linspace(0.0, 1.0, len(pts_mm_ord[0]))
             fitParamsX = np.polyfit(t, pts_mm_ord[0], self.curve_order)
             fitParamsY = np.polyfit(t, pts_mm_ord[1], self.curve_order)
@@ -1037,7 +1073,6 @@ class SkeletonAnalyser:
                           'fitCurveStrX': str(np.poly1d(fitParamsX)),
                           'fitCurveStrY': str(np.poly1d(fitParamsY)),
                           'fitCurveStrZ': str(np.poly1d(fitParamsZ)),
-                          'orderedPoints_mm': pts_mm_ord,
                           # 'fitParamsSpline': tck
                       }}
 
@@ -1045,8 +1080,8 @@ class SkeletonAnalyser:
             logger.warning("Problem in __edge_curve()")
             logger.warning(traceback.format_exc())
             print(ex)
-
-        return retval
+        edg_stats.update(retval)
+        return edg_stats
 
     # def edge_analysis(sklabel, edg_number):
 # element dilate * sklabel[sklabel < 0]
@@ -1187,6 +1222,11 @@ def generate_binary_elipsoid(ndradius=[1, 1, 1]):
 
 
 
+def float_or_none(number):
+    if number is None:
+        return None
+    else:
+        float(number)
 
 def curve_model(t, params):
     p0 = params['start'][0] + t * params['vector'][0]

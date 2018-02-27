@@ -12,7 +12,7 @@ import os.path
 import logging
 logger = logging.getLogger(__name__)
 import argparse
-
+from io import open
 
 # import traceback
 

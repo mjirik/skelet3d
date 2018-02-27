@@ -15,13 +15,14 @@ from nose.plugins.attrib import attr
 import skelet3d
 import skelet3d.skeleton_analyser as sk
 import copy
+import os
 
 
-class TemplateTest(unittest.TestCase):
+class SkeletonAnalyserTest(unittest.TestCase):
 
-    @attr('actual')
     @attr('slow')
-    @unittest.skip("I dont know how to turn off this test on travis-ci")
+    # @unittest.skip("I dont know how to turn off this test on travis-ci")
+    @unittest.skipIf(os.environ.get("TRAVIS", True), "Skip on Travis-CI")
     def test_nodes_aggregation_big_data(self):
 
         data = np.zeros([1000, 1000, 100], dtype=np.int8)
@@ -37,7 +38,7 @@ class TemplateTest(unittest.TestCase):
 
         # T-junction on the left
         data[18, 4:16, 3] = 1
-        import sed3
+        # import sed3
         # ed = sed3.sed3(data)
         # ed.show()
 
@@ -171,7 +172,6 @@ class TemplateTest(unittest.TestCase):
                                    voxelsize_mm=[1, 20, 300], cut_wrong_skeleton=False)
         vessel_tree = skan.skeleton_analysis()
 
-        self.assertAlmostEqual
         self.assertAlmostEqual(vessel_tree[1]['lengthEstimationPixel'], 10)
         self.assertAlmostEqual(vessel_tree[2]['lengthEstimationPixel'], 200)
         self.assertAlmostEqual(vessel_tree[3]['lengthEstimationPixel'], 3000)
@@ -180,8 +180,8 @@ class TemplateTest(unittest.TestCase):
                                diag_length)
         # test spline
         self.assertLess(
-            vessel_tree[1]['lengthEstimationPixel']
-            - vessel_tree[1]['lengthEstimationSpline'],
+            vessel_tree[3]['lengthEstimationPixel']
+            - vessel_tree[3]['lengthEstimationSpline'],
             0.001
         )
         # test poly
@@ -222,7 +222,7 @@ class TemplateTest(unittest.TestCase):
             0.00001
         )
 
-    def test_fileter_small(self):
+    def test_filter_small(self):
         import skelet3d
 
         data = np.zeros([20, 20, 20], dtype=np.int8)
@@ -244,6 +244,34 @@ class TemplateTest(unittest.TestCase):
         # pe.show()
 
         self.assertEqual(output[5, 8, 7], 0)
+
+
+    def test_small_with_write_to_file(self):
+        filename = "test_output.yaml"
+
+        # delete file if exists
+        if os.path.exists(filename):
+            os.remove(filename)
+
+
+        data = np.zeros([60, 60, 60], dtype=np.int8)
+        data[5:8, 13:27, 5:9] = 1
+        # crossing
+        data[6:21, 18:20, 4:7] = 1
+
+        data_skelet = skelet3d.skelet3d(data)
+        # pe = ped.sed3(data)
+        # pe.show()
+
+        skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data)
+
+        # output = skan.filter_small_objects(data, 3)
+        skan.skeleton_analysis()
+
+        # self.assertEqual(output[5, 8, 7], 0)
+        skan.to_yaml(filename)
+        self.assertTrue(os.path.exists(filename))
+
 
 
 if __name__ == "__main__":

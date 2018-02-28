@@ -42,8 +42,6 @@ before_install:
 # command to install dependencies
 install:
 
-    - conda info cffi
-    - conda info vtk
 #    - conda install --yes pip nose
     # Install dependencies
     - conda install --yes -c SimpleITK -c luispedro -c mjirik -c conda-forge --file requirements_conda.txt python=$CONDA_PYTHON_VERSION pip nose

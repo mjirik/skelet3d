@@ -70,8 +70,11 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
 
     lines.append("%i\t%i\t%i\t%i" % (0, 0, 0, 0))
     lines[3] = str(i - 1) + "\n"
-    with open(outputfilename, 'wt', encoding="utf-8") as f:
-        f.writelines(lines)
+    from builtins import str as text
+    with open(outputfilename, 'wt') as f:
+        for line in lines:
+            f.write(text(line))
+        # f.writelines(lines)
 
 
 if __name__ == "__main__":

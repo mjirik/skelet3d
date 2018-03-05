@@ -176,7 +176,7 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         # ed = sed3.sed3(skan.sklabel)
         # ed.show()
-        # vessel_tree = skan.skeleton_analysis()
+        vessel_tree = skan.skeleton_analysis()
 
         self.assertAlmostEqual(vessel_tree[1]['lengthEstimationPixel'], 10)
         self.assertAlmostEqual(vessel_tree[2]['lengthEstimationPixel'], 200)

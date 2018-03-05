@@ -164,13 +164,19 @@ class SkeletonAnalyserTest(unittest.TestCase):
         data[18, 14:17, 13] = 1
         data[18, 17, 14:17] = 1
         data[14:18, 17, 17] = 1
-        # data[18, 18, 15:17] = 1
+
+        # import sed3
+        # ed = sed3.sed3(data)
+        # ed.show()
 
         skel = data
 
         skan = sk.SkeletonAnalyser(copy.copy(skel), volume_data=data,
                                    voxelsize_mm=[1, 20, 300], cut_wrong_skeleton=False)
-        vessel_tree = skan.skeleton_analysis()
+
+        # ed = sed3.sed3(skan.sklabel)
+        # ed.show()
+        # vessel_tree = skan.skeleton_analysis()
 
         self.assertAlmostEqual(vessel_tree[1]['lengthEstimationPixel'], 10)
         self.assertAlmostEqual(vessel_tree[2]['lengthEstimationPixel'], 200)

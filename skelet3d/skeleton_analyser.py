@@ -779,22 +779,24 @@ class SkeletonAnalyser:
 
         return neighbors, box
 
-    def __length_from_curve_spline(self, edg_stats, N=20):
-        # pts_mm_ord = [
-        #     edg_stats['curve_params']['orderedPoints_mm_X'],
-        #     edg_stats['curve_params']['orderedPoints_mm_Y'],
-        #     edg_stats['curve_params']['orderedPoints_mm_Z']
-        # ]
+    def __length_from_curve_spline(self, edg_stats, N=20, spline_order=3):
+        """
+        Get length from list of points in edge stats.
+
+        :param edg_stats: dict with key "orderedPoints_mm"
+        :param N: Number of points used for reconstruction
+        :param spline_order: Order of spline
+        :return:
+        """
         pts_mm_ord = edg_stats["orderedPoints_mm"]
+        if len(pts_mm_ord[0]) <= spline_order:
+            return None
         tck, u = scipy.interpolate.splprep(
-            pts_mm_ord, s=self.spline_smoothing)
+            pts_mm_ord, s=self.spline_smoothing, k=spline_order)
         t = np.linspace(0.0, 1.0, N)
-        x, y, z = scipy.interpolate.splev(t,tck)
-        # x, y, z = scipy.interpolate.splev(
-        #     t,
-        #     edg_stats['curve_params']['fitParamsSpline']
-        # )
-        return self.__count_length(x, y, z, N)
+        x, y, z = scipy.interpolate.splev(t, tck)
+        length = self.__count_length(x, y, z, N)
+        return length
 
     def __length_from_curve_poly(self, edg_stats, N=10):
 
@@ -983,12 +985,15 @@ class SkeletonAnalyser:
                 logger.info("problem with length_poly")
             try:
                 length_spline = self.__length_from_curve_spline(edg_stats)
-                length = length_spline
             except:
                 logger.info(traceback.format_exc())
                 logger.info('problem with length_spline')
                 logger.error("problem with spline")
 
+            if length_spline is not None:
+                length = length_spline
+            else:
+                pass
         # get distance between nodes
         pts_mm = np.asarray(edg_stats["orderedPoints_mm"])
         nodes_distance = np.linalg.norm(pts_mm[:, 0] - pts_mm[:, -1])
@@ -1226,7 +1231,7 @@ def float_or_none(number):
     if number is None:
         return None
     else:
-        float(number)
+        return float(number)
 
 def curve_model(t, params):
     p0 = params['start'][0] + t * params['vector'][0]

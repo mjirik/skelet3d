@@ -34,7 +34,7 @@ requirements:
     - setuptools
     - numpy
     - scipy
-    - wget # this package from -c mjirik is used instead of pywget package from -c conda.
+    - pywget # this package from -c mjirik is used instead of pywget package from -c conda.
     # pywget is not build for python 3.6
 #    - pywget
 
@@ -42,7 +42,7 @@ requirements:
     - python
     - numpy
     - scipy
-    - wget # this package from -c mjirik is used instead of pywget package from -c conda
+    - pywget # this package from -c mjirik is used instead of pywget package from -c conda
     # pywget is not build for python 3.6
 #    - pywget
     # necessary for yaml

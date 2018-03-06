@@ -12,7 +12,6 @@
 import unittest
 from nose.plugins.attrib import attr
 import numpy as np
-
 import skelet3d
 
 

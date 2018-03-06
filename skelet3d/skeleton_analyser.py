@@ -13,7 +13,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 import traceback
-
 import numpy as np
 import scipy.ndimage
 import scipy.interpolate

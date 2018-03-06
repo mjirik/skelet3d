@@ -12,13 +12,16 @@ import tempfile
 import sys
 
 def download_and_unzip(url):
-    import wget
+    try:
+        import pywget
+    except:
+        import wget as pywget
     outdir = tempfile.gettempdir()
     # print("temp directory ", outdir)
     outdir = tempfile.mkdtemp()
     # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
     # be requred permisson for write
-    filename = wget.download(url, out=op.join(outdir, "skelet3d.zip"))
+    filename = pywget.download(url, out=op.join(outdir, "skelet3d.zip"))
 
 
     zf = zipfile.ZipFile(filename)

@@ -67,5 +67,5 @@ setup(
 #	"c:\\users/mjirik/projects/skelet3d/src" },
     packages=find_packages(),
     # py_modules=['skelet3d']
-    install_requires=['numpy', 'scipy', 'pywget'],
+    install_requires=['numpy', 'scipy', 'wget'],
     )

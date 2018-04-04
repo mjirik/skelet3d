@@ -828,49 +828,6 @@ class SkeletonAnalyser:
 
         return length
 
-    def __ordered_points_mm(self, points_mm, nodeA_pos, nodeB_pos,
-                            one_node_mode=False):
-
-        length = 0
-        startpoint = nodeA_pos
-        pt_mm = [[nodeA_pos[0]], [nodeA_pos[1]], [nodeA_pos[2]]]
-        while len(points_mm[0]) != 0:
-            # get closest point to startpoint
-            p_length = float('Inf')  # get max length
-            closest_num = -1
-            for p in list(range(0, len(points_mm[0]))):
-                test_point = np.array(
-                    [points_mm[0][p], points_mm[1][p], points_mm[2][p]])
-                p_length_new = np.linalg.norm(startpoint - test_point)
-                if p_length_new < p_length:
-                    p_length = p_length_new
-                    closest_num = p
-            closest = np.array(
-                [points_mm[0][closest_num],
-                 points_mm[1][closest_num],
-                 points_mm[2][closest_num]])
-            # add length
-            pt_mm[0].append(points_mm[0][closest_num])
-            pt_mm[1].append(points_mm[1][closest_num])
-            pt_mm[2].append(points_mm[2][closest_num])
-            length += np.linalg.norm(closest - startpoint)
-            # replace startpoint with used point
-            startpoint = closest
-            # remove used point from points
-            points_mm = [
-                np.delete(points_mm[0], closest_num),
-                np.delete(points_mm[1], closest_num),
-                np.delete(points_mm[2], closest_num)
-            ]
-        # add length to nodeB
-        if not one_node_mode:
-            length += np.linalg.norm(nodeB_pos - startpoint)
-            pt_mm[0].append(nodeB_pos[0])
-            pt_mm[1].append(nodeB_pos[1])
-            pt_mm[2].append(nodeB_pos[2])
-
-        return np.asarray(pt_mm).tolist(), length
-
     def __edge_length(self, edg_number, edg_stats):
         """
         Computes estimated length of edge, distance from end nodes and
@@ -1027,7 +984,7 @@ class SkeletonAnalyser:
         #     one_node_mode = True
         point0_mm = np.array(edg_stats['nodeA_ZYX_mm'])
         point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
-        pts_mm_ord, pixel_length = self.__ordered_points_mm(
+        pts_mm_ord, pixel_length = get_ordered_points_mm(
             points_mm, point0_mm, point1_mm)
 
         # edg_stats["orderedPoints_mm"]
@@ -1237,3 +1194,55 @@ def curve_model(t, params):
     p1 = params['start'][1] + t * params['vector'][1]
     p2 = params['start'][2] + t * params['vector'][2]
     return [p0, p1, p2]
+
+def get_ordered_points_mm(points_mm, nodeA_pos, nodeB_pos,
+                          one_node_mode=False):
+    """
+
+    :param points_mm: list of not ordered points
+    :param nodeA_pos: start point
+    :param nodeB_pos: end point
+    :param one_node_mode: if no end point is given
+    :return:
+    """
+
+    length = 0
+    startpoint = nodeA_pos
+    pt_mm = [[nodeA_pos[0]], [nodeA_pos[1]], [nodeA_pos[2]]]
+    while len(points_mm[0]) != 0:
+        # get closest point to startpoint
+        p_length = float('Inf')  # get max length
+        closest_num = -1
+        for p in list(range(0, len(points_mm[0]))):
+            test_point = np.array(
+                [points_mm[0][p], points_mm[1][p], points_mm[2][p]])
+            p_length_new = np.linalg.norm(startpoint - test_point)
+            if p_length_new < p_length:
+                p_length = p_length_new
+                closest_num = p
+        closest = np.array(
+            [points_mm[0][closest_num],
+             points_mm[1][closest_num],
+             points_mm[2][closest_num]])
+        # add length
+        pt_mm[0].append(points_mm[0][closest_num])
+        pt_mm[1].append(points_mm[1][closest_num])
+        pt_mm[2].append(points_mm[2][closest_num])
+        length += np.linalg.norm(closest - startpoint)
+        # replace startpoint with used point
+        startpoint = closest
+        # remove used point from points
+        points_mm = [
+            np.delete(points_mm[0], closest_num),
+            np.delete(points_mm[1], closest_num),
+            np.delete(points_mm[2], closest_num)
+        ]
+    # add length to nodeB
+    if not one_node_mode:
+        length += np.linalg.norm(nodeB_pos - startpoint)
+        pt_mm[0].append(nodeB_pos[0])
+        pt_mm[1].append(nodeB_pos[1])
+        pt_mm[2].append(nodeB_pos[2])
+
+    return np.asarray(pt_mm).tolist(), length
+

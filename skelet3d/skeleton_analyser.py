@@ -965,27 +965,20 @@ class SkeletonAnalyser:
 
         return stats
 
+
+
     def __ordered_points_with_pixel_length(self, edg_number, edg_stats):
         box = self.elm_box[edg_number]
 
         sklabelcr = self.sklabel[box]
         # get positions of edge points
-        points = (sklabelcr == edg_number).nonzero()
-        points_mm = [
-            np.array((box[0].start + points[0]) * self.voxelsize_mm[0]),
-            np.array((box[1].start + points[1]) * self.voxelsize_mm[1]),
-            np.array((box[2].start + points[2]) * self.voxelsize_mm[2])
-        ]
-        # if 'nodeB_ZYX_mm' in edg_stats.keys():
-        #     point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
-        #     one_node_mode = False
-        # else:
-        #     point1_mm = None
-        #     one_node_mode = True
         point0_mm = np.array(edg_stats['nodeA_ZYX_mm'])
         point1_mm = np.array(edg_stats['nodeB_ZYX_mm'])
-        pts_mm_ord, pixel_length = get_ordered_points_mm(
-            points_mm, point0_mm, point1_mm)
+
+        pts_mm_ord, pixel_length = get_ordered_points_mm_from_labeled_image(
+            sklabelcr, edg_number, self.voxelsize_mm, point0_mm, point1_mm,
+            offset_mm=box
+        )
 
         # edg_stats["orderedPoints_mm"]
         edg_stats['orderedPoints_mm_X'] = pts_mm_ord[0]
@@ -1245,4 +1238,42 @@ def get_ordered_points_mm(points_mm, nodeA_pos, nodeB_pos,
         pt_mm[2].append(nodeB_pos[2])
 
     return np.asarray(pt_mm).tolist(), length
+
+
+def get_ordered_points_mm_from_labeled_image(
+        labeled_skeleton, edg_number, voxelsize_mm, start_point_mm, end_point_mm=None,
+        offset_mm=None
+):
+    """
+    
+    :param labeled_skeleton: image containing labeled lines. ndimage with integer numbers
+    :param edg_number: number of requested line integer number
+    :param voxelsize_mm: 
+    :param start_point_mm: 
+    :param end_point_mm:
+    :param offset_mm: coordinate of very first voxel of the image
+    :return: 
+    """
+
+    if offset_mm is None:
+        offset_mm = [0, 0, 0]
+    points = (labeled_skeleton == edg_number).nonzero()
+    points_mm = [
+        np.array((offset_mm[0].start + points[0]) * voxelsize_mm[0]),
+        np.array((offset_mm[1].start + points[1]) * voxelsize_mm[1]),
+        np.array((offset_mm[2].start + points[2]) * voxelsize_mm[2])
+    ]
+
+
+    if end_point_mm is None:
+        one_node_mode = True
+    else:
+        one_node_mode = False
+
+
+    pts_mm_ord, pixel_length = get_ordered_points_mm(
+        points_mm, start_point_mm, end_point_mm, one_node_mode=one_node_mode)
+
+    return pts_mm_ord, pixel_length
+
 

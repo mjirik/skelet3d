@@ -21,7 +21,7 @@ def get_skelet3d_lib():
     libpath = ctypes.util.find_library(libname)
 
     if libpath is None:
-        import libfixer
+        from . import libfixer
         libfixer.libfix()
         print("Library download complete")
         libpath = ctypes.util.find_library(libname)

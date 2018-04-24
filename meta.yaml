@@ -34,6 +34,7 @@ requirements:
     - setuptools
     - numpy
     - scipy
+    # pywget removed used just simple urlretrive
 #    - pywget # this package from -c mjirik is used instead of pywget package from -c conda.
     # pywget is not build for python 3.6
 #    - pywget
@@ -42,6 +43,7 @@ requirements:
     - python
     - numpy
     - scipy
+    # pywget removed used just simple urlretrive
 #    - pywget # this package from -c mjirik is used instead of pywget package from -c conda
     # pywget is not build for python 3.6
 #    - pywget

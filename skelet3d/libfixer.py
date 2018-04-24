@@ -10,18 +10,24 @@ import os.path as op
 import stat
 import tempfile
 import sys
+if sys.version_info < (3, 0):
+    import urllib as urllibr
+else:
+    import urllib.request as urllibr
 
 def download_and_unzip(url):
-    try:
-        import pywget
-    except:
-        import wget as pywget
+    # try:
+    #     import pywget
+    # except:
+    #     import wget as pywget
     outdir = tempfile.gettempdir()
     # print("temp directory ", outdir)
     outdir = tempfile.mkdtemp()
     # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
     # be requred permisson for write
-    filename = pywget.download(url, out=op.join(outdir, "skelet3d.zip"))
+    filename = op.join(outdir, "skelet3d.zip")
+    urllibr.urlretrieve(url, zip_file_name)
+    # filename = pywget.download(url, out=filename)
 
 
     zf = zipfile.ZipFile(filename)

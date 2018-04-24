@@ -4,5 +4,5 @@ sip
 pyyaml
 numpy
 scipy
-pywget
+# pywget # use just simple urlretrive
 

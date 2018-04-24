@@ -26,7 +26,7 @@ def download_and_unzip(url):
     # there is problem with wget. It uses its ouwn tempfile in current dir. It is not sure that there will
     # be requred permisson for write
     filename = op.join(outdir, "skelet3d.zip")
-    urllibr.urlretrieve(url, zip_file_name)
+    urllibr.urlretrieve(url, filename)
     # filename = pywget.download(url, out=filename)
 
 
@@ -42,6 +42,19 @@ def libfix(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     if sys.platform.startswith('linux'):
         print("Trying to download .so libraries")
         libfix_linux_conda()
+
+def get_conda_dir():
+    """
+    Get conda base dir.
+    I would remove envs subdirs from output dir.
+
+    :return:
+    """
+    conda_dir = sys.base_prefix
+    idx = conda_dir.find("envs")
+    if idx > 0:
+        conda_dir = conda_dir[:idx]
+    return conda_dir
 
 def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
     outdir = download_and_unzip(url)
@@ -178,7 +191,7 @@ def _find_conda_dir_with_conda():
     return dstdir
 
 
-def get_conda_dir():
+def get_conda_dir_old():
     dstdir = ""
     if sys.platform.startswith('win'):
         dstdir = _find_conda_dir_with_conda()

@@ -71,6 +71,7 @@ class Skelet3DTest(unittest.TestCase):
     def test_import_libfixer(self):
         import skelet3d.libfixer
         condadir = skelet3d.libfixer.get_conda_dir()
+        condadir_old = skelet3d.libfixer.get_conda_dir_old()
 
 if __name__ == "__main__":
     unittest.main()

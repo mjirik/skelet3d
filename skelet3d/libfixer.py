@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
+import logging
+logger = logging.getLogger(__name__)
+
 import zipfile
 import glob
 import shutil
@@ -192,6 +195,7 @@ def _find_conda_dir_with_conda():
 
 
 def get_conda_dir_old():
+    logger.warning("Function get_conda_dir_old is obsolete and will be removed.")
     dstdir = ""
     if sys.platform.startswith('win'):
         dstdir = _find_conda_dir_with_conda()

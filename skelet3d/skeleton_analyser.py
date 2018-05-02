@@ -69,8 +69,10 @@ class SkeletonAnalyser:
         if self.stats is None:
             logger.error("Run .skeleton_analysis() before .to_yaml()")
             return
-        import yaml
-        with open(filename, "w") as f:
+
+        from ruamel.yaml import YAML
+        yaml = YAML(typ="unsafe")
+        with open(filename, 'wt', encoding="utf-8") as f:
             yaml.dump(self.stats, f)
 
 

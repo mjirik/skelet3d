@@ -1,8 +1,8 @@
 # requirements for development only
 vtk
 sip
-pyyaml
 numpy
 scipy
+ruamel.yaml
 # pywget # use just simple urlretrive
 

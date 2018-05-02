@@ -38,6 +38,7 @@ requirements:
 #    - pywget # this package from -c mjirik is used instead of pywget package from -c conda.
     # pywget is not build for python 3.6
 #    - pywget
+    - ruamel.yaml
 
   run:
     - python
@@ -49,7 +50,7 @@ requirements:
 #    - pywget
     # necessary for yaml
     - vtk
-    - pyyaml
+    - ruamel.yaml
 
 test:
   # Python imports

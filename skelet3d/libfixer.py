@@ -57,7 +57,6 @@ def get_conda_dir():
         conda_dir = get_conda_dir_old()
     else:
         conda_dir = sys.exec_prefix
-    conda_dir = sys.base_prefix
     idx = conda_dir.find("envs")
     if idx > 0:
         conda_dir = conda_dir[:idx]

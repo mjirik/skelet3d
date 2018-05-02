@@ -53,6 +53,10 @@ def get_conda_dir():
 
     :return:
     """
+    if sys.version_info.major == 2:
+        conda_dir = get_conda_dir_old()
+    else:
+        conda_dir = sys.exec_prefix
     conda_dir = sys.base_prefix
     idx = conda_dir.find("envs")
     if idx > 0:
@@ -215,12 +219,18 @@ def get_conda_dir_old():
         dstdir = op.join(home, "miniconda")
     elif op.isdir(op.join(home, "miniconda2")):
         dstdir = op.join(home, "miniconda2")
+    elif op.isdir(op.join(home, "miniconda3")):
+        dstdir = op.join(home, "miniconda3")
     elif op.isdir("c:\miniconda2"):
         dstdir = "c:\miniconda2"
+    elif op.isdir("c:\miniconda3"):
+        dstdir = "c:\miniconda3"
     elif op.isdir("c:\miniconda"):
         dstdir = "c:\miniconda"
     elif op.isdir(r"c:\anaconda2"):
         dstdir = r"c:\anaconda2"
+    elif op.isdir(r"c:\anaconda3"):
+        dstdir = r"c:\anaconda3"
     elif op.isdir(r"c:\anaconda"):
         dstdir = r"c:\anaconda"
     else:

@@ -9,10 +9,18 @@
 """
 
 """
+import logging
+logger = logging.getLogger(__name__)
 import unittest
+import os
+import sys
 from nose.plugins.attrib import attr
 import numpy as np
 import skelet3d
+
+path_to_script = os.path.dirname(os.path.abspath(__file__))
+imcut_path = os.path.join(path_to_script, "../../io3d/")
+sys.path.insert(0, imcut_path)
 
 
 class Skelet3DTest(unittest.TestCase):
@@ -72,6 +80,12 @@ class Skelet3DTest(unittest.TestCase):
         import skelet3d.libfixer
         condadir = skelet3d.libfixer.get_conda_dir()
         condadir_old = skelet3d.libfixer.get_conda_dir_old()
+
+    def test_skeleton_from_portal_vein(self):
+        import io3d.datasets
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        skelet = skelet3d.skelet3d(segm==2)
 
 if __name__ == "__main__":
     unittest.main()

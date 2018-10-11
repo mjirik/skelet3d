@@ -85,7 +85,9 @@ class Skelet3DTest(unittest.TestCase):
         import io3d.datasets
         data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
 
-        skelet = skelet3d.skelet3d(segm==2)
+        skelet = skelet3d.skelet3d(segm == 2)
+        self.assertEqual(np.max(skelet), 1)
+        self.assertEqual(np.min(skelet), 0)
 
 if __name__ == "__main__":
     unittest.main()

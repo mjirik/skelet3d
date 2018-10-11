@@ -279,6 +279,27 @@ class SkeletonAnalyserTest(unittest.TestCase):
         self.assertTrue(os.path.exists(filename))
 
 
+    def test_skeleton_analyser_from_portal_vein(self):
+        filename = "test_output_synthetic_porta.yaml"
+
+        # delete file if exists
+        if os.path.exists(filename):
+            os.remove(filename)
+        import io3d.datasets
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        data_segm = segm == 2
+        data_skelet = skelet3d.skelet3d(data_segm)
+        self.assertEqual(np.max(data_skelet), 1)
+        self.assertEqual(np.min(data_skelet), 0)
+
+        skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data_segm)
+
+        skan.skeleton_analysis()
+
+        # self.assertEqual(output[5, 8, 7], 0)
+        skan.to_yaml(filename)
+        self.assertTrue(os.path.exists(filename))
 
 if __name__ == "__main__":
     unittest.main()

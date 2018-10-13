@@ -311,19 +311,32 @@ class SkeletonAnalyserTest(unittest.TestCase):
         data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
 
         data_segm = segm == 2
+
+        # data_segm[41:44, 122:127, 68:70] = True
+        data_segm[40:45, 77:80, 100:110] = False
+        data_segm[42:44, 77:80, 103:106] = True
         data_skelet = skelet3d.skelet3d(data_segm)
         self.assertEqual(np.max(data_skelet), 1)
         self.assertEqual(np.min(data_skelet), 0)
 
+        # import sed3
+        # ed = sed3.sed3(data_skelet, contour=data_segm)# , contour=branche_label)
+        # ed.show()
+
         skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data_segm)
 
         branche_label = skan.get_branche_label()
+
         # import sed3
-        # ed = sed3.sed3(branche_label, contour=skan.sklabel)
+        # ed = sed3.sed3(branche_label) #, contour=skan.sklabel)
         # ed.show()
 
+        # import sed3
+        # ed = sed3.sed3(skan.sklabel)# , contour=branche_label)
+        # ed.show()
         self.assertGreater(np.max(branche_label), 2)
-        self.assertLess(np.max(branche_label), -3)
+        # self.assertLess(np.max(branche_label), -4)
+        self.assertEqual(branche_label[0, 0, 0], 0)
 
 if __name__ == "__main__":
     unittest.main()

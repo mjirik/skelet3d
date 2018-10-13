@@ -3,7 +3,8 @@
 
 import numpy as np
 import traceback
-import sys
+# import sys
+import os.path
 
 def get_skelet3d_lib():
     import ctypes
@@ -76,6 +77,7 @@ def skelet3d(data):
 
     outa = np.fromstring(sdata, dtype='uint8')
     return outa.reshape(data.shape)
+
 
 def main():
     data = np.zeros([8,9,10], dtype='int8')

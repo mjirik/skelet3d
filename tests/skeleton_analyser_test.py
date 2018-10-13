@@ -301,5 +301,29 @@ class SkeletonAnalyserTest(unittest.TestCase):
         skan.to_yaml(filename)
         self.assertTrue(os.path.exists(filename))
 
+    def test_skeleton_analyser_from_portal_vein_to_its_branches(self):
+        filename = "test_output_synthetic_porta.yaml"
+
+        # delete file if exists
+        if os.path.exists(filename):
+            os.remove(filename)
+        import io3d.datasets
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        data_segm = segm == 2
+        data_skelet = skelet3d.skelet3d(data_segm)
+        self.assertEqual(np.max(data_skelet), 1)
+        self.assertEqual(np.min(data_skelet), 0)
+
+        skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data_segm)
+
+        branche_label = skan.get_branche_label()
+        # import sed3
+        # ed = sed3.sed3(branche_label, contour=skan.sklabel)
+        # ed.show()
+
+        self.assertGreater(np.max(branche_label), 2)
+        self.assertLess(np.max(branche_label), -3)
+
 if __name__ == "__main__":
     unittest.main()

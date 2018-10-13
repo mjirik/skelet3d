@@ -39,6 +39,7 @@ requirements:
     # pywget is not build for python 3.6
 #    - pywget
     - ruamel.yaml
+    - imma
 
   run:
     - python
@@ -51,6 +52,7 @@ requirements:
     # necessary for yaml
     - vtk
     - ruamel.yaml
+    - imma
 
 test:
   # Python imports

@@ -49,6 +49,8 @@ class SkeletonAnalyser:
             data3d_skel = self.filter_small_objects(data3d_skel,
                                                     filter_small_threshold)
 
+        self.data3d_skel = data3d_skel
+
         # generate nodes and enges (sklabel)
         logger.debug('__skeleton_nodes, __generate_sklabel')
         skelet_nodes = self.__skeleton_nodes(data3d_skel)
@@ -65,6 +67,7 @@ class SkeletonAnalyser:
         self.shifted_zero = None
         self.shifted_sklabel = None
         self.stats = None
+        self.branche_label = None
 
     def to_yaml(self, filename):
         if self.stats is None:
@@ -324,12 +327,14 @@ class SkeletonAnalyser:
         skelet_nodes = self.__skeleton_nodes(self.sklabel)
         self.sklabel = self.__generate_sklabel(skelet_nodes)
 
-    def __skeleton_nodes(self, data3d_skel):
+    def __skeleton_nodes(self, data3d_skel, kernel=None):
         """
         Return 3d ndarray where 0 is background, 1 is skeleton, 2 is node
         and 3 is terminal node
         """
-        kernel = np.ones([3, 3, 3])
+
+        if kernel is None:
+            kernel = np.ones([3, 3, 3])
 
         mocnost = scipy.ndimage.filters.convolve(
             data3d_skel, kernel) * data3d_skel
@@ -464,6 +469,26 @@ class SkeletonAnalyser:
         sklabel = sklabel_edg - sklabel_nod
 
         return sklabel
+
+    def get_branche_label(self):
+        """
+
+        :return:
+        """
+        if self.branche_label is None:
+            self.__generate_branche_label()
+        return self.branche_label
+
+    def __generate_branche_label(self):
+        # if self.sklabel is None:
+        #     sknodes = self.__skeleton_nodes(self.data3d_skel)
+        #     self.sklabel = self.__generate_sklabel(skelet_nodes=sknodes)
+
+        import imma
+        import imma.image_manipulation
+        self.branche_label = imma.image_manipulation.distance_segmentation(self.sklabel)
+
+        pass
 
     def __edge_vectors(self, edg_number, edg_stats):
         """

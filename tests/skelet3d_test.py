@@ -89,5 +89,44 @@ class Skelet3DTest(unittest.TestCase):
         self.assertEqual(np.max(skelet), 1)
         self.assertEqual(np.min(skelet), 0)
 
+    @unittest.skip("TODO find solution for bug in skelet algorithm")
+    def test_skeleton_problem_with_some_types_of_rectangular_structures(self):
+        # TODO fix bug in skeletonization algorithm.
+        # It ignores vertical structures and horizontal structures. Sometimes is just change the shape inough.
+        #
+        import io3d.datasets
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        data_segm = segm == 2
+
+        # data_segm[39:44, 120:170, 100:111] = True
+        # data_segm[39:44, 50:120, 60:70] = True
+        # data_segm[39:44, 60:120, 100:105] = True
+        # data_segm[39:44, 60:120, 110:110 + 5] = True
+        data_segm[39:44, 120:130, 120:240] = True
+        data_segm[39:44, 60:120, 120:120 + 6] = True
+        data_segm[39:44, 60:120, 130:130 + 7] = True
+        data_segm[39:44, 60:120, 140:140 + 8] = True
+        data_segm[39:44, 60:120, 160:160 + 9] = True
+        data_segm[39:44, 60:120, 180:180 + 10] = True
+        data_segm[39:44, 60:120, 200:200 + 11] = True
+        data_segm[39:44, 60:120, 220:220 + 12] = True
+        # data_segm[39:44, 60:120, 120:126] = True
+        # data_segm[39:44, 60:120, 130:140] = True
+        # data_segm[39:44, 60:120, 150:151] = True
+        # data_segm[39:44, 60:120, 160:162] = True
+
+        data_skelet = skelet3d.skelet3d(data_segm)
+
+        import sed3
+        ed = sed3.sed3(data_skelet, contour=data_segm)# , contour=branche_label)
+        ed.show()
+
+        self.assertEqual(np.max(
+            data_skelet[39:44, 60:100, 140:140 + 8]
+        ), 1, "In this branche is expected skeleton")
+        self.assertEqual(np.min(data_skelet), 0)
+        self.assertEqual(np.max(data_skelet), 1)
+
 if __name__ == "__main__":
     unittest.main()

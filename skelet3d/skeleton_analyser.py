@@ -477,16 +477,28 @@ class SkeletonAnalyser:
         """
         if self.branche_label is None:
             self.__generate_branche_label()
+        if self.volume_data is not None:
+            self.branche_label[self.volume_data == 0] = 0
         return self.branche_label
 
-    def __generate_branche_label(self):
+    def __generate_branche_label(self, ignore_nodes=True):
         # if self.sklabel is None:
         #     sknodes = self.__skeleton_nodes(self.data3d_skel)
         #     self.sklabel = self.__generate_sklabel(skelet_nodes=sknodes)
 
         import imma
         import imma.image_manipulation
-        self.branche_label = imma.image_manipulation.distance_segmentation(self.sklabel)
+
+        if ignore_nodes:
+            import copy
+            sklabel = self.sklabel.copy()
+            # delete nodes
+            sklabel[sklabel < 0] = 0
+
+        else:
+            sklabel = self.sklabel
+
+        self.branche_label = imma.image_manipulation.distance_segmentation(sklabel)
 
         pass
 

@@ -189,7 +189,7 @@ def _find_conda_dir_with_conda():
         out, err = p.communicate()
 
         # import ipdb; ipdb.set_trace()
-        dstdir = out.strip()
+        dstdir = out.decode("utf8").strip()
         dstdir = re.search("\*(.*)(\n|$)", dstdir).group(1).strip()
     except:
         import traceback

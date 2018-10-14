@@ -325,7 +325,7 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data_segm)
 
-        branche_label = skan.get_branche_label()
+        branche_label = skan.get_branch_label()
 
         # import sed3
         # ed = sed3.sed3(branche_label) #, contour=skan.sklabel)

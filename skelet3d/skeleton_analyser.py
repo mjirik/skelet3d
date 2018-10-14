@@ -67,7 +67,7 @@ class SkeletonAnalyser:
         self.shifted_zero = None
         self.shifted_sklabel = None
         self.stats = None
-        self.branche_label = None
+        self.branch_label = None
 
     def to_yaml(self, filename):
         if self.stats is None:
@@ -470,18 +470,18 @@ class SkeletonAnalyser:
 
         return sklabel
 
-    def get_branche_label(self):
+    def get_branch_label(self):
         """
 
         :return:
         """
-        if self.branche_label is None:
-            self.__generate_branche_label()
+        if self.branch_label is None:
+            self.__generate_branch_label()
         if self.volume_data is not None:
-            self.branche_label[self.volume_data == 0] = 0
-        return self.branche_label
+            self.branch_label[self.volume_data == 0] = 0
+        return self.branch_label
 
-    def __generate_branche_label(self, ignore_nodes=True):
+    def __generate_branch_label(self, ignore_nodes=True):
         # if self.sklabel is None:
         #     sknodes = self.__skeleton_nodes(self.data3d_skel)
         #     self.sklabel = self.__generate_sklabel(skelet_nodes=sknodes)
@@ -498,7 +498,7 @@ class SkeletonAnalyser:
         else:
             sklabel = self.sklabel
 
-        self.branche_label = imma.image_manipulation.distance_segmentation(sklabel)
+        self.branch_label = imma.image_manipulation.distance_segmentation(sklabel)
 
         pass
 

@@ -338,5 +338,6 @@ class SkeletonAnalyserTest(unittest.TestCase):
         # self.assertLess(np.max(branche_label), -4)
         self.assertEqual(branche_label[0, 0, 0], 0)
 
+
 if __name__ == "__main__":
     unittest.main()

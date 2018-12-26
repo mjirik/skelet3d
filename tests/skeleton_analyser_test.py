@@ -251,7 +251,6 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         self.assertEqual(output[5, 8, 7], 0)
 
-
     def test_small_with_write_to_file(self):
         filename = "test_output.yaml"
 

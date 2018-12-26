@@ -128,5 +128,6 @@ class Skelet3DTest(unittest.TestCase):
         self.assertEqual(np.min(data_skelet), 0)
         self.assertEqual(np.max(data_skelet), 1)
 
+
 if __name__ == "__main__":
     unittest.main()

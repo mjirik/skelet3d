@@ -63,9 +63,32 @@ setup(
     package_dir=package_dir,
     author='Miroslav Jirik',
     author_email="miroslav.jirik@gmail.com",
+    url='https://github.com/mjirik/skelet3d',
 
 #	"c:\\users/mjirik/projects/skelet3d/src" },
     packages=find_packages(),
     # py_modules=['skelet3d']
-    install_requires=['numpy', 'scipy']#, 'wget'],
+    install_requires=['numpy', 'scipy'], #, 'wget'],
+    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    license='MIT',
+    classifiers=[
+                    # How mature is this project? Common values are
+                    #   3 - Alpha
+                    #   4 - Beta
+                    #   5 - Production/Stable
+                    'Development Status :: 3 - Alpha',
+
+                    # Indicate who your project is intended for
+                    'Intended Audience :: Developers',
+                    'Topic :: Scientific/Engineering :: Bio-Informatics',
+
+                    # Pick your license as you wish (should match "license" above)
+                    'License :: OSI Approved :: BSD License',
+
+                    # Specify the Python versions you support here. In particular, ensure
+                    # that you indicate whether you support Python 2, Python 3 or both.
+                    # 'Programming Language :: Python :: 2',
+                    'Programming Language :: Python :: 2.7',
+                    'Programming Language :: Python :: 3.6',
+                ],
     )

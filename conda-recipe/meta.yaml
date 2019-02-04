@@ -4,7 +4,7 @@ package:
 
 source:
   git_rev: 1.7.2
-  git_url: .
+  git_url: https://github.com/mjirik/skelet3d.git
   # fn: skelet3d-1.7.2.tar.gz
   # url: https://pypi.python.org/packages/source/s/skelet3d/skelet3d-1.7.2.tar.gz
   # md5: 3674d524673671c87cc7b74f20276eb6

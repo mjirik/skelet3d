@@ -62,7 +62,8 @@ def get_conda_dir():
         conda_dir = conda_dir[:idx]
     return conda_dir
 
-def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
+# def libfix_windows(url="http://147.228.240.61/queetech/install/ITK%2bSkelet3D_dll.zip"):
+def libfix_windows(url="http://home.zcu.cz/~mjirik/lisa/install/ITK%2bSkelet3D_dll.zip"):
     outdir = download_and_unzip(url)
 
     dest_dir = get_conda_dir()
@@ -129,7 +130,8 @@ def __make_non_sudo():
         return None
 
 
-def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
+# def libfix_linux_conda(url="http://147.228.240.61/queetech/install/Skelet3D_so.zip"):
+def libfix_linux_conda(url="http://home.zcu.cz/~mjirik/lisa/install/Skelet3D_so.zip"):
     # linux_copy_to_conda_dir(url)
     if os.getuid() != 0:
         print("please run with sudo")

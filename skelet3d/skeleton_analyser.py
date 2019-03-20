@@ -135,10 +135,13 @@ class SkeletonAnalyser:
         for edg_number in list(range(1, len_edg + 1)):
             edgst = {}
             edgst.update(self.__connection_analysis(edg_number))
-            edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
-            edgst = self.__edge_curve(edg_number, edgst)
-            edgst.update(self.__edge_length(edg_number, edgst))
-            edgst.update(self.__edge_vectors(edg_number, edgst))
+            if 'nodeB_ZYX_mm' in edgst:
+                edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
+                edgst = self.__edge_curve(edg_number, edgst)
+                edgst.update(self.__edge_length(edg_number, edgst))
+                edgst.update(self.__edge_vectors(edg_number, edgst))
+            else:
+                logger.warning("No B point for edge ID {}. No length computation.".format(edg_number))
             # edgst = edge_analysis(sklabel, i)
             if self.volume_data is not None:
                 edgst['radius_mm'] = float(self.__radius_analysis(

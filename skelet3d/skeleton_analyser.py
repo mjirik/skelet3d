@@ -159,8 +159,9 @@ class SkeletonAnalyser:
         # @TODO dokončit
         logger.debug('skeleton_analysis: starting processing part: angles of connected edges')
         for edg_number in list(range(1, len_edg + 1)):
-            edgst = stats[edg_number]
-            edgst.update(self.__connected_edge_angle(edg_number, stats))
+            if 'nodeB_ZYX_mm' in edgst:
+                edgst = stats[edg_number]
+                edgst.update(self.__connected_edge_angle(edg_number, stats))
 
             updateFunction(edg_number, len_edg, "angles of connected edges")
 

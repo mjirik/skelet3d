@@ -136,7 +136,7 @@ class SkeletonAnalyser:
             try:
                 edgst = {}
                 edgst.update(self.__connection_analysis(edg_number))
-                if 'nodeB_ZYX_mm' in edgst:
+                if 'nodeB_ZYX_mm' in edgst and "nodeA_ZYX_mm":
                     edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
                     edgst = self.__edge_curve(edg_number, edgst)
                     edgst.update(self.__edge_length(edg_number, edgst))
@@ -1101,7 +1101,8 @@ class SkeletonAnalyser:
             return dst
 
         else:
-            logger.warning("__radius_analysis_init() error.  ")
+            logger.Error("__radius_analysis_init() error.  Values are expected be 0 and 1")
+            raise ValueError("Volumetric data are expected to be 0 and 1.")
             return None
 
     def __radius_analysis(self, edg_number, skdst):

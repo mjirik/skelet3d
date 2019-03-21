@@ -133,25 +133,29 @@ class SkeletonAnalyser:
             'curve and connections of edge')
         # TODO switch A and B based on neighborhood maximal radius
         for edg_number in list(range(1, len_edg + 1)):
-            edgst = {}
-            edgst.update(self.__connection_analysis(edg_number))
-            if 'nodeB_ZYX_mm' in edgst:
-                edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
-                edgst = self.__edge_curve(edg_number, edgst)
-                edgst.update(self.__edge_length(edg_number, edgst))
-                edgst.update(self.__edge_vectors(edg_number, edgst))
-            else:
-                logger.warning("No B point for edge ID {}. No length computation.".format(edg_number))
-            # edgst = edge_analysis(sklabel, i)
-            if self.volume_data is not None:
-                edgst['radius_mm'] = float(self.__radius_analysis(
-                    edg_number, skdst))  # slow (this takes most of time)
-            stats[edgst['id']] = edgst
+            try:
+                edgst = {}
+                edgst.update(self.__connection_analysis(edg_number))
+                if 'nodeB_ZYX_mm' in edgst:
+                    edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
+                    edgst = self.__edge_curve(edg_number, edgst)
+                    edgst.update(self.__edge_length(edg_number, edgst))
+                    edgst.update(self.__edge_vectors(edg_number, edgst))
+                else:
+                    logger.warning("No B point for edge ID {}. No length computation.".format(edg_number))
+                # edgst = edge_analysis(sklabel, i)
+                if self.volume_data is not None:
+                    edgst['radius_mm'] = float(self.__radius_analysis(
+                        edg_number, skdst))  # slow (this takes most of time)
+                stats[edgst['id']] = edgst
 
-            # update gui progress
-            updateFunction(
-                edg_number, len_edg,
-                "length, radius, curve, connections of edge")
+                # update gui progress
+                updateFunction(
+                    edg_number, len_edg,
+                    "length, radius, curve, connections of edge")
+            except Exception as e:
+                logger.warning("Problem in connection analysis\n" + traceback.format_exc())
+
         logger.debug(
             'skeleton_analysis: finished processing part: length, radius, ' +
             'curve, connections of edge')
@@ -159,11 +163,14 @@ class SkeletonAnalyser:
         # @TODO dokončit
         logger.debug('skeleton_analysis: starting processing part: angles of connected edges')
         for edg_number in list(range(1, len_edg + 1)):
-            if 'nodeB_ZYX_mm' in edgst:
-                edgst = stats[edg_number]
-                edgst.update(self.__connected_edge_angle(edg_number, stats))
+            try:
+                if 'nodeB_ZYX_mm' in edgst and "nodeA_ZYX_mm" in edgst:
+                    edgst = stats[edg_number]
+                    edgst.update(self.__connected_edge_angle(edg_number, stats))
 
-            updateFunction(edg_number, len_edg, "angles of connected edges")
+                updateFunction(edg_number, len_edg, "angles of connected edges")
+            except Exception as e:
+                logger.warning("Problem in angle analysis\n" + traceback.format_exc())
 
         self.stats = stats
         logger.debug('skeleton_analysis: finished processing part: angles of connected edges')

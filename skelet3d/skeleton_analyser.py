@@ -132,6 +132,7 @@ class SkeletonAnalyser:
             'skeleton_analysis: starting processing part: length, radius, ' +
             'curve and connections of edge')
         # TODO switch A and B based on neighborhood maximal radius
+
         for edg_number in list(range(1, len_edg + 1)):
             try:
                 edgst = {}
@@ -1089,6 +1090,10 @@ class SkeletonAnalyser:
         | volume_data: volumetric data with zeros and ones
         """
         uq = np.unique(self.volume_data)
+        if len(uq) < 2:
+            logger.Error("labels 0 and 1 expected in volume data")
+            raise ValueError("Volumetric data are expected to be 0 and 1.")
+            return None
         if (uq[0] == 0) & (uq[1] == 1):
             dst = scipy.ndimage.morphology.distance_transform_edt(
                 self.volume_data,

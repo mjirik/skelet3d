@@ -12,7 +12,7 @@ sudo: required
 #    sources:
 #      - kalakris-cmake
 env:
-    - CONDA_PYTHON_VERSION=2.7
+#    - CONDA_PYTHON_VERSION=2.7
     - CONDA_PYTHON_VERSION=3.6
     - CONDA_PYTHON_VERSION=3.7
 virtualenv:
@@ -49,12 +49,12 @@ install:
     # - pip install -r requirements_pip.txt
     - pip install python-coveralls
     - "echo $LD_LIBRARY_PATH"
-    - "pip install -r requirements.txt"
-    - 'mkdir build'
-    - "cd build"
-    - "cmake .."
-    - "cmake --build ."
-    - "sudo make install"
+    - pip install -r requirements.txt
+    - mkdir build
+    - cd build
+    - cmake ..
+    - cmake --build .
+    - sudo make install
     - pip install .
     - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'

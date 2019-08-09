@@ -337,6 +337,25 @@ class SkeletonAnalyserTest(unittest.TestCase):
         # self.assertLess(np.max(branche_label), -4)
         self.assertEqual(branche_label[0, 0, 0], 0)
 
+    def test_skan_from_skeleton_of_one_tube(self):
+
+        import skelet3d.skeleton_analyser
+
+        # fn_out = 'tree_one_tube.vtk'
+        # if os.path.exists(fn_out):
+        #     os.remove(fn_out)
+
+        volume_data = np.zeros([7, 8, 9], dtype=np.int)
+        volume_data[4:8, 4:6, 1:3] = 1
+        volume_data[:, 5, 2:9] = 1
+        volume_data[:, 0:7, 5] = 1
+        skelet = skelet3d.skelet3d(volume_data)
+
+        skan = skelet3d.skeleton_analyser.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1])
+        stats = skan.skeleton_analysis()
+
+        self.assertEqual(len(stats), 1, "There should be just one cylinder based on data with different diameter")
+
 
 if __name__ == "__main__":
     unittest.main()

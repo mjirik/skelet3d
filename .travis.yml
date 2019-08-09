@@ -1,5 +1,5 @@
 language: python
-python: 3.6
+python: 2.7
 os: linux
 # Ubuntu 14.04 Trusty support
 sudo: required

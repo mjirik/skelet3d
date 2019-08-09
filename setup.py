@@ -66,7 +66,7 @@ def run_cmake(no_setuppy=1):
         sys.exit(-1)
 
     try:
-        ds.spawn(['cmake', "--build", "."]) # +cmake_args.split())
+        ds.spawn(['cmake', "--install", "."]) # +cmake_args.split())
     except ds.DistutilsExecError:
         print("Error while: cmake --build .")
         print("run 'setup.py build --help' for build options")
@@ -76,8 +76,8 @@ def run_cmake(no_setuppy=1):
 class CustomInstallCommand(install):
     """Customized setuptools install command - prints a friendly greeting."""
     def run(self):
-        if platform.system() == "Linux":
-            run_cmake()
+        # if platform.system() == "Linux":
+        #     run_cmake()
 
         install.run(self)
 

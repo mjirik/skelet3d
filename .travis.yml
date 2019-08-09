@@ -54,8 +54,8 @@ install:
     - cd build
     - cmake ..
     - cmake --build .
-    - cmake --install .
-#    - sudo make install
+#    - cmake --install .
+    - sudo make install
     - pip install .
     - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'

@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 import os
 import os.path
 
-from nose.plugins.attrib import attr
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 import unittest
 # import sys

@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 import unittest
 import os
 import sys
-from nose.plugins.attrib import attr
 import numpy as np
 import skelet3d
 

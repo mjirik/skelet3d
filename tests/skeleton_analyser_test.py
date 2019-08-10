@@ -11,7 +11,7 @@
 """
 import numpy as np
 import unittest
-from nose.plugins.attrib import attr
+import pytest
 import skelet3d
 import skelet3d.skeleton_analyser as sk
 import copy
@@ -20,7 +20,7 @@ import os
 
 class SkeletonAnalyserTest(unittest.TestCase):
 
-    @attr('slow')
+    @pytest.mark.slow
     # @unittest.skip("I dont know how to turn off this test on travis-ci")
     @unittest.skipIf(os.environ.get("TRAVIS", True), "Skip on Travis-CI")
     def test_nodes_aggregation_big_data(self):

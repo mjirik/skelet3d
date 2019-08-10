@@ -46,8 +46,9 @@ install:
 #    - conda install --yes pip nose
     # Install dependencies
     - conda install --yes -c SimpleITK -c luispedro -c mjirik -c conda-forge --file requirements_conda.txt python=$CONDA_PYTHON_VERSION pip nose
+    - conda install --yes pytest-cov
     # - pip install -r requirements_pip.txt
-    - pip install python-coveralls
+#    - pip install python-coveralls
     - "echo $LD_LIBRARY_PATH"
     - pip install -r requirements.txt
     - mkdir build
@@ -62,6 +63,7 @@ install:
     - 'sudo ldconfig -v'
     # - conda list -e
 # command to run tests
-script: nosetests --with-coverage --cover-package=skelet3d
+script:
+  - python -m pytest --cov=skelet3d/
 after_success:
     - coveralls

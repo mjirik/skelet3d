@@ -58,8 +58,8 @@ install:
     - conda list -e
 #    - cmake --install .
     - sudo make install
+    - cd ..
     - pip install .
-    - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'
     - 'sudo ldconfig -v'
     - conda list -e

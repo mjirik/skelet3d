@@ -195,6 +195,7 @@ INSTALL(TARGETS BinaryThinningCxxShared DESTINATION ${SKELET3D_LIB_INSTALL_DESTI
 # it can be installed independently on shared libraries
 
 FIND_PROGRAM(PYTHON "python")
+MESSAGE("FIND PYTHON: ${PYTHON}")
 
 IF (PYTHON)
     MESSAGE(status "python executable ${PYTHON}")

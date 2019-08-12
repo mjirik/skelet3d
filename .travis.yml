@@ -55,15 +55,17 @@ install:
     - cd build
     - cmake ..
     - cmake --build .
+    - conda list -e
 #    - cmake --install .
     - sudo make install
     - pip install .
     - "cd .."
     - 'echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf'
     - 'sudo ldconfig -v'
-    # - conda list -e
+    - conda list -e
 # command to run tests
 script:
+  - mkdir empty & cd empty
   - python -m pytest --cov=skelet3d/
 after_success:
     - coveralls

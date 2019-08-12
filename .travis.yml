@@ -65,7 +65,7 @@ install:
     - conda list -e
 # command to run tests
 script:
-  - mkdir empty & cd empty
+  - mkdir empty && cd empty
   - python -m pytest --cov=skelet3d/
 after_success:
     - coveralls

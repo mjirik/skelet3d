@@ -66,6 +66,6 @@ install:
 # command to run tests
 script:
   - mkdir empty && cd empty
-  - python -m pytest --cov=skelet3d/
+  - python -m pytest --cov=skelet3d/ ../tests
 after_success:
     - coveralls

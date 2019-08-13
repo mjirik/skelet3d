@@ -19,7 +19,6 @@ import os
 
 
 class SkeletonAnalyserTest(unittest.TestCase):
-
     @pytest.mark.slow
     # @unittest.skip("I dont know how to turn off this test on travis-ci")
     @unittest.skipIf(os.environ.get("TRAVIS", True), "Skip on Travis-CI")
@@ -27,7 +26,7 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         data = np.zeros([1000, 1000, 100], dtype=np.int8)
         voxelsize_mm = [14, 10, 6]
-        
+
         # snake
         # data[15:17, 13, 13] = 1
         data[18, 3:17, 12] = 1
@@ -45,11 +44,12 @@ class SkeletonAnalyserTest(unittest.TestCase):
         skel = data
 
         skan = sk.SkeletonAnalyser(
-                copy.copy(skel), 
-                volume_data=data,
-                voxelsize_mm=voxelsize_mm, 
-                cut_wrong_skeleton=False, 
-                aggregate_near_nodes_distance=20)
+            copy.copy(skel),
+            volume_data=data,
+            voxelsize_mm=voxelsize_mm,
+            cut_wrong_skeleton=False,
+            aggregate_near_nodes_distance=20,
+        )
         vessel_tree = skan.skeleton_analysis()
 
         # ed = sed3.sed3(skan.sklabel, contour=data)
@@ -83,11 +83,12 @@ class SkeletonAnalyserTest(unittest.TestCase):
         skel = data
 
         skan = sk.SkeletonAnalyser(
-                copy.copy(skel), 
-                volume_data=data,
-                voxelsize_mm=voxelsize_mm, 
-                cut_wrong_skeleton=False, 
-                aggregate_near_nodes_distance=20)
+            copy.copy(skel),
+            volume_data=data,
+            voxelsize_mm=voxelsize_mm,
+            cut_wrong_skeleton=False,
+            aggregate_near_nodes_distance=20,
+        )
         vessel_tree = skan.skeleton_analysis()
 
         # ed = sed3.sed3(skan.sklabel, contour=data)
@@ -101,16 +102,17 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
     def test_generate_elipse(self):
         import skelet3d.skeleton_analyser
+
         mask = skelet3d.skeleton_analyser.generate_binary_elipsoid([6, 4, 3])
 
         self.assertEqual(mask[0][0][0], 0)
         self.assertEqual(mask[6][4][3], 1)
-# on axis border should be zero
+        # on axis border should be zero
         self.assertEqual(mask[0][4][3], 0)
         self.assertEqual(mask[6][0][3], 0)
         self.assertEqual(mask[6][4][0], 0)
 
-# on axis border one pixel into center should be one
+        # on axis border one pixel into center should be one
         self.assertEqual(mask[1][4][3], 1)
         self.assertEqual(mask[6][1][3], 1)
         self.assertEqual(mask[6][4][1], 1)
@@ -131,13 +133,14 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         skel = data
 
-        skan = sk.SkeletonAnalyser(copy.copy(skel), volume_data=data,
-                                   voxelsize_mm=[1, 20, 300])
+        skan = sk.SkeletonAnalyser(
+            copy.copy(skel), volume_data=data, voxelsize_mm=[1, 20, 300]
+        )
         # skan.spline_smoothing = 5
         vessel_tree = skan.skeleton_analysis()
-        pixel = vessel_tree[1]['lengthEstimationPixel']
-        poly = vessel_tree[1]['lengthEstimationPoly']
-        spline = vessel_tree[1]['lengthEstimationSpline']
+        pixel = vessel_tree[1]["lengthEstimationPixel"]
+        poly = vessel_tree[1]["lengthEstimationPoly"]
+        spline = vessel_tree[1]["lengthEstimationSpline"]
 
         # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
         # self.assertAlmostEqual
@@ -171,30 +174,33 @@ class SkeletonAnalyserTest(unittest.TestCase):
 
         skel = data
 
-        skan = sk.SkeletonAnalyser(copy.copy(skel), volume_data=data,
-                                   voxelsize_mm=[1, 20, 300], cut_wrong_skeleton=False)
+        skan = sk.SkeletonAnalyser(
+            copy.copy(skel),
+            volume_data=data,
+            voxelsize_mm=[1, 20, 300],
+            cut_wrong_skeleton=False,
+        )
 
         # ed = sed3.sed3(skan.sklabel)
         # ed.show()
         vessel_tree = skan.skeleton_analysis()
 
-        self.assertAlmostEqual(vessel_tree[1]['lengthEstimationPixel'], 10)
-        self.assertAlmostEqual(vessel_tree[2]['lengthEstimationPixel'], 200)
-        self.assertAlmostEqual(vessel_tree[3]['lengthEstimationPixel'], 3000)
-        diag_length = 2 * ((1**2 + 20**2 + 300**2)**0.5)
-        self.assertAlmostEqual(vessel_tree[4]['lengthEstimationPixel'],
-                               diag_length)
+        self.assertAlmostEqual(vessel_tree[1]["lengthEstimationPixel"], 10)
+        self.assertAlmostEqual(vessel_tree[2]["lengthEstimationPixel"], 200)
+        self.assertAlmostEqual(vessel_tree[3]["lengthEstimationPixel"], 3000)
+        diag_length = 2 * ((1 ** 2 + 20 ** 2 + 300 ** 2) ** 0.5)
+        self.assertAlmostEqual(vessel_tree[4]["lengthEstimationPixel"], diag_length)
         # test spline
         self.assertLess(
-            vessel_tree[3]['lengthEstimationPixel']
-            - vessel_tree[3]['lengthEstimationSpline'],
-            0.001
+            vessel_tree[3]["lengthEstimationPixel"]
+            - vessel_tree[3]["lengthEstimationSpline"],
+            0.001,
         )
         # test poly
         self.assertLess(
-            vessel_tree[1]['lengthEstimationPixel']
-            - vessel_tree[1]['lengthEstimationPoly'],
-            0.001
+            vessel_tree[1]["lengthEstimationPixel"]
+            - vessel_tree[1]["lengthEstimationPoly"],
+            0.001,
         )
 
     def test_tortuosity(self):
@@ -216,17 +222,15 @@ class SkeletonAnalyserTest(unittest.TestCase):
         # pe = ped.sed3(skel)
         # pe.show()
 
-        skan = sk.SkeletonAnalyser(copy.copy(skel), volume_data=data,
-                                   voxelsize_mm=[1, 1, 1])
+        skan = sk.SkeletonAnalyser(
+            copy.copy(skel), volume_data=data, voxelsize_mm=[1, 1, 1]
+        )
         vessel_tree = skan.skeleton_analysis()
 
         # banana
-        self.assertGreater(vessel_tree[1]['tortuosity'], 1.2)
+        self.assertGreater(vessel_tree[1]["tortuosity"], 1.2)
         # bar
-        self.assertLess(
-            vessel_tree[2]['tortuosity'] - 1,
-            0.00001
-        )
+        self.assertLess(vessel_tree[2]["tortuosity"] - 1, 0.00001)
 
     def test_filter_small(self):
         import skelet3d
@@ -258,7 +262,6 @@ class SkeletonAnalyserTest(unittest.TestCase):
         if os.path.exists(filename):
             os.remove(filename)
 
-
         data = np.zeros([60, 60, 60], dtype=np.int8)
         data[5:8, 13:27, 5:9] = 1
         # crossing
@@ -277,7 +280,6 @@ class SkeletonAnalyserTest(unittest.TestCase):
         skan.to_yaml(filename)
         self.assertTrue(os.path.exists(filename))
 
-
     def test_skeleton_analyser_from_portal_vein(self):
         filename = "test_output_synthetic_porta.yaml"
 
@@ -285,7 +287,10 @@ class SkeletonAnalyserTest(unittest.TestCase):
         if os.path.exists(filename):
             os.remove(filename)
         import io3d.datasets
-        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = (
+            io3d.datasets.generate_synthetic_liver()
+        )
 
         data_segm = segm == 2
         data_skelet = skelet3d.skelet3d(data_segm)
@@ -307,7 +312,10 @@ class SkeletonAnalyserTest(unittest.TestCase):
         if os.path.exists(filename):
             os.remove(filename)
         import io3d.datasets
-        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = io3d.datasets.generate_synthetic_liver()
+
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = (
+            io3d.datasets.generate_synthetic_liver()
+        )
 
         data_segm = segm == 2
 
@@ -351,10 +359,16 @@ class SkeletonAnalyserTest(unittest.TestCase):
         volume_data[:, 0:7, 5] = 1
         skelet = skelet3d.skelet3d(volume_data)
 
-        skan = skelet3d.skeleton_analyser.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1])
+        skan = skelet3d.skeleton_analyser.SkeletonAnalyser(
+            skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1]
+        )
         stats = skan.skeleton_analysis()
 
-        self.assertEqual(len(stats), 1, "There should be just one cylinder based on data with different diameter")
+        self.assertEqual(
+            len(stats),
+            1,
+            "There should be just one cylinder based on data with different diameter",
+        )
 
 
 if __name__ == "__main__":

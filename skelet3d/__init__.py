@@ -1,4 +1,4 @@
-__all__ = ['skeletonizer', 'skeleton_analyser', 'tree']
+__all__ = ["skeletonizer", "skeleton_analyser", "tree"]
 
 __version__ = "1.7.13"
 

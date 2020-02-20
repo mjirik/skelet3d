@@ -24,3 +24,6 @@ skan = skelet3d.SkeletonAnalyser(skelet, volume_data=volume_data, voxelsize_mm=[
 stats = skan.skeleton_analysis()
 edge_number = 1
 print(stats[edge_number]['radius_mm'])
+
+# Get np.ndarray with labeled skeletonized image
+skan.sklabel

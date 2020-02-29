@@ -4,7 +4,7 @@ os:
   - linux
 #  - osx
 # Ubuntu 14.04 Trusty support
-sudo: required
+#sudo: required
 #dist: trusty
 # install new cmake
 #addons:
@@ -23,12 +23,12 @@ env:
 matrix:
   include:
     - os: osx
-      language: minimal
+      language: shell
       name: osx python36
       env:
         - CONDA_PYTHON_VERSION=3.6
     - os: osx
-      language: minimal
+      language: shell
       name: osx python37
       env:
         - CONDA_PYTHON_VERSION=3.7

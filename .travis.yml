@@ -41,17 +41,17 @@ matrix:
 virtualenv:
   system_site_packages: true
 before_install:
+  # Do something under Mac OS X platform
+  #      sudo apt-get update;
     - if [[ "$(uname)" == "Darwin" ]]; then
-      # Do something under Mac OS X platform
-#      sudo apt-get update;
       elif [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
         sudo apt-get install -qq cmake libinsighttoolkit3-dev libpng12-dev libgdcm2-dev;
+      fi
       # Do something under GNU/Linux platform
       # elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
       # Do something under 32 bits Windows NT platform
       # elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
       # Do something under 64 bits Windows NT platform
-      fi
 
     # We do this conditionally because it saves us some downloading if the
     # version is the same.

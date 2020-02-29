@@ -34,7 +34,7 @@ jobs:
         - CONDA_PYTHON_VERSION=3.7
   allow_failures:
 #    - env: CONDA_PYTHON_VERSION=3.7
-    - env: CONDA_PYTHON_VERSION=3.8
+#    - env: CONDA_PYTHON_VERSION=3.8
     - name: "osx python36"
     - name: "osx python37"
   fast_finish: true

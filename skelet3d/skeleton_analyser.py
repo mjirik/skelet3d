@@ -1153,7 +1153,7 @@ class SkeletonAnalyser:
         """
         uq = np.unique(self.volume_data)
         if len(uq) < 2:
-            logger.Error("labels 0 and 1 expected in volume data")
+            logger.error("labels 0 and 1 expected in volume data")
             raise ValueError("Volumetric data are expected to be 0 and 1.")
             return None
         if (uq[0] == 0) & (uq[1] == 1):
@@ -1167,7 +1167,7 @@ class SkeletonAnalyser:
             return dst
 
         else:
-            logger.Error(
+            logger.error(
                 "__radius_analysis_init() error.  Values are expected be 0 and 1"
             )
             raise ValueError("Volumetric data are expected to be 0 and 1.")

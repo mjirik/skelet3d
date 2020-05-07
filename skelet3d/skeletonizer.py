@@ -79,8 +79,9 @@ def skelet3d(data):
         data.shape[2], data.shape[1], data.shape[0], ctypes.c_char_p(sdata)
     )
 
-    outa = np.fromstring(sdata, dtype="uint8")
-    return outa.reshape(data.shape)
+    # outa = np.fromstring(sdata, dtype="uint8")
+    outa = np.frombuffer(sdata, dtype="uint8")
+    return outa.reshape(data.shape).copy()
 
 
 def main():

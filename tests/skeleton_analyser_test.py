@@ -401,12 +401,12 @@ class SkeletonAnalyserTest(unittest.TestCase):
         print(stats)
         df = skan.stats_as_dataframe()
         assert df is not None
-        import missingno as msno
-        print(df)
-        msno.matrix(df)
-        from matplotlib import pyplot as plt
-        plt.show()
-        pass
+        # import missingno as msno
+        # print(df)
+        # msno.matrix(df)
+        # from matplotlib import pyplot as plt
+        # plt.show()
+        # pass
 
     # def test_skan_from_skeleton_of_one_tube(self):
     #

@@ -9,15 +9,16 @@ Modul is used for skeleton binary 3D data analysis
 # path_to_script = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(os.path.join(path_to_script, "../extern/dicom2fem/src"))
 
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
+# import logging
+# logger = logging.getLogger(__name__)
 
 import traceback
 import numpy as np
 import scipy.ndimage
 import scipy.interpolate
 from io import open
+import copy
 
 
 class SkeletonAnalyser:
@@ -44,6 +45,7 @@ class SkeletonAnalyser:
         filter_small_threshold=3,
         cut_wrong_skeleton=True,
         aggregate_near_nodes_distance=0,
+        debug_show=False
     ):
         # for not
         self.volume_data = volume_data
@@ -65,6 +67,7 @@ class SkeletonAnalyser:
         self.cut_wrong_skeleton = cut_wrong_skeleton
         self.curve_order = 2
         self.spline_smoothing = None
+        self.debug_show=debug_show
 
         logger.debug(
             "Inited SkeletonAnalyser - voxelsize:"
@@ -155,20 +158,18 @@ class SkeletonAnalyser:
         # TODO switch A and B based on neighborhood maximal radius
 
         for edg_number in list(range(1, len_edg + 1)):
-            try:
+            # try:
                 edgst = {}
                 edgst.update(self.__connection_analysis(edg_number))
-                if "nodeB_ZYX_mm" in edgst and "nodeA_ZYX_mm":
+                if "nodeB_ZYX_mm" in edgst and "nodeA_ZYX_mm" in edgst:
                     edgst = self.__ordered_points_with_pixel_length(edg_number, edgst)
                     edgst = self.__edge_curve(edg_number, edgst)
                     edgst.update(self.__edge_length(edg_number, edgst))
                     edgst.update(self.__edge_vectors(edg_number, edgst))
                 else:
-                    logger.warning(
-                        "No B point for edge ID {}. No length computation.".format(
-                            edg_number
-                        )
-                    )
+                    logger.warning(f"No B point for edge ID {edg_number}. No length computation.")
+                    self.show_label_neighborhood(edg_number)
+
                 # edgst = edge_analysis(sklabel, i)
                 if self.volume_data is not None:
                     edgst["radius_mm"] = float(
@@ -180,10 +181,10 @@ class SkeletonAnalyser:
                 updateFunction(
                     edg_number, len_edg, "length, radius, curve, connections of edge"
                 )
-            except Exception as e:
-                logger.warning(
-                    "Problem in connection analysis\n" + traceback.format_exc()
-                )
+            # except Exception as e:
+            #     logger.warning(
+            #         "Problem in connection analysis\n" + traceback.format_exc()
+            #     )
 
         logger.debug(
             "skeleton_analysis: finished processing part: length, radius, "
@@ -210,6 +211,40 @@ class SkeletonAnalyser:
         )
 
         return stats
+
+    def stats_as_dataframe(self):
+        import pandas as pd
+        import exsu.dili
+        if self.stats is None:
+            msg = "Run skeleton_analyser before stats_as_dataframe()"
+            logger.error(msg)
+            raise RuntimeError(msg)
+
+        # import imtools.dili
+        df = pd.DataFrame()
+        for stats_key in self.stats:
+            one_edge = copy.copy(self.stats[stats_key])
+            k = "orderedPoints_mm_X"
+            if k in one_edge:
+                one_edge[k] = str(one_edge[k])
+            k = "orderedPoints_mm_Y"
+            if k in one_edge:
+                one_edge[k] = str(one_edge[k])
+            k = "orderedPoints_mm_Z"
+            if k in one_edge:
+                one_edge[k] = str(one_edge[k])
+            k = "orderedPoints_mm"
+            if k in one_edge:
+                one_edge[k] = str(one_edge[k])
+            # one_edge[]
+            one_dct = exsu.dili.flatten_dict_join_keys(one_edge, simplify_iterables=True)
+            # df_one = pd.DataFrame(one_dct)
+
+            df_one = pd.DataFrame([list(one_dct.values())], columns=list(one_dct.keys()))
+            df = df.append(df_one, ignore_index=True)
+        return df
+
+
 
     def __remove_edge_from_stats(self, stats, edge):
         logger.debug("Cutting edge id:" + str(edge) + " from stats")
@@ -246,6 +281,27 @@ class SkeletonAnalyser:
         #     del(self.shifted_sklabel) # needed by __element_neighbors
         # except:
         #     logger.warning('self.shifted_zero does not exsist')
+
+    def show_label_neighborhood(self, elm, margin=3):
+        wh = np.where(self.sklabel == elm)
+        print(f"wh={wh}")
+        x0 = np.max(wh[0])
+        y0 = np.max(wh[1])
+        z0 = np.max(wh[2])
+        x1 = np.min(wh[0])
+        y1 = np.min(wh[1])
+        z1 = np.min(wh[2])
+
+        sklabel_part = self.sklabel[
+                       max(int(x0 - margin), 0):min(int(x1 + margin + 1), self.sklabel.shape[0]),
+                       max(int(y0 - margin), 0):min(int(y1 + margin + 1), self.sklabel.shape[1]),
+                       max(int(z0 - margin), 0):min(int(z1 + margin + 1), self.sklabel.shape[2]),
+                       ]
+        logger.debug(f"sklabel_part={sklabel_part}")
+        if self.debug_show:
+            import sed3
+            ed = sed3.sed3(sklabel_part)
+            ed.show()
 
     def __cut_short_skeleton_terminal_edges(self, cut_ratio=2.0):
         """
@@ -290,47 +346,31 @@ class SkeletonAnalyser:
                 conn_nodes = [i for i in self.elm_neigh[elm] if i < 0]
                 conn_edges = []
                 for n in conn_nodes:
-                    try:
+                    if n in self.elm_neigh:
                         nn = self.elm_neigh[n]  # get neighbours elements of node
-                    except:
-                        logger.debug(
-                            "Node " + str(n) + " not found! May be already deleted."
-                        )
+                    else:
+                        logger.debug(f"Node {str(n)} not found! May be already deleted.")
                         continue
 
-                    for (
-                        e
-                    ) in (
-                        nn
-                    ):  # if there are other edges connected to node add them to conn_edges
+                    for (e) in (nn):  # if there are other edges connected to node add them to conn_edges
                         if e > 0 and e not in conn_edges and e != elm:
                             conn_edges.append(e)
 
-                if (
-                    len(conn_edges) == 0
-                ):  # if no other edges are connected to nodes, remove from skeleton
-                    logger.debug(
-                        "removing edge "
-                        + str(elm)
-                        + " with its nodes "
-                        + str(self.elm_neigh[elm])
-                    )
+                if (len(conn_edges) == 0):  # if no other edges are connected to nodes, remove from skeleton
+                    logger.debug(f"removing edge {str(elm)} with its nodes {str(self.elm_neigh[elm])}")
                     for night in self.elm_neigh[elm]:
                         remove_elm(night, cut_elm_neigh, cut_elm_box, self.sklabel)
         self.elm_neigh = cut_elm_neigh
         self.elm_box = cut_elm_box
 
         # remove elements that are not connected to the rest of skeleton
-        logger.debug(
-            "skeleton_analysis: Cut - Removing elements that are not connected"
-            + " to rest of the skeleton"
-        )
+        logger.debug("skeleton_analysis: Cut - Removing elements that are not connected to rest of the skeleton")
         cut_elm_neigh = dict(self.elm_neigh)
         cut_elm_box = dict(self.elm_box)
         for elm in self.elm_neigh:
             elm = int(elm)
             if len(self.elm_neigh[elm]) == 0:
-                logger.debug("removing element " + str(elm))
+                logger.debug(f"removing element {str(elm)}")
                 remove_elm(elm, cut_elm_neigh, cut_elm_box, self.sklabel)
         self.elm_neigh = cut_elm_neigh
         self.elm_box = cut_elm_box
@@ -366,29 +406,52 @@ class SkeletonAnalyser:
 
             # logger.debug(str(radius / float(length))+" "+str(radius)+" "+str(length))
             if (radius / float(length)) > cut_ratio:
-                logger.debug("removing edge " + str(te) + " with its terminal node.")
+                logger.debug(f"removing edge {str(te)} with its terminal node.")
                 remove_elm(elm, cut_elm_neigh, cut_elm_box, self.sklabel)
         self.elm_neigh = cut_elm_neigh
         self.elm_box = cut_elm_box
 
+        self.__check_nodes_to_be_just_curve_from_elm_neig()
+
+        # regenerate new nodes and edges from cut skeleton (sklabel)
+        logger.debug("Regenerate new nodes and edges from cut skeleton")
+        self.sklabel[self.sklabel != 0] = 1
+        skelet_nodes = self.__skeleton_nodes(self.sklabel)
+        self.sklabel = self.__generate_sklabel(skelet_nodes)
+
+    def __check_nodes_to_be_just_curve_from_elm_neig(self):
+        """
+        Detect curve-like nodes from elm_neigh
+
+
+        :return:
+        """
         # check if some nodes are not forks but just curves
-        logger.debug(
-            "skeleton_analysis: Cut - check if some nodes are not forks but just curves"
-        )
+        logger.debug("skeleton_analysis: Cut - check if some nodes are not forks but just curves")
         for elm in self.elm_neigh:
             if elm < 0:
                 conn_edges = [i for i in self.elm_neigh[elm] if i > 0]
                 if len(conn_edges) == 2:
-                    logger.warning(
-                        "Node " + str(elm) + " is just a curve!!! FIX THIS!!!"
-                    )
-                    # TODO
+                    self.show_label_neighborhood(elm)
+                    logger.debug(f"Node {str(elm)} is just a curve."+
+                                 " It will be fixed automatically on on regeneration of skeleton nodes")
+                    # wh = np.where(self.sklabel == elm)
+                    # print(f"wh={wh}")
+                    # x = wh[0][0]
+                    # y = wh[1][0]
+                    # z = wh[2][0]
+                    #
+                    # sklabel_part = self.sklabel[
+                    #     int(x - 2):int(x + 3),
+                    #     int(y - 2):int(y + 3),
+                    #     int(z - 2):int(z + 3),
+                    # ]
+                    # print(f"sklabel_part={sklabel_part}")
+                    # import sed3
+                    # ed = sed3.sed3(sklabel_part)
+                    # ed.show()
+                    # print("slabel_part visualized")
 
-        # regenerate new nodes and edges from cut skeleton (sklabel)
-        logger.debug("regenerate new nodes and edges from cut skeleton")
-        self.sklabel[self.sklabel != 0] = 1
-        skelet_nodes = self.__skeleton_nodes(self.sklabel)
-        self.sklabel = self.__generate_sklabel(skelet_nodes)
 
     def __skeleton_nodes(self, data3d_skel, kernel=None):
         """
@@ -406,8 +469,30 @@ class SkeletonAnalyser:
 
         data3d_skel[nodes == 1] = 2
         data3d_skel[terminals == 1] = 3
+        # maybe swap next two lines
         data3d_skel = self.__skeleton_nodes_aggregation(data3d_skel)
+        data3d_skel = self.__remove_terminal_nodes_in_neghborhood_of_the_branching_node(data3d_skel)
 
+        return data3d_skel
+
+    def __remove_terminal_nodes_in_neghborhood_of_the_branching_node(self, data3d_skel, kernel=None):
+        """
+        Delete terminal nodes with 0 length edge.
+                    #
+                    #       T
+                    #      N
+                    #    EE EEE
+        :param data3d_skel: ndimage 0-nothing, 1-edge, 2-nodes, 3-terminal
+        :return:
+        """
+        if kernel is None:
+            kernel = np.ones([3, 3, 3])
+
+        # mocnost = scipy.ndimage.filters.convolve(data3d_skel, kernel) * data3d_skel
+
+        nd_dil = scipy.ndimage.binary_dilation(data3d_skel == 2, kernel)
+        # delete one
+        data3d_skel[(nd_dil & (data3d_skel == 3)) > 0] = 0
         return data3d_skel
 
     def __skeleton_nodes_aggregation(self, data3d_skel):
@@ -435,7 +520,7 @@ class SkeletonAnalyser:
             # per partes method even slower
             # nd_dil = self.__skeleton_nodes_aggregation_per_each_node(data3d_skel==2, structure)
             data3d_skel[nd_dil & data3d_skel > 0] = 2
-            sklabel_edg1, len_edg1 = scipy.ndimage.label(data3d_skel)
+            # sklabel_edg1, len_edg1 = scipy.ndimage.label(data3d_skel)
             # import ipdb; ipdb.set_trace() #  noqa BREAKPOINT
             # import sed3
             # ed = sed3.sed3(data3d_skel)
@@ -621,14 +706,15 @@ class SkeletonAnalyser:
         | edg_end: Which end of edge you want (0 or 1)
         | con_edg_order: Which edge of selected end of edge you want (0,1)
         """
-        if edg_end == "A":
+        if edg_end == "A" and "connectedEdgesA" in stats[edg_number]:
             connectedEdges = stats[edg_number]["connectedEdgesA"]
             ndid = "nodeIdA"
-        elif edg_end == "B":
+        elif edg_end == "B" and "connectedEdgesB" in stats[edg_number]:
             connectedEdges = stats[edg_number]["connectedEdgesB"]
             ndid = "nodeIdB"
         else:
-            logger.error("Wrong edg_end in __vector_of_connected_edge()")
+            logger.debug("Wrong edg_end in __vector_of_connected_edge()")
+            return None
         if len(connectedEdges) <= con_edg_order:
             return None
         connected_edge_id = connectedEdges[con_edg_order]
@@ -645,9 +731,15 @@ class SkeletonAnalyser:
             # sousední hrana u uzlu na konci 0 má stejný node na
             # svém konci 0 jako
             # nynější hrana
-            vector = connectedEdgeStats["vectorA"]
+            if "vectorA" in connectedEdgeStats:
+                vector = connectedEdgeStats["vectorA"]
+            else:
+                logger.debug(f"missing key vectorA in edg_number={edg_number}")
         elif stats[edg_number][ndid] == connectedEdgeStats["nodeIdB"]:
-            vector = connectedEdgeStats["vectorB"]
+            if "vectorB" in connectedEdgeStats:
+                vector = connectedEdgeStats["vectorB"]
+            else:
+                logger.debug(f"missing key vectorB in edg_number={edg_number}")
 
         return vector
 
@@ -685,10 +777,10 @@ class SkeletonAnalyser:
         vectorX0 = None
         vectorX1 = None
         vector = None
-        try:
+        if vector_key in stats[edg_number]:
             vector = stats[edg_number][vector_key]
-        except:  # Exception as e:
-            logger.debug(traceback.format_exc())
+        else:
+            logger.debug(f"Vector key {vector_key} not found for edge {edg_number}.")
 
         # try:
         vectorX0 = self.__vector_of_connected_edge(edg_number, stats, edg_end, 0)
@@ -1039,13 +1131,13 @@ class SkeletonAnalyser:
             try:
                 length_poly = self.__length_from_curve_poly(edg_stats)
             except:
-                logger.info("problem with length_poly")
+                logger.debug(f"problem with length_poly edg_number={edg_number}")
             try:
                 length_spline = self.__length_from_curve_spline(edg_stats)
             except:
                 logger.info(traceback.format_exc())
                 logger.info("problem with length_spline")
-                logger.error("problem with spline")
+                logger.error(f"problem with spline edg_number={edg_number}")
 
             if length_spline is not None:
                 length = length_spline
@@ -1152,26 +1244,29 @@ class SkeletonAnalyser:
         | volume_data: volumetric data with zeros and ones
         """
         uq = np.unique(self.volume_data)
-        if len(uq) < 2:
-            logger.error("labels 0 and 1 expected in volume data")
-            raise ValueError("Volumetric data are expected to be 0 and 1.")
-            return None
-        if (uq[0] == 0) & (uq[1] == 1):
-            dst = scipy.ndimage.morphology.distance_transform_edt(
-                self.volume_data, sampling=self.voxelsize_mm
-            )
-
-            # import ipdb; ipdb.set_trace() # BREAKPOINT
-            dst = dst * (self.sklabel != 0)
-
-            return dst
-
-        else:
+        if (len(uq) != 2) or (uq[0] != 0) or (uq[1] != 1):
             logger.error(
-                "__radius_analysis_init() error.  Values are expected be 0 and 1"
+                f"__radius_analysis_init() error. Values in volume data are expected be 0 and 1. Given values={uq}."
             )
             raise ValueError("Volumetric data are expected to be 0 and 1.")
             return None
+        # if (len(uq) != 2) or (len(uq)):
+        #     logger.error("labels 0 and 1 expected in volume data")
+        #     raise ValueError("Volumetric data are expected to be 0 and 1.")
+        #     return None
+        # if (uq[0] == 0) & (uq[1] == 1):
+        dst = scipy.ndimage.morphology.distance_transform_edt(
+            self.volume_data, sampling=self.voxelsize_mm
+        )
+
+        # import ipdb; ipdb.set_trace() # BREAKPOINT
+        dst = dst * (self.sklabel != 0)
+
+        return dst
+
+        # else:
+        #     raise ValueError("Volumetric data are expected to be 0 and 1.")
+        #     return None
 
     def __radius_analysis(self, edg_number, skdst):
         """

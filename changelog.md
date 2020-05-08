@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.7.
+
+* Changed debug messages.
+* Pandas export added.
+
 ## 1.6.1
 
 * Error of skelet3d algorithm documented

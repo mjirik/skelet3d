@@ -360,7 +360,7 @@ class SkeletonAnalyserTest(unittest.TestCase):
         skelet = skelet3d.skelet3d(volume_data)
 
         skan = skelet3d.skeleton_analyser.SkeletonAnalyser(
-            skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1]
+            skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1],
         )
         stats = skan.skeleton_analysis()
 
@@ -369,6 +369,69 @@ class SkeletonAnalyserTest(unittest.TestCase):
             1,
             "There should be just one cylinder based on data with different diameter",
         )
+
+    def test_skeleton_analyser_from_portal_vein_to_its_branches_and_save_to_pandas(self):
+        filename = "test_output_synthetic_porta.yaml"
+
+        # delete file if exists
+        if os.path.exists(filename):
+            os.remove(filename)
+        import io3d.datasets
+
+        data3d, segm, voxelsize_mm, slab, seeds_liver, seeds_porta = (
+            io3d.datasets.generate_synthetic_liver()
+        )
+
+        data_segm = segm == 2
+
+        # data_segm[41:44, 122:127, 68:70] = True
+        data_segm[40:45, 77:80, 100:110] = False
+        data_segm[42:44, 77:80, 103:106] = True
+        data_skelet = skelet3d.skelet3d(data_segm)
+        self.assertEqual(np.max(data_skelet), 1)
+        self.assertEqual(np.min(data_skelet), 0)
+
+        # import sed3
+        # ed = sed3.sed3(data_skelet, contour=data_segm)# , contour=branche_label)
+        # ed.show()
+
+        skan = sk.SkeletonAnalyser(copy.copy(data_skelet), volume_data=data_segm)
+        stats = skan.skeleton_analysis()
+
+        print(stats)
+        df = skan.stats_as_dataframe()
+        assert df is not None
+        import missingno as msno
+        print(df)
+        msno.matrix(df)
+        from matplotlib import pyplot as plt
+        plt.show()
+        pass
+
+    # def test_skan_from_skeleton_of_one_tube(self):
+    #
+    #     import skelet3d.skeleton_analyser
+    #
+    #     # fn_out = 'tree_one_tube.vtk'
+    #     # if os.path.exists(fn_out):
+    #     #     os.remove(fn_out)
+    #
+    #     volume_data = np.zeros([7, 8, 9], dtype=np.int)
+    #     volume_data[4:8, 4:6, 1:3] = 1
+    #     volume_data[:, 5, 2:9] = 1
+    #     volume_data[:, 0:7, 5] = 1
+    #     skelet = skelet3d.skelet3d(volume_data)
+    #
+    #     skan = skelet3d.skeleton_analyser.SkeletonAnalyser(
+    #         skelet, volume_data=volume_data, voxelsize_mm=[1, 1, 1]
+    #     )
+    #     stats = skan.skeleton_analysis()
+    #
+    #     self.assertEqual(
+    #         len(stats),
+    #         1,
+    #         "There should be just one cylinder based on data with different diameter",
+    #     )
 
 
 if __name__ == "__main__":

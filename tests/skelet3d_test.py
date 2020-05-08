@@ -9,14 +9,13 @@
 """
 
 """
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 import unittest
 import os
 import sys
 import numpy as np
 import skelet3d
+import pytest
 
 path_to_script = os.path.dirname(os.path.abspath(__file__))
 imcut_path = os.path.join(path_to_script, "../../io3d/")
@@ -140,5 +139,53 @@ class Skelet3DTest(unittest.TestCase):
         self.assertEqual(np.max(data_skelet), 1)
 
 
-if __name__ == "__main__":
-    unittest.main()
+@unittest.skip("Complex example to debug all problems")
+def test_skeleton_ircad():
+    import io3d.datasets
+    from pathlib import Path
+    import sed3
+
+    from skimage.measure import label
+    pth = Path(io3d.datasets.join_path("medical/orig/3Dircadb1.16/MASKS_DICOM/portalvein", get_root=True))
+    datap = io3d.read(pth, dataplus_format=True)
+    data_segm = datap["data3d"]
+
+    data_skelet = skelet3d.skelet3d(data_segm)
+    lab_segm = label(data_segm)
+    nlab_segm = np.max(lab_segm)
+    un_sg = np.unique(lab_segm)
+    logger.debug(nlab_segm)
+    logger.debug(un_sg)
+
+    lab_skel = label(data_skelet)
+    un_sk = np.unique(lab_skel)
+    nlab_skel = np.max(lab_skel)
+    logger.debug(nlab_skel)
+    logger.debug(un_sk)
+
+    skvals = lab_segm[data_skelet > 0]
+    sklabs = lab_skel[data_skelet > 0]
+    import sklearn.metrics
+    from matplotlib import pyplot as plt
+
+    # cm = sklearn.metrics.confusion_matrix(sklabs, skvals, labels=un_sg)
+    # plt.show()
+
+    # ed = sed3.sed3(lab_skel, contour=lab_segm)  # , contour=branche_label)
+    # ed.show()
+
+    skan = skelet3d.skeleton_analyser.SkeletonAnalyser(
+        (data_skelet > 0).astype(np.uint8), volume_data=(data_segm>0).astype(np.uint8), voxelsize_mm=[1, 1, 1]
+    )
+
+    stats = skan.skeleton_analysis()
+    df = skan.stats_as_dataframe()
+    import missingno as msno
+    msno.matrix(df, labels=True)
+
+    from matplotlib import pyplot as plt
+    plt.show()
+    assert False
+
+
+

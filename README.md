@@ -14,7 +14,7 @@ scripts call this library.
 Prerequisites
 =============
 
-  * Python (2.7)
+  * Python (2.7, 3.x)
   * CMake
   * ITK
   * Numpy
@@ -41,6 +41,16 @@ To build `.so` libraries you will need download skelet3d sources:
 
 ## Windows 
 
+Installation with `pip`  should be enough. 
+```cmd
+pip install skelet3d
+```
+In case of any problems you can download dll or build it.
+
+
+### Manual download and build
+
+
 Tested on Windows 10 64-bit 
  
 * Install numpy. Recommended is installation with [Anaconda](https://www.continuum.io/downloads) 
@@ -52,7 +62,7 @@ into directory in environment PATH (e.g. `c:\Windows\System32` ) or [build it yo
  
 
 
-## Matlab
+## Matlab - deprecated
 
 For matlab wrapper run src/compile.m
 

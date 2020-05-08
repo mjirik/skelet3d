@@ -18,3 +18,9 @@
         cmake --build . --config Release
         
 * Add builded DLL libraries into environment PATH
+
+
+# General usefull compilation tips
+
+
+* [list of compilers for python](https://wiki.python.org/moin/WindowsCompilers)

@@ -40,6 +40,7 @@ requirements:
 #    - pywget
     - ruamel.yaml
     - imma
+    - loguru
 
   run:
     - python
@@ -53,6 +54,7 @@ requirements:
     - vtk
     - ruamel.yaml
     - imma
+    - loguru
 
 test:
   # Python imports

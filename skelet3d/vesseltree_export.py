@@ -10,9 +10,7 @@ import os.path
 # path_to_script = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(os.path.join(path_to_script, "../extern/dicom2fem/src"))
 
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 import argparse
 from io import open
 
@@ -77,11 +75,6 @@ def vt2esofspy(vesseltree, outputfilename="tracer.txt", axisorder=[0, 1, 2]):
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger()
-
-    logger.setLevel(logging.WARNING)
-    ch = logging.StreamHandler()
-    logger.addHandler(ch)
 
     # logger.debug('input params')
 

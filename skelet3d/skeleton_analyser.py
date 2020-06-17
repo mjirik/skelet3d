@@ -44,6 +44,7 @@ class SkeletonAnalyser:
         use_filter_small=False,
         filter_small_threshold=3,
         cut_wrong_skeleton=True,
+        do_radius_calculation=True,
         aggregate_near_nodes_distance=0,
         debug_show=False
     ):
@@ -51,6 +52,7 @@ class SkeletonAnalyser:
         self.volume_data = volume_data
         self.voxelsize_mm = voxelsize_mm
         self.aggregate_near_nodes_distance = aggregate_near_nodes_distance
+        self.do_radius_calculation = do_radius_calculation
 
         # get array with 1 for edge, 2 is node and 3 is terminal
         logger.debug("Generating sklabel...")
@@ -129,7 +131,7 @@ class SkeletonAnalyser:
 
         # init radius analysis
         logger.debug("__radius_analysis_init")
-        if self.volume_data is not None:
+        if self.volume_data is not None and self.do_radius_calculation:
             skdst = self.__radius_analysis_init()
 
         # get edges and nodes that are near the edge. (+bounding box)
@@ -171,7 +173,7 @@ class SkeletonAnalyser:
                     self.show_label_neighborhood(edg_number)
 
                 # edgst = edge_analysis(sklabel, i)
-                if self.volume_data is not None:
+                if self.volume_data is not None and self.do_radius_calculation:
                     edgst["radius_mm"] = float(
                         self.__radius_analysis(edg_number, skdst)
                     )  # slow (this takes most of time)

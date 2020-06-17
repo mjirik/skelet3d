@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* Export to pandas
+* Some parts of the algorithm can be skipped now
+
 ## 1.7.
 
 * Changed debug messages.

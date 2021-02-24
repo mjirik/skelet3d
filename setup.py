@@ -25,7 +25,7 @@ if cmake_pkgdir[0] == '$':
 else:
     package_dir={ '': cmake_pkgdir }
 
-__VERSION__='1.7.13'
+__VERSION__='1.8.0'
 
 # src_dir = os.path.abspath(__file__)
 # src_dir, fl = os.path.split(src_dir)

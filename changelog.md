@@ -1,9 +1,14 @@
 # Changelog
 
+Latest version: 1.7.13
+
 ## Unreleased
 
-* Export to pandas
-* Some parts of the algorithm can be skipped now
+## 1.8 
+
+* [Changed] Bifurcation 
+* [Added] Export to pandas
+* [Added] Some parts of the algorithm can be skipped now
 
 ## 1.7.
 

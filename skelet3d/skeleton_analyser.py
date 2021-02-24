@@ -286,7 +286,7 @@ class SkeletonAnalyser:
 
     def show_label_neighborhood(self, elm, margin=3):
         wh = np.where(self.sklabel == elm)
-        print(f"wh={wh}")
+        logger.trace(f"wh={wh}")
         x0 = np.max(wh[0])
         y0 = np.max(wh[1])
         z0 = np.max(wh[2])
@@ -705,7 +705,7 @@ class SkeletonAnalyser:
         """
         | find common node with connected edge and its vector
 
-        | edg_end: Which end of edge you want (0 or 1)
+        | edg_end: Which end of edge you want ('A' or 'B')
         | con_edg_order: Which edge of selected end of edge you want (0,1)
         """
         if edg_end == "A" and "connectedEdgesA" in stats[edg_number]:
@@ -728,6 +728,13 @@ class SkeletonAnalyser:
             return None
         connectedEdgeStats = stats[connected_edge_id]
         # import pdb; pdb.set_trace()
+        tagA = f"nodeA_ZYX_mm"
+        tagB = f"nodeB_ZYX_mm"
+        tag = f"node{edg_end}_ZYX_mm"
+        tag_other = f"node{'A' if edg_end == 'A' else 'B'}_ZYX_mm"
+        logger.trace(f"node{edg_end} = {stats[edg_number][tag]} -- {stats[edg_number][tag_other]}")
+        logger.trace(f"connected_edge_id={connected_edge_id}, {connectedEdgeStats[tagA]} {connectedEdgeStats[tagB]}")
+
 
         if stats[edg_number][ndid] == connectedEdgeStats["nodeIdA"]:
             # sousední hrana u uzlu na konci 0 má stejný node na
@@ -752,14 +759,20 @@ class SkeletonAnalyser:
         c = (v1[0] * v2[1]) - (v1[1] * v2[0])
         return [a, b, c]
 
-    def projection_of_vect_to_xy_plane(self, vect, xy1, xy2):
+    def projection_of_vect_to_xy_plane(self, vect, xy1, xy2, edg_number=None):
         """
         Return porojection of vect to xy plane given by vectprs xy1 and xy2
+        :param edg_number: For debug reasons
         """
-        norm = self.perpendicular_to_two_vects(xy1, xy2)
+        normal_vector = self.perpendicular_to_two_vects(xy1, xy2)
+        norm = np.linalg.norm(normal_vector)
+        logger.trace(f"edge_vect={vect}, xy1={xy1}, xy2={xy2}, normal_vector={normal_vector}")
+        if norm == 0:
+            logger.debug(f"norm of vector of edge {edg_number} is 0")
+            return None
         vect_proj = np.array(vect) - (
-            np.dot(vect, norm) / np.linalg.norm(norm) ** 2
-        ) * np.array(norm)
+            np.dot(vect, normal_vector) / norm** 2
+        ) * np.array(normal_vector)
         return vect_proj
 
     def __connected_edge_angle_on_one_end(self, edg_number, stats, edg_end):
@@ -795,25 +808,39 @@ class SkeletonAnalyser:
         vectorX1 = self.__vector_of_connected_edge(edg_number, stats, edg_end, 1)
         # except:  # Exception as e:
         #     logger.debug(traceback.format_exc())
+        out["phi" + "a"] = np.NaN
+        out["phi" + "b"] = np.Nan
+        out["phi" + "c"] = np.Nan
+        out["vector" + "0"] = np.Nan
+        out["vector" + "1"] = np.Nan
 
         if (vectorX0 is not None) and (vectorX1 is not None) and (vector is not None):
-            vect_proj = self.projection_of_vect_to_xy_plane(vector, vectorX0, vectorX1)
-            phiXa = self.__vectors_to_angle_deg(vectorX0, vectorX1)
-            phiXb = self.__vectors_to_angle_deg(vector, vect_proj)
-            vectorX01avg = np.array(vectorX0 / np.linalg.norm(vectorX0)) + np.array(
-                vectorX1 / np.linalg.norm(vectorX1)
-            )
-            phiXc = self.__vectors_to_angle_deg(vectorX01avg, vect_proj)
+            norm_vectorX0 = np.linalg.norm(vectorX0)
+            norm_vectorX1 = np.linalg.norm(vectorX1)
+            if (norm_vectorX0 > 0) and (norm_vectorX1 > 0):
+                vect_proj = self.projection_of_vect_to_xy_plane(vector, vectorX0, vectorX1, edg_number=edg_number)
+                if vect_proj is not None:
+                    phiXa = self.__vectors_to_angle_deg(vectorX0, vectorX1)
+                    phiXb = self.__vectors_to_angle_deg(vector, vect_proj)
+                    vectorX01avg = np.array(vectorX0 / norm_vectorX0) + np.array(
+                        vectorX1 / norm_vectorX1
+                    )
+                    phiXc = self.__vectors_to_angle_deg(vectorX01avg, vect_proj)
 
-            out.update(
-                {
-                    "phi" + "a": phiXa.tolist(),
-                    "phi" + "b": phiXb.tolist(),
-                    "phi" + "c": phiXc.tolist(),
-                    "vector" + "0": vectorX0,
-                    "vector" + "1": vectorX1,
-                }
-            )
+                    out["phi" + "a"] = phiXa.tolist() if phiXa else np.NaN
+                    out["phi" + "b"] = phiXb.tolist() if phiXb else np.NaN
+                    out["phi" + "c"] = phiXc.tolist() if phiXc else np.NaN
+                    out["vector" + "0"] = vectorX0 if vectorX0 else np.NaN
+                    out["vector" + "1"] = vectorX1 if vectorX0 else np.NaN
+
+            # out.update(
+            #     {
+            #         "phi" + "b": phiXb.tolist(),
+            #         "phi" + "c": phiXc.tolist(),
+            #         "vector" + "0": vectorX0,
+            #         "vector" + "1": vectorX1,
+            #     }
+            # )
             # out.update({
             #     'phi' + edg_end + 'a': phiXa.tolist(),
             #     'phi' + edg_end + 'b': phiXb.tolist(),

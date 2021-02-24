@@ -11,6 +11,64 @@ scripts call this library.
 
 ![1D simplified model](graphics/2014-09-2-porta_lar-crop.png)
 
+Example
+=======
+
+Simple example with donut shape
+
+```python
+import skelet3d
+import numpy as np
+
+# Create donut shape
+data = np.ones([3,7,9])
+data [:, 3, 3:6] = 0
+
+skelet = skelet3d.skelet3d(data)
+
+print(skelet)
+```
+
+Result:
+
+```python
+array([[[0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]],
+
+        [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]],
+
+        [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]]], dtype=uint8)
+```
+            
+            
+
+For more examples with skeleton analysis or visualisation see [example directory](https://github.com/mjirik/skelet3d/tree/master/examples)
+
+
+
+# Installation
+
+```cmd
+conda install -c mjirik -c conda-forge skelet3d
+```
+
 Prerequisites
 =============
 
@@ -69,52 +127,6 @@ For matlab wrapper run src/compile.m
     matlab -nodesktop -nosplash -r "cd src;compile;exit"
 
 Then there is binaryThhinningMex.mexa64 file. It is used by skelet3d.m.
-
-Example
-=======
-
-Simple example with donut shape
-
-    import skelet3d
-    import numpy as np
-
-    # Create donut shape
-    data = np.ones([3,7,9])
-    data [:, 3, 3:6] = 0
-
-    skelet = skelet3d.skelet3d(data)
-
-    print(skelet)
-
-Result:
-
-    array([[[0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0]],
-
-            [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 1, 1, 1, 1, 0, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0],
-            [0, 0, 1, 1, 1, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0]],
-
-            [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0]]], dtype=uint8)
-            
-            
-For more examples with skeleton analysis or visualisation see [example directory](https://github.com/mjirik/skelet3d/tree/master/examples)
-
 
 
 Troubleshooting

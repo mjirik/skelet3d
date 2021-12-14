@@ -1,6 +1,8 @@
 
 # Linux install notes
 
+
+
 ## Use Anaconda packages
 
 
@@ -75,6 +77,34 @@ There are 3 ways how to obtain `.so` libs:
         cmake ..
         make
         make install
-    
 
+
+
+### Build and create `Skelet3D_so.zip` using Docker Xenial
+
+```bash
+docker pull ubuntu:xenial
+docker run -it ubuntu:xenial
+```
+In the running docker image:
+
+```bash
+apt-get update
+sudo apt-get install -y git cmake python-numpy libinsighttoolkit3-dev libpng12-dev libgdcm2-dev libgdcm2.6 build-essential python-setuptools unzip python-pip zip
+git clone https://github.com/mjirik/skelet3d.git
+mkdir -p skelet3d/build
+cd skelet3d/build
+cmake ..
+make
+mkdir Skelet3D_so
+cp ../bin/* Skelet3D_so/
+cp /usr/lib/*[iI][tT][kK]* Skelet3D_so/
+zip -r Skelet3D_so.zip Skelet3D_so
+```
+
+To get the zip outside of the container. Run fallowing outside of the container:
+```bash
+docker ps
+docker cp <container_id>:/skelet3d/build/Skelet3D_so.zip .
+```
 

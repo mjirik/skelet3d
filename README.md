@@ -149,8 +149,23 @@ libBinaryThinningCxxShared.so: cannot open shared object file: No such file or
 directory
 
 
-Probably there is a problem in Ubuntu with `LD_LIBRARY_PATH`. If you do want 
-to add correct library paths:
+Probably there is a problem in Ubuntu with `LD_LIBRARY_PATH`. 
+`libBinaryThinningCxxShared.so` and ITK libraries are expected to be in `LD_LIBRARY_PATH`
+
+Download libraries to home directory, unzip and set correct `LD_LIBRARY_PATH`
+```bash
+cd ~
+curl -O http://home.zcu.cz/~mjirik/lisa/install/Skelet3D_so.zip
+unzip Skelet3D_so.zip
+export LD_LIBRARY_PATH=$HOME/Skelet3D_so:$LD_LIBRARY_PATH
+```
+
+
+Cannot find library (alternative 1)
+---------
+
+
+If you do want to add correct library paths:
 
     echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf
     sudo ldconfig -v
@@ -162,7 +177,7 @@ http://bugs.python.org/issue18502
 http://ubuntuforums.org/showthread.php?t=1498755
 
 
-Cannot find library 2
+Cannot find library (alternative 2)
 ---------------------
 
 `libBinaryThinningCxxShared.so` is expected to be in `/usr/local/lib` and in `~/miniconda2/lib`

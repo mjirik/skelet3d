@@ -21,9 +21,11 @@ import platform
 cmake_pkgdir = '${CMAKE_CURRENT_SOURCE_DIR}'
 
 if cmake_pkgdir[0] == '$':
+    print("CMAKE_CURRENT_SOURCE_DIR is not set")
     package_dir={}# {'':'./'}
 else:
-    package_dir={ '': cmake_pkgdir }
+    # package_dir={ '': cmake_pkgdir }
+    package_dir={}
 
 __VERSION__='1.8.1'
 
@@ -75,6 +77,7 @@ def run_cmake(no_setuppy=1):
 
 class CustomInstallCommand(install):
     """Customized setuptools install command - prints a friendly greeting."""
+    print("Performing Custom Install Command ...")
     def run(self):
         # if platform.system() == "Linux":
         #     run_cmake()

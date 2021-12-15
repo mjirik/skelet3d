@@ -77,16 +77,17 @@ def run_cmake(no_setuppy=1):
 
 class CustomInstallCommand(install):
     """Customized setuptools install command - prints a friendly greeting."""
-    print("Performing Custom Install Command ...")
     def run(self):
+        print("Performing Custom Install Command ...")
         # if platform.system() == "Linux":
         #     run_cmake()
 
         install.run(self)
+        print("install.run() finished...")
 
 
 # run_cmake()
-print('pkgdir ', package_dir)
+print('pkgdir = ', package_dir)
 setup(
     name='skelet3d',
     version=__VERSION__,

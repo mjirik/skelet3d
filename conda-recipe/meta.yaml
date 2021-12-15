@@ -75,7 +75,7 @@ test:
 
 about:
   #home: The package home page
-  license: UNKNOWN
+  license: 'UNKNOWN'
   summary: 'UNKNOWN'
 
 # See

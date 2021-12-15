@@ -1,6 +1,6 @@
 __all__ = ["skeletonizer", "skeleton_analyser"]
 
-__version__ = "1.8.0"
+__version__ = "1.8.1"
 
 from . import skeleton_analyser
 from .skeleton_analyser import SkeletonAnalyser

@@ -39,7 +39,7 @@ requirements:
     # pywget is not build for python 3.6
 #    - pywget
     - ruamel.yaml
-    - imma
+    - imma >=0.18
     - loguru
 
   run:
@@ -53,7 +53,7 @@ requirements:
     # necessary for yaml
     - vtk
     - ruamel.yaml
-    - imma
+    - imma >=0.18
     - loguru
 
 test:

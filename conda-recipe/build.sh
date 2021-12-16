@@ -8,7 +8,8 @@ $PYTHON setup.py install
 # http://docs.continuum.io/conda/build.html
 # for a list of environment variables that are set during the build process.
 
-echo "build.sh - running CMAKE"
+echo "build.sh: running CMAKE"
+echo "build.sh: CONDA_PREFIX={$CONDA_PREFIX}"
 #mkdir build_cmake
 #cd build_cmake
 #CMAKE_GENERATOR="Unix Makefiles"

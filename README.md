@@ -152,7 +152,18 @@ directory
 Probably there is a problem in Ubuntu with `LD_LIBRARY_PATH`. 
 `libBinaryThinningCxxShared.so` and ITK libraries are expected to be in `LD_LIBRARY_PATH`
 
-Download libraries to home directory, unzip and set correct `LD_LIBRARY_PATH`
+### Solution 1 (for conda)
+
+Download libraries to home directory, unzip and put into correct directory
+```bash
+cd ~
+curl -O http://home.zcu.cz/~mjirik/lisa/install/Skelet3D_so.zip
+unzip Skelet3D_so.zip
+cp Skelet3D_so/* $CONDA_PREFIX/lib/
+```
+
+### Solution 2 
+Download the libraries and set `LD_LIBRARY_PATH` to new dir
 ```bash
 cd ~
 curl -O http://home.zcu.cz/~mjirik/lisa/install/Skelet3D_so.zip
@@ -160,11 +171,7 @@ unzip Skelet3D_so.zip
 export LD_LIBRARY_PATH=$HOME/Skelet3D_so:$LD_LIBRARY_PATH
 ```
 
-
-Cannot find library (alternative 1)
----------
-
-
+### Solution 3 (Ubuntu)
 If you do want to add correct library paths:
 
     echo "include /usr/local/lib" | sudo tee -a /etc/ld.so.conf
@@ -176,11 +183,6 @@ http://bugs.python.org/issue18502
 
 http://ubuntuforums.org/showthread.php?t=1498755
 
-
-Cannot find library (alternative 2)
----------------------
-
-`libBinaryThinningCxxShared.so` is expected to be in `/usr/local/lib` and in `~/miniconda2/lib`
 
 OSError
 -------
